@@ -1,0 +1,22 @@
+return Def.ActorFrame{
+	
+	Def.ActorFrame{
+	Condition=not GAMESTATE:IsCourseMode();
+		LoadActor("ScreenGameplay stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage()) )..{
+		OnCommand=cmd(Center;draworder,105;zoom,1;sleep,1.2;linear,0.3;zoom,0.25;y,SCREEN_BOTTOM-40);
+		OffCommand=cmd(accelerate,0.8;addy,150);
+		},
+	},
+
+	Def.ActorFrame{
+	Condition=GAMESTATE:IsCourseMode();
+		LoadActor("CourseStages 1x5")..{
+		OnCommand=cmd(Center;animate,0;draworder,105;zoom,1;sleep,1.2;linear,0.3;zoom,0.25;y,SCREEN_BOTTOM-40);
+		OffCommand=cmd(accelerate,0.8;addy,150);
+		CurrentSongChangedMessageCommand=function(self)
+			self:setstate( GAMESTATE:GetCourseSongIndex() )
+		end,
+		},
+	},
+
+}
