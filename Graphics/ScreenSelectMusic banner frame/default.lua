@@ -24,6 +24,10 @@ return Def.ActorFrame{
 				end;
 			};
 
+			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{
+			OnCommand=cmd(y,129.5;zoomx,1;zoomy,0.94;)
+		},
+
 		};
 
 		LoadActor("right frame edge")..{
@@ -98,7 +102,9 @@ return Def.ActorFrame{
 		},
 
 	},
-
+	LoadActor( "../ScreenSelectMusic wheel mask" ) .. {
+				InitCommand=cmd(x,-420;y,1;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+			},
 	LoadActor("left frame")..{
 	OnCommand=cmd(x,-380;y,1;addx,-150;decelerate,0.5;addx,150);
 	OffCommand=cmd(sleep,0.2;accelerate,0.6;addx,-150);

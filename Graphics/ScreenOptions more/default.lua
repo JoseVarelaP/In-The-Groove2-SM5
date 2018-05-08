@@ -12,6 +12,6 @@ return Def.ActorFrame{
 	},
 
 	LoadActor("moreexit")..{
-	OnCommand=cmd(y,-17;croptop,.57;cropbottom,.1);
+	OnCommand=cmd(y,-18;croptop,.57;cropbottom,.1);
 	},
 }

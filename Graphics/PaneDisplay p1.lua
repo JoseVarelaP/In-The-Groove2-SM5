@@ -20,6 +20,29 @@ function RadarValue(pn,n)
 	end
 end
 
+GetNameAndScore = function(pn)
+	local song = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse()) or GAMESTATE:GetCurrentSong()
+	local steps = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(PLAYER_1)) or GAMESTATE:GetCurrentSteps(PLAYER_1)
+	local score = ""
+	local name = ""
+
+	if profile and song and steps then
+		local scorelist = profile:GetHighScoreList(song,steps)
+		local scores = scorelist:GetHighScores()
+		local topscore = scores[1]
+
+		if topscore then
+			score = string.format("%.2f%%", topscore:GetPercentDP()*100.0)
+			name = topscore:GetName()
+		else
+			score = string.format("%.2f%%", 0)
+			name = "????"
+		end
+	end
+
+	return score, name
+end
+
 return Def.ActorFrame{
 	LoadActor( THEME:GetPathG('PaneDisplay','Frame') ),
 
@@ -43,10 +66,21 @@ return Def.ActorFrame{
 	end,
 	},
 
-	Def.BitmapText{ Font="_eurostile normal", Text=DifficultyName( PLAYER_1 ), InitCommand=cmd(x,100;y,-24+38); OnCommand=cmd(zoom,0.6;shadowlength,0);
+	Def.BitmapText{ Font="_eurostile normal", Text="diff", InitCommand=cmd(x,100;y,-24+38); OnCommand=cmd(zoom,0.6;zoomy,0.55;shadowlength,0);
 	CurrentStepsP1ChangedMessageCommand=function(self)
 	if GAMESTATE:GetCurrentSteps(PLAYER_1) then
-		self:settext( DifficultyName( PLAYER_1 ) )
+		self:maxwidth(90)
+		self:settext( string.upper( DifficultyName( PLAYER_1 ) ) )
+		self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
+	end
+	end,
+	},
+
+	Def.BitmapText{ Font="_eurostile normal", Text="diff", InitCommand=cmd(x,100;y,-24+38); OnCommand=cmd(zoom,0.6;zoomy,0.55;shadowlength,0);
+	CurrentStepsP1ChangedMessageCommand=function(self)
+	if GAMESTATE:GetCurrentSteps(PLAYER_1) then
+		self:maxwidth(90)
+		self:settext( GetNameAndScore(PLAYER_1) )
 		self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
 	end
 	end,
