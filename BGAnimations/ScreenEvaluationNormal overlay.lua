@@ -25,15 +25,15 @@ return Def.ActorFrame{
 	-- Banner frame
 
 
-	LoadActor( THEME:GetPathG("ScreenSelectMusic","banner mask") )..{
+	LoadActor( THEME:GetPathG("Evaluation","banner frame mask") )..{
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
-	OnCommand=cmd(setsize,-418/2,164/2;zwrite,1;z,1;blend,"BlendMode_NoEffect";y,SCREEN_TOP-100;sleep,3;decelerate,0.3;y,SCREEN_CENTER_Y-124);
+	OnCommand=cmd(zwrite,1;z,1;blend,"BlendMode_NoEffect";y,SCREEN_TOP-100;sleep,3;decelerate,0.3;y,SCREEN_CENTER_Y-125;zoom,1.02);
 	OffCommand=cmd(accelerate,0.3;addy,-SCREEN_CENTER_X);
 	},
-	
+
 	Def.Banner{
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) self:LoadFromSong( GAMESTATE:GetCurrentSong() ) end,
-	OnCommand=cmd(setsize,418/2,164/2;y,SCREEN_TOP-100;sleep,3;decelerate,0.3;y,SCREEN_CENTER_Y-124);
+	OnCommand=cmd(setsize,418/2,164/2;ztest,1;y,SCREEN_TOP-100;sleep,3;decelerate,0.3;y,SCREEN_CENTER_Y-124);
 	OffCommand=cmd(accelerate,0.3;addy,-SCREEN_CENTER_X);
 	},
 
