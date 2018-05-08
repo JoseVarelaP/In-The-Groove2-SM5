@@ -25,4 +25,16 @@ return Def.ActorFrame{
 		},
 
 	},
+
+
+	LoadActor( THEME:GetPathG('PaneDisplay','p1') )..{
+		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
+		OnCommand=cmd(x,SCREEN_CENTER_X-155;y,SCREEN_BOTTOM-95;zoomy,0;sleep,0.5;decelerate,0.3;zoomy,1);
+	},
+	LoadActor( THEME:GetPathG('PaneDisplay','p1') )..{
+		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
+		OnCommand=cmd(x,SCREEN_CENTER_X+155;y,SCREEN_BOTTOM-95;zoomy,0;sleep,0.5;decelerate,0.3;zoomy,1);
+	},
+
+
 }

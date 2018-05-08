@@ -8,19 +8,14 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,40;y,-110);
 
 			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=cmd(zwrite,1;z,1;blend,"BlendMode_NoEffect");
-			},
-	
-			Def.ActorProxy {
+				InitCommand=cmd(zoom,1.1;x,18;y,8;z,1;blend,'BlendMode_NoEffect');
+			};
+			Def.ActorProxy{
 				BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('Banner'); self:SetTarget(banner); end,
-				InitCommand=cmd(x,60;y,18;zoom,2.1;);
-			},
+				InitCommand=cmd(x,61;y,18;zoom,2.2);
+			};
 
-			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=cmd(zwrite,1;z,1;blend,"BlendMode_NoEffect");
-			},
-
-		},
+		};
 
 		LoadActor("right frame edge")..{
 		OnCommand=cmd(x,-200;horizalign,left;zoomx,1);
@@ -98,7 +93,7 @@ return Def.ActorFrame{
 	LoadActor("left frame")..{
 	OnCommand=cmd(x,-380;y,1;addx,-150;decelerate,0.5;addx,150);
 	OffCommand=cmd(sleep,0.2;accelerate,0.6;addx,-150);
-	}
+	},
 }
 -- 		<AutoActor 
 -- 			File="left frame"
