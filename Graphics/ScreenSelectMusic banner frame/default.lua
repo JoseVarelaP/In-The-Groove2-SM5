@@ -8,11 +8,20 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,40;y,-110);
 
 			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=cmd(zoom,1.1;x,18;y,8;z,1;blend,'BlendMode_NoEffect');
+				InitCommand=cmd(zoom,1.12;x,17;y,8;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+			};
+			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
+				InitCommand=cmd(zoom,1.12;zoomx,-1.12;x,187;y,8;zwrite,true;z,1;blend,"BlendMode_NoEffect");
 			};
 			Def.ActorProxy{
 				BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('Banner'); self:SetTarget(banner); end,
-				InitCommand=cmd(x,61;y,18;zoom,2.2);
+				InitCommand=function(self)
+				if IsUsingWideScreen() then
+					self:x(61):y(18):zoom(2.2);
+				else
+					self:x(10):y(17):setsize(418,164):zoomx(1.8):zoomy(2.2);
+				end
+				end;
 			};
 
 		};
