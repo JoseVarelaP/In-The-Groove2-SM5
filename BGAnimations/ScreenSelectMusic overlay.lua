@@ -54,6 +54,14 @@ return Def.ActorFrame{
 	SetHelpTextCommand=function(self, params)
 		self:SetTipsColonSeparated( params.Text );
 	end;
+	OffCommand=cmd(linear,0.5;zoomy,0);
+	},
+
+	LoadActor(THEME:GetPathG("ScreenSelectMusic","Options Message"))..{
+		InitCommand=cmd(Center;pause;diffusealpha,0);
+		ShowPressStartForOptionsCommand=cmd(diffusealpha,1;faderight,.3;fadeleft,.3;cropleft,-0.3;cropright,1.3;linear,0.3;cropright,-0.3);
+		ShowEnteringOptionsCommand=cmd(stoptweening;setstate,1;sleep,0.6;linear,0.3;cropleft,1.3);
+		HidePressStartForOptionsCommandCommand=cmd(linear,0.3;cropleft,1.3);
 	},
 
 

@@ -15,6 +15,9 @@ return Def.ActorFrame{
 		OffCommand=cmd(accelerate,0.8;addy,150);
 		CurrentSongChangedMessageCommand=function(self)
 			self:setstate( GAMESTATE:GetCourseSongIndex() )
+			self:linear(0.3)
+			self:Center()
+			self:zoom(1)
 		end,
 		},
 	},

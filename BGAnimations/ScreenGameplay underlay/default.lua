@@ -1,5 +1,6 @@
 return Def.ActorFrame{
 	Def.ActorFrame{
+		Condition=GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:GetPlayMode()=="PlayMode_Regular" and GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=="Difficulty_Beginner" or GAMESTATE:IsHumanPlayer(PLAYER_2) and GAMESTATE:GetPlayMode()=="PlayMode_Regular" and GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=="Difficulty_Beginner";
 		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-30);
 		Def.ActorFrame{
 			LoadActor("light_frame");

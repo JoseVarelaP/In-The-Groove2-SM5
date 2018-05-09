@@ -1,7 +1,6 @@
 return Def.ActorFrame{
-	LoadActor("_ITG credits text")..{
-	InitCommand=cmd(y,SCREEN_CENTER_Y);
-	OnCommand=cmd(addx,-SCREEN_WIDTH;decelerate,0.3;addx,SCREEN_WIDTH;sleep,44.5;accelerate,0.3;addx,SCREEN_WIDTH);
+	LoadActor("_scrolling ITG credits")..{
+	OnCommand=cmd(addx,-SCREEN_WIDTH;decelerate,0.3;addx,SCREEN_WIDTH;sleep,33;accelerate,0.3;addx,SCREEN_WIDTH);
 	OffCommand=cmd(stoptweening;accelerate,0.3;addx,SCREEN_WIDTH);
 	},
 
@@ -9,7 +8,7 @@ return Def.ActorFrame{
 	SecondsPerItem = 2,
 	NumItemsToDraw = 8,
 	TransformFunction = function( self, offset, itemIndex, numItems) self:x(SCREEN_LEFT+50) self:y(offset*168) end,
-	InitCommand=cmd(hibernate,25);
+	InitCommand=cmd(hibernate,28);
 	OnCommand=cmd(scrollwithpadding,6,9),
 
 			Def.ActorFrame{ Def.BitmapText{ Text=GetLegalText(  1, 10), Font="_eurostile normal", OnCommand=cmd(horizalign,left;vertalign,top;zoom,0.7;shadowlength,0); OffCommand=cmd(linear,0.3;diffusealpha,0); }, },
@@ -46,6 +45,5 @@ return Def.ActorFrame{
 			Def.ActorFrame{ Def.BitmapText{ Text=GetLegalText(311,320), Font="_eurostile normal", OnCommand=cmd(horizalign,left;vertalign,top;zoom,0.7;shadowlength,0); OffCommand=cmd(linear,0.3;diffusealpha,0); }, },
 			Def.ActorFrame{ Def.BitmapText{ Text=GetLegalText(321,330), Font="_eurostile normal", OnCommand=cmd(horizalign,left;vertalign,top;zoom,0.7;shadowlength,0); OffCommand=cmd(linear,0.3;diffusealpha,0); }, },
 			Def.ActorFrame{ Def.BitmapText{ Text=GetLegalText(331,340), Font="_eurostile normal", OnCommand=cmd(horizalign,left;vertalign,top;zoom,0.7;shadowlength,0); OffCommand=cmd(linear,0.3;diffusealpha,0); }, },
-			
 	},
 }
