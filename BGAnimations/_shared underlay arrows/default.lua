@@ -5,8 +5,8 @@ return Def.ActorFrame{
 	MenuLeftP1MessageCommand=cmd(playcommand, "Blink");
 	MenuLeftP2MessageCommand=cmd(playcommand, "Blink");
 	BlinkCommand=cmd(finishtweening;zoom,1.2;glow,1,1,1,1;linear,0.2;glow,1,1,1,0;zoom,1);
-	MadeChoiceP1MessageCommand=cmd(playcommand,GoOff);
-	MadeChoiceP2MessageCommand=cmd(playcommand,GoOff);
+	MadeChoiceP1MessageCommand=cmd(playcommand, "GoOff");
+	MadeChoiceP2MessageCommand=cmd(playcommand, "GoOff");
 	GoOffCommand=cmd(accelerate,0.5;addx,-200);
 	},
 	LoadActor("arrow")..{
@@ -15,8 +15,8 @@ return Def.ActorFrame{
 	MenuRightP1MessageCommand=cmd(playcommand, "Blink");
 	MenuRightP2MessageCommand=cmd(playcommand, "Blink");
 	BlinkCommand=cmd(finishtweening;zoom,1.2;glow,1,1,1,1;linear,0.2;glow,1,1,1,0;zoom,1);
-	MadeChoiceP1MessageCommand=cmd(playcommand,GoOff);
-	MadeChoiceP2MessageCommand=cmd(playcommand,GoOff);
+	MadeChoiceP1MessageCommand=cmd(playcommand, "GoOff");
+	MadeChoiceP2MessageCommand=cmd(playcommand, "GoOff");
 	GoOffCommand=cmd(accelerate,0.5;addx,200);
 	},
 }
