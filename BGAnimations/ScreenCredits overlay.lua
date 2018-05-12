@@ -4,6 +4,13 @@ return Def.ActorFrame{
 	OffCommand=cmd(stoptweening;accelerate,0.3;addx,SCREEN_WIDTH);
 	},
 
+	Def.Quad{
+		OnCommand=function(self)
+		self:visible(false):sleep(110):queuecommand("NextScreen")
+		end,
+		NextScreenCommand=function() SCREENMAN:SetNewScreen("ScreenTitleMenu") end;
+		},
+
 	Def.ActorScroller {
 	SecondsPerItem = 2,
 	NumItemsToDraw = 8,
