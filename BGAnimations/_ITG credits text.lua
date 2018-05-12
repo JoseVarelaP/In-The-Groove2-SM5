@@ -3,6 +3,37 @@ local ITGCredits_Table = {
 	-- 1 is Header.
 	-- 2 is Subheader.
 	-- 3 is Normal text.
+	{0},
+	{0},
+	{0},
+	{0},
+	{1,"IN THE GROOVE 2"},
+	{1,"STEPMANIA 5 CONVERSION"},
+	{0},
+	{0},
+	{2,"PROGRAMMING"},
+	{3,"Jose_Varela"},
+	{0},
+	{2,"ADDITIONAL HELP"},
+	{3,"dbk2"},
+	{3,"Melody"},
+	{3,"MadkaT"},
+	{0},
+	{2,"FEEDBACK"},
+	{3,"dbk2"},
+	{3,"Telperion"},
+	{3,"Moru Zerinho"},
+	{3,"willycel123"},
+	{3,"Melody"},
+	{3,"MadkaT"},
+	{0},
+	{2,"SPECIAL THANKS"},
+	{3,"UKSRT Discord"},
+	{0},
+	{0},
+	{0},
+	{0},
+	{0},
 	{1,"IN THE GROOVE TEAM"},
 	{0},
 	{0},
@@ -122,11 +153,11 @@ local af = Def.ActorScroller {
 };
 
 for i=1,table.getn(ITGCredits_Table) do
-	af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile normal",
+	af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile outline",
 	InitCommand=function(self)
 	self:zoom(0.7):ztest(1)
 	if ITGCredits_Table[i][1] == 1 then self:diffuse( color("#D57676") ) end
-	if ITGCredits_Table[i][1] == 2 then self:diffuse( color("#057676") ) end
+	if ITGCredits_Table[i][1] == 2 then self:diffuse( color("#76B1D5") ) end
 	end
 	},
 }

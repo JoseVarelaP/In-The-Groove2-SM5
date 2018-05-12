@@ -1,6 +1,6 @@
 return Def.ActorFrame{
 	LoadActor("_scrolling ITG credits")..{
-	OnCommand=cmd(addx,-SCREEN_WIDTH;decelerate,0.3;addx,SCREEN_WIDTH;sleep,33;accelerate,0.3;addx,SCREEN_WIDTH);
+	OnCommand=cmd(addx,-SCREEN_WIDTH;decelerate,0.3;addx,SCREEN_WIDTH;sleep,42;accelerate,0.3;addx,SCREEN_WIDTH);
 	OffCommand=cmd(stoptweening;accelerate,0.3;addx,SCREEN_WIDTH);
 	},
 
@@ -8,7 +8,7 @@ return Def.ActorFrame{
 	SecondsPerItem = 2,
 	NumItemsToDraw = 8,
 	TransformFunction = function( self, offset, itemIndex, numItems) self:x(SCREEN_LEFT+50) self:y(offset*168) end,
-	InitCommand=cmd(hibernate,28);
+	InitCommand=cmd(hibernate,37);
 	OnCommand=cmd(scrollwithpadding,6,9),
 
 			Def.ActorFrame{ Def.BitmapText{ Text=GetLegalText(  1, 10), Font="_eurostile normal", OnCommand=cmd(horizalign,left;vertalign,top;zoom,0.7;shadowlength,0); OffCommand=cmd(linear,0.3;diffusealpha,0); }, },
