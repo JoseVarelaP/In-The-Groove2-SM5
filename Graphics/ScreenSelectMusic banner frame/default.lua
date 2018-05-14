@@ -24,15 +24,15 @@ return Def.ActorFrame{
 				BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('Banner'); self:SetTarget(banner); end,
 				InitCommand=function(self)
 				if IsUsingWideScreen() then
-					self:x(61):y(18):zoom(2.2);
+					self:x(61):y(-3):setsize(418,164):zoomx(2.2):zoomy(1.6)
 				else
-					self:x(10):y(17):setsize(418,164):zoomx(1.8):zoomy(2.2);
+					self:x(10):y(-3):setsize(418,164):zoomx(1.8):zoomy(1.6)
 				end
 				end;
 			};
 
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{
-			OnCommand=cmd(y,129.5;zoomx,1;zoomy,0.94;)
+			OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
 		},
 
 		};
@@ -71,7 +71,7 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.5;x,-155;y,-20;diffusealpha,1);
+		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.6;x,-165;y,-22;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
 		local songCourse = GAMESTATE:GetCurrentSong()
 		if songCourse then
@@ -91,12 +91,12 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.5;x,40;y,-18;diffusealpha,1);
+		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.6;x,40;y,-18;diffusealpha,1);
 		CurrentSongChangedMessageCommand=function(self)
-			local songCourse = GAMESTATE:GetCurrentSong()
+			local song = GAMESTATE:GetCurrentSong()
 			local val
-			if songCourse then
-				local bpms = songCourse:GetDisplayBpms()
+			if song then
+				local bpms = song:GetDisplayBpms()
 
 				if bpms[1] == bpms[2] then
 					val = string.format("%i",bpms[1])
@@ -110,11 +110,13 @@ return Def.ActorFrame{
 		end;
 		},
 
-		Def.BitmapText{
-		Text="POP",
-		Font="_eurostile normal",
-		OnCommand=cmd(shadowlength,2;zoom,0.5;x,150;y,-30;diffusealpha,0.5);
-		},
+		-- need to figure out how to get pop
+
+		-- Def.BitmapText{
+		-- Text="POP",
+		-- Font="_eurostile normal",
+		-- OnCommand=cmd(shadowlength,2;zoom,0.5;x,150;y,-30;diffusealpha,0.5);
+		-- },
 
 	},
 	LoadActor( "../ScreenSelectMusic wheel mask" ) .. {
