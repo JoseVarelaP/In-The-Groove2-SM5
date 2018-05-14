@@ -1,14 +1,29 @@
+
+-- This is to obtain data from the options the player has selected.
+-- First we get the state. Then the option array, which is a bunch of strings that later give a table.
 local PlayerState = GAMESTATE:GetPlayerState(PLAYER_1)
 local PlayerOptions = PlayerState:GetPlayerOptionsArray(0)
+-- We begin with an empty set.
 local optionslist = ""
 
+-- Now set a ipairs instance to get all things.
 for k,option in ipairs(PlayerOptions) do
-	if option ~= "FailAtEnd" and option ~= "FailImmediateContinue" and option ~= "FailImmediate" then
-		if k < #PlayerOptions then
-			optionslist = optionslist..option..", "
-		else
-			optionslist = optionslist..option
-		end
+	if k < #PlayerOptions then
+		optionslist = optionslist..option..", "
+	else
+		optionslist = optionslist..option
+	end
+end
+
+-- This is to set the Combo award.
+-- We begin with an empty set.
+local ComboAward = "_empty"
+
+-- If we do get an award, then return the value it gives.
+-- I know this is a shit method, but I've tried some others with no success.
+if not GetPSStageStats(PLAYER_1):GetPeakComboAward() == nil then
+	if string.len( GetPSStageStats(PLAYER_1):GetPeakComboAward() ) > 1 then
+		ComboAward = GetPSStageStats(PLAYER_1):GetPeakComboAward()
 	end
 end
 
@@ -70,6 +85,13 @@ return Def.ActorFrame{
 
 	Def.BitmapText{ Font="_eurostile normal", Text=optionslist, OnCommand=cmd(xy,45,-112;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
 
+	Def.BitmapText{ Font="_eurostile blue glow", Text="Disqualified from ranking",
+	Condition=GetPSStageStats(PLAYER_1):IsDisqualified();
+	OnCommand=cmd(xy,45,-65;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
+
+	LoadActor( "../ComboAwards/"..ComboAward ),
+	--LoadActor( "../ComboAwards/PeakComboAward_10000" ),
+
 	-- labels
 	Def.ActorFrame{
 		OnCommand=cmd(x,-128;y,31);
@@ -107,11 +129,11 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		OnCommand=cmd(x,128;y,31);
 		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",20).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*0;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
-		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",20).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*1;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
+		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",GetPSStageStats(PLAYER_1):GetHoldNoteScores(2)).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*1;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
 		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",20).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*2;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
 		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",20).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*3;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
 		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 3d",20).."/"..string.format("% 3d",90), 	OnCommand=cmd(y,16*4;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
-		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 4d",20), 	OnCommand=cmd(y,16*5;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
+		Def.BitmapText{ Font="ScreenEvaluation judge", Text=string.format("% 4d",GetPSStageStats(PLAYER_1):MaxCombo()), 	OnCommand=cmd(y,16*5;zoom,0.5;horizalign,right;shadowlength,0;diffuse,PlayerColor(PLAYER_1)); };
 	},
 }
 

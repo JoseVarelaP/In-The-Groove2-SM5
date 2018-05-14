@@ -17,17 +17,8 @@ local LabelMaxZoom = THEME:GetMetric("Combo", "LabelMaxZoom");
 
 local t = Def.ActorFrame {
 	InitCommand=cmd(vertalign,bottom);
-
-	LoadFont( "_xenotron", "metal" ) .. {
-		Name="Number";
-		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
-	};
-	LoadActor("../combo label") .. {
-		Name="Label";
-		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
-	};
-
-
+	
+	-- These are behind the combo and label for obvious reasons.
 	-- 100 Combo milestone
 	LoadActor("explosion")..{
 	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
@@ -58,6 +49,17 @@ local t = Def.ActorFrame {
 	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
 	ThousandMilestoneCommand=cmd(zoomx,2;zoomy,2;diffusealpha,1;x,0;linear,0.5;diffusealpha,0;x,150);
 	},
+
+	LoadFont( "_xenotron", "metal" ) .. {
+		Name="Number";
+		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
+	};
+	LoadActor("label") .. {
+		Name="Label";
+		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
+	};
+
+
 
 	
 	InitCommand = function(self)

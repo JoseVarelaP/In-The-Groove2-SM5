@@ -20,7 +20,7 @@ local TNSFrames = {
 };
 local t = Def.ActorFrame {};
 t[#t+1] = Def.ActorFrame {
-	LoadActor(THEME:GetPathG("Judgment","label")) .. {
+	LoadActor("Judgment label") .. {
 		Name="Judgment";
 		InitCommand=cmd(pause;visible,false);
 		OnCommand=THEME:GetMetric("Judgment","JudgmentOnCommand");
