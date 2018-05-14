@@ -1,4 +1,7 @@
 return Def.ActorFrame{
+	OnCommand=cmd(ztest,1;addx,-420;sleep,0.35;linear,0.5;addx,420);
+	OffCommand=cmd(linear,0.5;addx,-420);
+	
 	Def.Sprite{ Texture="WheelItems/SectionExpanded" },
 	
 	Def.BitmapText{
