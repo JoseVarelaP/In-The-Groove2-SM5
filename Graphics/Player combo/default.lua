@@ -17,6 +17,7 @@ local LabelMaxZoom = THEME:GetMetric("Combo", "LabelMaxZoom");
 
 local t = Def.ActorFrame {
 	InitCommand=cmd(vertalign,bottom);
+
 	LoadFont( "_xenotron", "metal" ) .. {
 		Name="Number";
 		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
@@ -25,6 +26,39 @@ local t = Def.ActorFrame {
 		Name="Label";
 		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 	};
+
+
+	-- 100 Combo milestone
+	LoadActor("explosion")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	HundredMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,90;zoom,2;diffusealpha,0);
+	},
+
+	LoadActor("explosion")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	HundredMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,-90;zoom,2;diffusealpha,0);
+	},
+
+	-- 1000 Combo milestone
+	LoadActor("explosion")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	ThousandMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,90;zoom,2;diffusealpha,0);
+	},
+
+	LoadActor("explosion")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	ThousandMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,-90;zoom,2;diffusealpha,0);
+	},
+
+	LoadActor("shot")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	ThousandMilestoneCommand=cmd(zoomx,-2;zoomy,2;diffusealpha,1;x,0;linear,0.5;diffusealpha,0;x,-150);
+	},
+	LoadActor("shot")..{
+	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
+	ThousandMilestoneCommand=cmd(zoomx,2;zoomy,2;diffusealpha,1;x,0;linear,0.5;diffusealpha,0;x,150);
+	},
+
 	
 	InitCommand = function(self)
 		c = self:GetChildren();
@@ -42,7 +76,7 @@ local t = Def.ActorFrame {
 		else
 			return
 		end; --]]
-	OneHundredMilestoneCommand=function(self,parent)
+	TwentyFiveMilestoneCommand=function(self,parent)
 		(cmd(skewy,-0.125;decelerate,0.325;skewy,0))(self);
 	end;
 	ComboCommand=function(self, param)
