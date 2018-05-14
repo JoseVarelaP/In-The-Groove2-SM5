@@ -76,9 +76,6 @@ local t = Def.ActorFrame {
 		else
 			return
 		end; --]]
-	TwentyFiveMilestoneCommand=function(self,parent)
-		(cmd(skewy,-0.125;decelerate,0.325;skewy,0))(self);
-	end;
 	ComboCommand=function(self, param)
 		local iCombo = param.Misses or param.Combo;
 		if not iCombo or iCombo < ShowComboAt then
