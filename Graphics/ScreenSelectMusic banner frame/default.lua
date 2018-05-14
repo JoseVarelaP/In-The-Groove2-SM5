@@ -2,7 +2,14 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 	OnCommand=cmd(fov,58;x,-10;y,2;zoomy,0.985;rotationy,-20;addx,450;decelerate,0.75;addx,-450);
-	OffCommand=cmd(accelerate,0.75;addx,450);
+	OffCommand=function(self)
+	self:accelerate(0.75);
+	if IsUsingWideScreen() then
+		self:addx(500);
+	else
+		self:addx(450);
+	end
+	end,
 
   		Def.ActorFrame{
 		InitCommand=cmd(x,40;y,-110);
@@ -45,7 +52,15 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 	OnCommand=cmd(y,1;addx,500;decelerate,0.75;addx,-500);
-	OffCommand=cmd(accelerate,0.75;addx,500);
+	OffCommand=function(self)
+	self:accelerate(0.75);
+	if IsUsingWideScreen() then
+		-- FIVE FIVE FIVE GUYS
+		self:addx(555);
+	else
+		self:addx(450);
+	end
+	end,
 
 		Def.BitmapText{
 		Text="ARTIST",
@@ -107,7 +122,15 @@ return Def.ActorFrame{
 			},
 	LoadActor("left frame")..{
 	OnCommand=cmd(x,-380;y,1;addx,-150;decelerate,0.5;addx,150);
-	OffCommand=cmd(sleep,0.2;accelerate,0.6;addx,-150);
+	OffCommand=function(self)
+	self:sleep(0.2);
+	self:accelerate(0.6);
+	if IsUsingWideScreen() then
+		self:addx(-225);
+	else
+		self:addx(-150);
+	end
+	end,
 	},
 }
 -- 		<AutoActor 

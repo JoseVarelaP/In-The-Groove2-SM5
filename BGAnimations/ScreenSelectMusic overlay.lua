@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 
 	LoadActor( THEME:GetPathG("","ScreenSelectMusic wheel mask") )..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_CENTER_Y-10;zoom,1.1;zoomy,1.1;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+		InitCommand=cmd(x,SCREEN_CENTER_X-385;y,SCREEN_CENTER_Y-10;zoom,1.1;zoomy,1.2;zwrite,true;z,1;blend,"BlendMode_NoEffect");
 	},
 
 	Def.ActorProxy{
