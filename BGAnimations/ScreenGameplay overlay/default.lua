@@ -81,12 +81,13 @@ return Def.ActorFrame{
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-35,0;horizalign,left;playcommand, "Update");
+			OnCommand=cmd(zoom,0.5;xy,-36,0;horizalign,left;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
 					self:settext( DifficultyName(PLAYER_1) )
+					self:maxwidth(100)
 					self:diffuse( ContrastingDifficultyColor( steps ) )
 				end,
 			},
@@ -120,12 +121,13 @@ return Def.ActorFrame{
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-35,0;horizalign,left;playcommand, "Update");
+			OnCommand=cmd(zoom,0.5;xy,-36,0;horizalign,left;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
 					self:settext( DifficultyName(PLAYER_2) )
+					self:maxwidth(100)
 					self:diffuse( ContrastingDifficultyColor( steps ) )
 				end,
 			},
