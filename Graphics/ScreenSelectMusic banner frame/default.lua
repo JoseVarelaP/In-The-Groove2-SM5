@@ -35,6 +35,93 @@ return Def.ActorFrame{
 			OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
 		},
 
+		Def.ActorFrame{
+		Condition=ThemePrefs.Get("MarathonLabel")	== "ITG";
+			-- Long/Marathon labels - ITG style
+			Def.BitmapText{
+			Text=THEME:GetString("Balloons","ITGLong"),
+			Font="_big blue glow",
+			OnCommand=cmd(shadowlength,2;zoom,1;x,05;y,200;diffuseshift;playcommand,"Hide");
+			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("Hide")
+			if GAMESTATE:GetCurrentSong() then
+				if GAMESTATE:GetCurrentSong():IsLong() then
+					self:queuecommand("Show")
+				end
+			end
+			end,
+			},
+
+			Def.BitmapText{
+			Text=THEME:GetString("Balloons","ITGMarathon"),
+			Font="_big blue glow",
+			OnCommand=cmd(shadowlength,2;zoom,1;x,05;y,200;diffuseshift;playcommand,"Hide");
+			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("Hide")
+			if GAMESTATE:GetCurrentSong() then
+				if GAMESTATE:GetCurrentSong():IsMarathon() then
+					self:queuecommand("Show")
+				end
+			end
+			end,
+			},
+
+		},
+
+
+		Def.ActorFrame{
+		Condition=ThemePrefs.Get("MarathonLabel")	== "OITG";
+			-- Long/Marathon labels - OITG style
+
+			LoadActor( "OITG Balloon" )..{
+			HideCommand=cmd(diffusealpha,0);
+			LongCommand=cmd(diffusealpha,1;diffuseshift;effectcolor1,0.8,0.8,0.8,1;effectcolor2,0.5,0.5,0.5,1;);
+			MaraCommand=cmd(diffusealpha,1;diffuseshift;effectcolor1,1,0.3,0.3,1;effectcolor2,0.7,0.1,0.1,1;);
+			OnCommand=cmd(shadowlength,2;zoom,1;zoomx,1.3;x,-200;horizalign,left;y,45;effectclock,"bgm";diffuseshift;effectcolor1,1,1,1,1;effectcolor2,0.7,0.7,0.7,1;playcommand,"Hide");
+			CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("Hide")
+			if GAMESTATE:GetCurrentSong() then
+				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("Long") end
+				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("Mara") end
+			end
+			end,
+
+			},
+
+			Def.BitmapText{
+			Text=THEME:GetString("Balloons","OITGLong"),
+			Font="_eurostile normal",
+			OnCommand=cmd(shadowlength,1;zoom,0.5;zoomx,0.55;x,-180;horizalign,left;y,45;playcommand,"Hide");
+			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("Hide")
+			if GAMESTATE:GetCurrentSong() then
+				if GAMESTATE:GetCurrentSong():IsLong() then
+					self:queuecommand("Show")
+				end
+			end
+			end,
+			},
+
+			Def.BitmapText{
+			Text=THEME:GetString("Balloons","OITGMarathon"),
+			Font="_eurostile normal",
+			OnCommand=cmd(shadowlength,1;zoom,0.5;zoomx,0.55;x,-180;horizalign,left;y,45;playcommand,"Hide");
+			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("Hide")
+			if GAMESTATE:GetCurrentSong() then
+				if GAMESTATE:GetCurrentSong():IsMarathon() then
+					self:queuecommand("Show")
+				end
+			end
+			end,
+			},
+
+		},
+
 		};
 
 		LoadActor("right frame edge")..{
@@ -135,10 +222,3 @@ return Def.ActorFrame{
 	end,
 	},
 }
--- 		<AutoActor 
--- 			File="left frame"
--- 			OnCommand="x,-380;y,1;addx,-150;decelerate,0.5;addx,150"
--- 			OffCommand="sleep,0.2;accelerate,0.6;addx,-150"
--- 		/>
--- 	</children>
--- </ActorFrame>
