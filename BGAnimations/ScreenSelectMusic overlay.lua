@@ -37,7 +37,7 @@ return Def.ActorFrame{
 		OnCommand=cmd(x,SCREEN_CENTER_X-155;y,SCREEN_BOTTOM-95;zoomy,0;sleep,0.5;linear,0.3;zoomy,1);
 		OffCommand=cmd(linear,0.3;zoomy,0);
 	},
-	LoadActor( THEME:GetPathG('PaneDisplay','p1') )..{
+	LoadActor( THEME:GetPathG('PaneDisplay','p2') )..{
 		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
 		OnCommand=cmd(x,SCREEN_CENTER_X+155;y,SCREEN_BOTTOM-95;zoomy,0;sleep,0.5;linear,0.3;zoomy,1);
 		OffCommand=cmd(linear,0.3;zoomy,0);
