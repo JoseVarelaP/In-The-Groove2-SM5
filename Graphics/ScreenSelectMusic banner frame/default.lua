@@ -42,28 +42,14 @@ return Def.ActorFrame{
 			Text=THEME:GetString("Balloons","ITGLong"),
 			Font="_big blue glow",
 			OnCommand=cmd(shadowlength,2;zoom,1;x,05;y,200;diffuseshift;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			HideCommand=cmd(diffusealpha,0);
+			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGLong") ); end,
+			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGMarathon") ); end,
 			CurrentSongChangedMessageCommand=function(self)
 			self:queuecommand("Hide")
 			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then
-					self:queuecommand("Show")
-				end
-			end
-			end,
-			},
-
-			Def.BitmapText{
-			Text=THEME:GetString("Balloons","ITGMarathon"),
-			Font="_big blue glow",
-			OnCommand=cmd(shadowlength,2;zoom,1;x,05;y,200;diffuseshift;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
-			CurrentSongChangedMessageCommand=function(self)
-			self:queuecommand("Hide")
-			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsMarathon() then
-					self:queuecommand("Show")
-				end
+				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("ShowLong") end
+				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("ShowMara") end
 			end
 			end,
 			},
@@ -94,28 +80,14 @@ return Def.ActorFrame{
 			Text=THEME:GetString("Balloons","OITGLong"),
 			Font="_eurostile normal",
 			OnCommand=cmd(shadowlength,1;zoom,0.5;zoomx,0.55;x,-180;horizalign,left;y,45;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
+			HideCommand=cmd(diffusealpha,0);
+			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGLong") ); end,
+			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGMarathon") ); end,
 			CurrentSongChangedMessageCommand=function(self)
 			self:queuecommand("Hide")
 			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then
-					self:queuecommand("Show")
-				end
-			end
-			end,
-			},
-
-			Def.BitmapText{
-			Text=THEME:GetString("Balloons","OITGMarathon"),
-			Font="_eurostile normal",
-			OnCommand=cmd(shadowlength,1;zoom,0.5;zoomx,0.55;x,-180;horizalign,left;y,45;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0); ShowCommand=cmd(diffusealpha,1);
-			CurrentSongChangedMessageCommand=function(self)
-			self:queuecommand("Hide")
-			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsMarathon() then
-					self:queuecommand("Show")
-				end
+				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("ShowLong") end
+				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("ShowMarathon") end
 			end
 			end,
 			},
