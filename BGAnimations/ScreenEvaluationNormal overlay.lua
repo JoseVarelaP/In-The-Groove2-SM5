@@ -10,9 +10,9 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Font="_eurostile blue glow",
 		Text=string.upper(THEME:GetString("ScreenEvaluation","HeaderText")),
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
-		OnCommand=cmd(zoomx,0;zoomy,6;sleep,0.3;bounceend,.3;zoom,1);
-		OffCommand=cmd(accelerate,.2;zoomx,2;zoomy,0;diffusealpha,0);
+			InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+			OnCommand=cmd(zoomx,0;zoomy,6;sleep,0.3;bounceend,0.3;zoom,1);
+			OffCommand=cmd(accelerate,0.2;zoomx,2;zoomy,0;diffusealpha,0);
 		},
 
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..ToEnumShortString(GAMESTATE:GetCurrentStage() ) ) )..{
@@ -81,7 +81,7 @@ return Def.ActorFrame{
 		LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetGrade() ) )..{
 			BeginCommand=cmd(x,SCREEN_CENTER_X+145;y,SCREEN_CENTER_Y-60;zoom,2;addx,SCREEN_WIDTH;decelerate,0.5;addx,-SCREEN_WIDTH;sleep,2.2;decelerate,0.5;zoom,0.9;x,SCREEN_CENTER_X+56;y,SCREEN_CENTER_Y-38);
 			OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH/2);
-		},
+		},		
 
 	},
 }
