@@ -31,14 +31,14 @@ return Def.ActorFrame{
 	LoadActor("base frame"),
 
 	LoadActor( THEME:GetPathG('','_difficulty icons') )..{
-		OnCommand=cmd(xy,-95,-149;animate,0;playcommand, "Update");
+		OnCommand=cmd(xy,95,-149;animate,0;playcommand, "Update");
 		UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(PLAYER_2) ) end,
 	},
 
-		Def.GraphDisplay{
-			InitCommand=cmd(y,-36),
+	Def.GraphDisplay{
+			InitCommand=cmd(x,-1;y,-36),
 			BeginCommand=function(self)
-				self:Load("GraphDisplayP1")
+				self:Load("GraphDisplayP2")
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 				local stageStats = STATSMAN:GetCurStageStats()
 				self:Set(stageStats, playerStageStats)
@@ -46,20 +46,18 @@ return Def.ActorFrame{
 		},
 
 		Def.ComboGraph{
-			InitCommand=cmd(y,-7),
+			InitCommand=cmd(x,-1;y,-7),
 			BeginCommand=function(self)
-				self:Load("ComboGraphP1")
+				self:Load("ComboGraphP2")
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2)
 				local stageStats = STATSMAN:GetCurStageStats()
 				self:Set(stageStats, playerStageStats)
 			end,
 		},
 
-	-- Grade time
-
 	Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-134,-149.5;horizalign,left;playcommand, "Update");
+			OnCommand=cmd(zoom,0.5;xy,134,-149.5;horizalign,right;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
@@ -71,7 +69,7 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-57,-149.5;horizalign,right;playcommand, "Update");
+			OnCommand=cmd(zoom,0.5;xy,57,-149.5;horizalign,left;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
