@@ -18,5 +18,17 @@ return Def.ActorFrame{
 
 	},
 
+	LoadActor( THEME:GetPathG("","_name p1") )..{
+		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsHumanPlayer(PLAYER_1);
+		OnCommand=cmd(x,SCREEN_CENTER_X+(372-320);y,81;addx,SCREEN_WIDTH*3/4;sleep,0.1;decelerate,0.3;addx,-SCREEN_WIDTH*3/4);
+		OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH);
+	},
+
+	LoadActor( THEME:GetPathG("","_name p2") )..{
+		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2) and GAMESTATE:IsHumanPlayer(PLAYER_2);
+		OnCommand=cmd(x,SCREEN_CENTER_X+(540-320);y,81;addx,SCREEN_WIDTH*3/4;sleep,0.2;decelerate,0.3;addx,-SCREEN_WIDTH*3/4);
+		OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH);
+	},
+
 
 }
