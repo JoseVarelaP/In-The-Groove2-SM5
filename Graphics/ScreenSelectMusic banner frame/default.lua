@@ -122,9 +122,9 @@ return Def.ActorFrame{
 	end,
 
 		Def.BitmapText{
-		Text="ARTIST",
+		Text=string.upper(THEME:GetString("BannerFrame","Artist"));
 		Font="_eurostile normal",
-		OnCommand=cmd(shadowlength,2;zoom,0.5;x,-140;y,-38;diffusealpha,0.5);
+		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.5;x,-165;y,-38;diffusealpha,0.5);
 		},
 
 		Def.BitmapText{
