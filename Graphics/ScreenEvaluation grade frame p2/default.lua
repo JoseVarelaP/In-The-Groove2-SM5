@@ -62,7 +62,11 @@ return Def.ActorFrame{
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
-					self:settext( DifficultyName(PLAYER_2) )
+						if GAMESTATE:IsCourseMode() then
+							self:settext( DifficultyName("Trail", PLAYER_2) )
+						else
+							self:settext( DifficultyName("Steps", PLAYER_2) )
+						end
 					self:diffuse( ContrastingDifficultyColor( steps ) )
 				end,
 			},
@@ -73,9 +77,13 @@ return Def.ActorFrame{
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
-					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
-					self:settext( GAMESTATE:GetCurrentSteps(PLAYER_2):GetMeter() )
-					self:diffuse( ContrastingDifficultyColor( steps ) )
+					if GAMESTATE:IsCourseMode() then
+						self:settext( GAMESTATE:GetCurrentTrail(PLAYER_2):GetMeter() )
+						self:diffuse( ContrastingDifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_2):GetDifficulty() ) )
+					else
+						self:settext( GAMESTATE:GetCurrentSteps(PLAYER_2):GetMeter() )
+						self:diffuse( ContrastingDifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+					end
 				end,
 			},
 
