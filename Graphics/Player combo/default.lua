@@ -58,6 +58,10 @@ local t = Def.ActorFrame {
 		Name="Label";
 		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 	};
+	LoadActor("misses") .. {
+		Name="Misses";
+		OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
+	};
 
 
 
@@ -66,6 +70,7 @@ local t = Def.ActorFrame {
 		c = self:GetChildren();
 		c.Number:visible(false);
 		c.Label:visible(false);
+		c.Misses:visible(false);
 	end;
 	-- Milestones:
 	-- 25,50,100,250,600 Multiples;
@@ -85,6 +90,7 @@ local t = Def.ActorFrame {
 			c.Number:y(15);
 			c.Label:visible(false);
 			c.Label:y(10);
+			c.Misses:y(10);
 			return;
 		end
 
@@ -113,10 +119,15 @@ local t = Def.ActorFrame {
 			c.Number:diffuse(Color("White"));
 			c.Number:stopeffect();
 			c.Label:stopeffect();
+			c.Misses:visible(false);
 			(cmd(diffuse,Color("White");))(c.Label);
 		else
-			c.Number:diffuse(color("#ffffff"));
+			c.Number:diffuse(color("#ff0000"));
+			c.Label:visible(false);
 			c.Number:stopeffect();
+			c.Label:stopeffect();
+			c.Misses:visible(true);
+			c.Misses:diffuse(color("#ff0000"));
 		end
 
 		c.Number:finishtweening();
@@ -124,6 +135,7 @@ local t = Def.ActorFrame {
 		-- Pulse
 		Pulse( c.Number, param );
 		PulseLabel( c.Label, param );
+		PulseLabel( c.Misses, param );
 		-- Milestone Logic
 	end;
 };
