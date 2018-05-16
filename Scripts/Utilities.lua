@@ -1,7 +1,11 @@
-function DifficultyName( pn )
-	if GAMESTATE:GetCurrentSteps(pn) then
-		local steps = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
-		local Shorten = ToEnumShortString( steps )
+function DifficultyName( name, pn )
+	local ToGet = {
+	["Steps"] = GAMESTATE:GetCurrentSteps(pn),
+	["Trail"] = GAMESTATE:GetCurrentTrail(pn),
+	}
+
+	if ToGet[name] then
+		local Shorten = ToEnumShortString( ToGet[name]:GetDifficulty() )
 		return THEME:GetString("Difficulty", Shorten)
 	end
 end

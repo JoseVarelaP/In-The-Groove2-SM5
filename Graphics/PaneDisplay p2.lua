@@ -34,23 +34,37 @@ return Def.ActorFrame{
 	Def.BitmapText{ Font="_eurostile normal", Text="Best", InitCommand=cmd(x,-125;y,-24+14*2); OnCommand=cmd(horizalign,left;zoom,.5;shadowlength,0); },
 	Def.BitmapText{ Font="_eurostile normal", Text="Card", InitCommand=cmd(x,-125;y,-24+14*3); OnCommand=cmd(horizalign,left;zoom,.5;shadowlength,0); },
 
-	Def.BitmapText{ Font="_futurist normal", Text="number", InitCommand=cmd(x,100;y,-24+13); OnCommand=cmd(zoom,1;shadowlength,2);
-	CurrentStepsP2ChangedMessageCommand=function(self)
-	if GAMESTATE:GetCurrentSteps(PLAYER_2) then
-		self:settext( GAMESTATE:GetCurrentSteps(PLAYER_2):GetMeter() )
-		self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+	Def.BitmapText{ Font="_futurist normal", Text="number", InitCommand=cmd(x,100;y,-24+13); OnCommand=cmd(zoom,1;shadowlength,2;queuemessage, "CurrentStepsP1Changed");
+	CurrentStepsP1ChangedMessageCommand=function(self)
+	if GAMESTATE:IsCourseMode() then
+		if GAMESTATE:GetCurrentTrail(PLAYER_2) then
+			self:settext( GAMESTATE:GetCurrentTrail(PLAYER_2):GetMeter() )
+			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_2):GetDifficulty() ) )
+		end
+	else
+		if GAMESTATE:GetCurrentSteps(PLAYER_2) then
+			self:settext( GAMESTATE:GetCurrentSteps(PLAYER_2):GetMeter() )
+			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+		end
 	end
 	end,
 	},
-
 	Def.BitmapText{ Font="_eurostile normal", Text="diff", InitCommand=cmd(x,100;y,-24+38); OnCommand=cmd(zoom,0.6;zoomy,0.55;shadowlength,0);
-	CurrentStepsP2ChangedMessageCommand=function(self)
-	if GAMESTATE:GetCurrentSteps(PLAYER_2) then
-		self:maxwidth(90)
-		self:settext( string.upper( DifficultyName( PLAYER_2 ) ) )
-		self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+	CurrentStepsP1ChangedMessageCommand=function(self)
+	self:maxwidth(90)
+	if GAMESTATE:IsCourseMode() then
+		if GAMESTATE:GetCurrentTrail(PLAYER_2) then
+			self:settext( string.upper( DifficultyName( "Trail", PLAYER_2 ) ) )
+			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_2):GetDifficulty() ) )
+		end
+	else
+		if GAMESTATE:GetCurrentSteps(PLAYER_2) then
+			self:settext( string.upper( DifficultyName( "Steps", PLAYER_2 ) ) )
+			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+		end
 	end
 	end,
+
 	},
 
 	Def.BitmapText{ Font="_eurostile normal", Text="Jumps", InitCommand=cmd(x,-15;y,-24+14*0); OnCommand=cmd(horizalign,left;zoom,.5;shadowlength,0); },

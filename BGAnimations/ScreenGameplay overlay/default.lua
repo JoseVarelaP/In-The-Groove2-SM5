@@ -86,7 +86,7 @@ return Def.ActorFrame{
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
-					self:settext( DifficultyName(PLAYER_1) )
+					self:settext( DifficultyName("Steps", PLAYER_1) )
 					self:maxwidth(100)
 					self:diffuse( ContrastingDifficultyColor( steps ) )
 				end,
@@ -126,7 +126,7 @@ return Def.ActorFrame{
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
-					self:settext( DifficultyName(PLAYER_2) )
+					self:settext( DifficultyName("Steps", PLAYER_2) )
 					self:maxwidth(100)
 					self:diffuse( ContrastingDifficultyColor( steps ) )
 				end,

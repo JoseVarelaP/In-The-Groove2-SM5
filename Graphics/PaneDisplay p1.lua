@@ -54,12 +54,12 @@ return Def.ActorFrame{
 	self:maxwidth(90)
 	if GAMESTATE:IsCourseMode() then
 		if GAMESTATE:GetCurrentTrail(PLAYER_1) then
-			self:settext( GAMESTATE:GetCurrentTrail(PLAYER_1):GetMeter() )
+			self:settext( string.upper( DifficultyName( "Trail", PLAYER_1 ) ) )
 			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_1):GetDifficulty() ) )
 		end
 	else
 		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
-			self:settext( GAMESTATE:GetCurrentSteps(PLAYER_1):GetMeter() )
+			self:settext( string.upper( DifficultyName( "Steps", PLAYER_1 ) ) )
 			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
 		end
 	end
