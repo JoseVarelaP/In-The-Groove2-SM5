@@ -127,36 +127,7 @@ return Def.ActorFrame{
 			},
 	},
 
-	-- <ActorFrame
-	-- 	Condition="GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:GetPlayMode()==PLAY_MODE_REGULAR and GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()==DIFFICULTY_BEGINNER"
-	-- 	OnCommand="x,SCREEN_CENTER_X-160;y,SCREEN_CENTER_Y+40;zoom,1.2;rotationx,-20"
-	-- 	FOV="45"
-	-- 	VanishX="SCREEN_CENTER_X-160"
-	-- 	VanishY="SCREEN_CENTER_Y+40"
-	-- ><children>
-	-- 	<AutoActor
-	-- 		File="platform"
-	-- 		OnCommand="y,7;diffuse,0.6,0.6,0.6,0.8"
-	-- 	/>
-	-- 	<AutoActor
-	-- 		File="panelglow"
-	-- 		OnCommand="x,-45;blend,add;diffusealpha,0"
-	-- 		NoteCrossedLeftMessageCommand="finishtweening;diffusealpha,1;zoom,1.1;linear,0.3;zoom,1;diffusealpha,0"
-	-- 	/>
-	-- 	<AutoActor
-	-- 		File="panelglow"
-	-- 		OnCommand="x,+45;blend,add;diffusealpha,0"
-	-- 		NoteCrossedRightMessageCommand="finishtweening;diffusealpha,1;zoom,1.1;linear,0.3;zoom,1;diffusealpha,0"
-	-- 	/>
-	-- 	<AutoActor
-	-- 		File="panelglow"
-	-- 		OnCommand="y,-45;blend,add;diffusealpha,0"
-	-- 		NoteCrossedUpMessageCommand="finishtweening;diffusealpha,1;zoom,1.1;linear,0.3;zoom,1;diffusealpha,0"
-	-- 	/>
-	-- 	<AutoActor
-	-- 		File="panelglow"
-	-- 		OnCommand="y,+45;blend,add;diffusealpha,0"
-	-- 		NoteCrossedDownMessageCommand="finishtweening;diffusealpha,1;zoom,1.1;linear,0.3;zoom,1;diffusealpha,0"
-	-- 	/>
-	-- </children></ActorFrame>
+	-- Additional scripts
+	LoadActor("danger p1"),
+	LoadActor("dead"),
 };

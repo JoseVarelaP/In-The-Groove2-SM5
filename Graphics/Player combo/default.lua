@@ -91,6 +91,9 @@ local t = Def.ActorFrame {
 			c.Label:visible(false);
 			c.Label:y(10);
 			c.Misses:y(10);
+			c.Number:x(-5);
+			c.Label:x(-5);
+			c.Misses:x(-5);
 			return;
 		end
 
