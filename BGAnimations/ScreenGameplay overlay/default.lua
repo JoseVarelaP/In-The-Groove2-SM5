@@ -27,7 +27,7 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+24;addy,-100;sleep,0.5;queuecommand, "TweenOn");
-	OffCommand=cmd(queuecommand, "TweenOff");
+	OffCommand=cmd(sleep,1;queuecommand, "TweenOff");
 	ShowGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOn");
 	HideGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOff");
 	TweenOnCommand=cmd(decelerate,0.8;addy,100);
@@ -62,7 +62,7 @@ return Def.ActorFrame{
 	-- Difficulty time
 	Def.ActorFrame{
 	OnCommand=cmd(sleep,0.5;queuecommand, "TweenOn");
-	OffCommand=cmd(queuecommand, "TweenOff");
+	OffCommand=cmd(sleep,1;queuecommand, "TweenOff");
 	ShowGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOn");
 	HideGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOff");
 
