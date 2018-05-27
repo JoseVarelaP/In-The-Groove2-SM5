@@ -32,8 +32,12 @@ return Def.ActorFrame{
 			};
 
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{
-			OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
-		},
+				OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
+			},
+
+			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{
+				OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
+			},
 
 		Def.ActorFrame{
 		Condition=ThemePrefs.Get("MarathonLabel")	== "ITG";

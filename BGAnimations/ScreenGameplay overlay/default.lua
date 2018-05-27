@@ -75,7 +75,7 @@ return Def.ActorFrame{
 			LoadActor( THEME:GetPathG('','_difficulty icons') )..{
 				OnCommand=cmd(animate,0;playcommand, "Update");
 				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+
 				UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(PLAYER_1) ) end,
 			},
 
@@ -83,7 +83,6 @@ return Def.ActorFrame{
 			Font="Common Normal",
 			OnCommand=cmd(zoom,0.5;xy,-36,0;horizalign,left;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
 					self:settext( DifficultyName("Steps", PLAYER_1) )
@@ -96,7 +95,6 @@ return Def.ActorFrame{
 			Font="Common Normal",
 			OnCommand=cmd(zoom,0.5;xy,35,0;horizalign,right;playcommand, "Update");
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
 					self:settext( GAMESTATE:GetCurrentSteps(PLAYER_1):GetMeter() )
@@ -114,7 +112,6 @@ return Def.ActorFrame{
 
 			LoadActor( THEME:GetPathG('','_difficulty icons') )..{
 				OnCommand=cmd(animate,0;playcommand, "Update");
-				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 				UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(PLAYER_2) ) end,
 			},
@@ -122,7 +119,6 @@ return Def.ActorFrame{
 			Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=cmd(zoom,0.5;xy,-36,0;horizalign,left;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
@@ -135,7 +131,6 @@ return Def.ActorFrame{
 			Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=cmd(zoom,0.5;xy,35,0;horizalign,right;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
