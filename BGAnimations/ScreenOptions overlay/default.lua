@@ -4,7 +4,7 @@ return Def.ActorFrame{
 
 		Def.BitmapText{
 		Font="_eurostile blue glow",
-		Text=string.upper(THEME:GetString("ScreenOptionsService","HeaderText")),
+		Text=string.upper(Screen.String("HeaderText")),
 		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
 		OnCommand=cmd(zoomx,0;zoomy,6;sleep,0.3;bounceend,.3;zoom,1);
 		OffCommand=cmd(accelerate,.2;zoomx,2;zoomy,0;diffusealpha,0);

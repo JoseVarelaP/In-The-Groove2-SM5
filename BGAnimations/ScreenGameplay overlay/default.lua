@@ -19,7 +19,7 @@ return Def.ActorFrame{
 		self:settext(GAMESTATE:GetPlayerDisplayName(PLAYER_2))
 	end
 	end,
-	OnCommand=cmd(x,SCREEN_CENTER_X-224;y,SCREEN_TOP+53;shadowlength,0;diffuse,color("#000000");zoom,.5;maxwidth,180;addy,-100;sleep,0.5;decelerate,0.8;addy,100);
+	OnCommand=cmd(x,SCREEN_CENTER_X+224;y,SCREEN_TOP+53;shadowlength,0;diffuse,color("#000000");zoom,.5;maxwidth,180;addy,-100;sleep,0.5;decelerate,0.8;addy,100);
 	OffCommand=cmd(accelerate,0.8;addy,-100);
 	},
 
