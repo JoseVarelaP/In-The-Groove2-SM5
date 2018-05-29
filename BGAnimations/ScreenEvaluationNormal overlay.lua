@@ -1,3 +1,6 @@
+local GradeP1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()
+local GradeP2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetGrade()
+
 return Def.ActorFrame{
 	-- The biggest challenge here was to compesate the positions because of SM5's TextureFiltering.
 	-- It is different from 3.95/OpenITG's filters, which differ a lot with the original positions.
@@ -61,7 +64,7 @@ return Def.ActorFrame{
 		OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2);
 		},
 
-		LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade() ) )..{
+		LoadActor( THEME:GetPathG("", "_grade models/"..GradeP1 ), GradeP1 )..{
 			BeginCommand=cmd(x,SCREEN_CENTER_X-145;y,SCREEN_CENTER_Y-60;zoom,2;addx,-SCREEN_WIDTH;decelerate,0.5;addx,SCREEN_WIDTH;sleep,2.2;decelerate,0.5;zoom,0.9;x,SCREEN_CENTER_X-230;y,SCREEN_CENTER_Y-38);
 			OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2);
 		},
@@ -78,7 +81,7 @@ return Def.ActorFrame{
 		OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH/2);
 		},
 
-		LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetGrade() ) )..{
+		LoadActor( THEME:GetPathG("", "_grade models/"..GradeP2 ), GradeP2 )..{
 			BeginCommand=cmd(x,SCREEN_CENTER_X+145;y,SCREEN_CENTER_Y-60;zoom,2;addx,SCREEN_WIDTH;decelerate,0.5;addx,-SCREEN_WIDTH;sleep,2.2;decelerate,0.5;zoom,0.9;x,SCREEN_CENTER_X+56;y,SCREEN_CENTER_Y-38);
 			OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH/2);
 		},		

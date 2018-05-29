@@ -63,8 +63,8 @@ t[#t+1] = Def.ActorFrame {
 
 		c.Judgment:visible( true );
 		c.Judgment:setstate( iFrame );
+		c.Judgment:rotationz( RotTween[param.TapNoteScore][math.random(1,2)] );
 		JudgeCmds[param.TapNoteScore](c.Judgment);
-		c.Judgment:rotationz( RotTween[param.TapNoteScore][math.random(1,2)] )
 		
 	end;
 };
