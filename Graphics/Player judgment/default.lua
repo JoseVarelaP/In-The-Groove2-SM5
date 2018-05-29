@@ -18,6 +18,17 @@ local TNSFrames = {
 	TapNoteScore_W5 = 4;
 	TapNoteScore_Miss = 5;
 };
+
+local RotTween = {
+	-- Even, Odd
+	TapNoteScore_W1 = {0,0},
+	TapNoteScore_W2 = {0,0},
+	TapNoteScore_W3 = {-3,3},	
+	TapNoteScore_W4 = {-5,5},
+	TapNoteScore_W5 = {-10,10},
+	TapNoteScore_Miss = {-30,30},
+};
+
 local t = Def.ActorFrame {};
 t[#t+1] = Def.ActorFrame {
 	LoadActor("Judgment label") .. {
@@ -53,6 +64,7 @@ t[#t+1] = Def.ActorFrame {
 		c.Judgment:visible( true );
 		c.Judgment:setstate( iFrame );
 		JudgeCmds[param.TapNoteScore](c.Judgment);
+		c.Judgment:rotationz( RotTween[param.TapNoteScore][math.random(1,2)] )
 		
 	end;
 };
