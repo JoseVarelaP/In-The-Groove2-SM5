@@ -3,9 +3,7 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 	self:rotationz(90);
 	self:zoomx(1.2);
-	if IsUsingWideScreen then
-		self:zoomy(1.2);
-	end
+	self:zoomy( WideScale(1,1.3) );
 	self:x(SCREEN_CENTER_X);
 	self:y(SCREEN_CENTER_Y);
 	self:SetUpdateRate(0.1);
