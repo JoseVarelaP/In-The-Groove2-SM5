@@ -7,7 +7,14 @@ local Prefs =
 	MarathonLabel =
 	{
 		Default = "ITG",
-		Choices = { THEME:GetString("ITGThemeChoices","ITG"), THEME:GetString("ITGThemeChoices","OITG") },
+		Choices = { "ITG", "OITG" },
+		Values = { "ITG", "OITG" }
+	},
+	
+	TimerLabel =
+	{
+		Default = "ITG",
+		Choices = { "Always Show", "Hide When Disabled (OITG)" },
 		Values = { "ITG", "OITG" }
 	},
 }

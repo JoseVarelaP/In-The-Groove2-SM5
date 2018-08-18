@@ -13,7 +13,7 @@ end
 function MenuTimerSet(self)
 	self:draworder(101);
 	self:zoom(1.1);
-	if PREFSMAN:GetPreference("MenuTimer") then
+	if PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG" then
 		self:visible(true);
 	else
 		self:visible(false);
