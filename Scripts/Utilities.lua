@@ -52,7 +52,7 @@ function CalculatePercentage( pn )
         if ScoreToCalculate > 0 then
             return FormatPercentScore( ScoreToCalculate )
         else
-            return "0.00%"
+            return " 0.00%"
         end
         
     else
