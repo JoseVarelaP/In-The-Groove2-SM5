@@ -145,6 +145,11 @@ for index, ScWin in ipairs(JudgmentInfo.Types) do
 	};
 end
 
+local PColor = {
+	["PlayerNumber_P1"] = color("#836002"),
+	["PlayerNumber_P2"] = color("#2F8425"),
+};
+
 for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 	local performance = GetPSStageStats(player):GetRadarActual():GetValue( "RadarCategory_"..RCType )
 	local possible = GetPSStageStats(player):GetRadarPossible():GetValue( "RadarCategory_"..RCType )
@@ -155,8 +160,8 @@ for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 		Def.BitmapText{ Font="ScreenEvaluation judge",
 		OnCommand=function(self)
 			self:xy( -40, 16*index ):zoom(0.5):halign(1)
-			self:settext(("% 3.0f"):format(performance))
-			local leadingZeroAttr = { Length=5-tonumber(tostring(performance):len()); Diffuse=PlayerColor(player) }
+			self:settext(("%03.0f"):format(performance)):diffuse( PlayerColor(player) )
+			local leadingZeroAttr = { Length=3-tonumber(tostring(performance):len()); Diffuse=PColor[player] }
 			self:AddAttribute(0, leadingZeroAttr )
 		end;
 		};
@@ -164,8 +169,8 @@ for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 		Def.BitmapText{ Font="ScreenEvaluation judge",
 		OnCommand=function(self)
 			self:y( 16*index ):zoom(0.5):halign(1)
-			self:settext(("% 3.0f"):format(possible))
-			local leadingZeroAttr = { Length=5-tonumber(tostring(possible):len()); Diffuse=PlayerColor(player) }
+			self:settext(("%03.0f"):format(possible)):diffuse( PlayerColor(player) )
+			local leadingZeroAttr = { Length=3-tonumber(tostring(possible):len()); Diffuse=PColor[player] }
 			self:AddAttribute(0, leadingZeroAttr )
 		end;
 		};
