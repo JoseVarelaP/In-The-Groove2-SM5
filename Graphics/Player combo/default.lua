@@ -53,6 +53,9 @@ local t = Def.ActorFrame {
 	LoadFont( "_xenotron", "metal" ) .. {
 		Name="Number";
 		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
+		BeginCommand=function(self)
+			self:y(5)
+		end;
 	};
 	LoadActor("label") .. {
 		Name="Label";

@@ -19,7 +19,7 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.BitmapText{
-		Condition=GAMESTATE:IsPlayerEnabled(player);
+		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave";
 		Font="_futurist metalic";
 		Text=" 0.00%";
 		OnCommand=function(self)

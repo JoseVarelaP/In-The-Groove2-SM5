@@ -54,6 +54,13 @@ return Def.ActorFrame{
 	SetHelpTextCommand=function(self, params)
 		self:SetTipsColonSeparated( params.Text );
 	end;
+	SelectMenuOpenedMessageCommand=function(self)
+		self:stoptweening():decelerate(0.2):zoomy(0)
+		SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMusic select","down") )
+	end;
+	SelectMenuClosedMessageCommand=function(self)
+		self:stoptweening():bouncebegin(0.2):zoomy(0.75)
+	end;
 	OffCommand=cmd(linear,0.5;zoomy,0);
 	},
 

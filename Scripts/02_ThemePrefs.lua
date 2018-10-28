@@ -17,6 +17,13 @@ local Prefs =
 		Choices = { "Always Show", "Hide When Disabled (OITG)" },
 		Values = { "ITG", "OITG" }
 	},
+
+	ShowAttackList =
+	{
+		Default = true,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

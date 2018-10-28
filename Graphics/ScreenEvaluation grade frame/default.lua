@@ -23,7 +23,7 @@ local ComboAward = "_empty"
 
 -- If we do get an award, then return the value it gives.
 -- I know this is a shit method, but I've tried some others with no success.
-if not GetPSStageStats(player):GetPeakComboAward() == nil then
+if GetPSStageStats(player):GetPeakComboAward() ~= nil then
 	if string.len( GetPSStageStats(player):GetPeakComboAward() ) > 1 then
 		ComboAward = GetPSStageStats(player):GetPeakComboAward()
 	end
@@ -115,7 +115,7 @@ t[#t+1] = Def.ActorFrame{
 	Condition=GetPSStageStats(player):IsDisqualified();
 	OnCommand=cmd(xy,45,-65;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
 
-	LoadActor( "../ComboAwards/"..ComboAward ),
+	LoadActor( "../ComboAwards/"..ComboAward..".lua" ),
 };
 
 -- Info regarding all judgment data

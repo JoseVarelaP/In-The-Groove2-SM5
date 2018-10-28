@@ -102,7 +102,7 @@ for player in ivalues(PlayerNumber) do
 			self:xy(SCREEN_CENTER_X+Gradeside(player),SCREEN_CENTER_Y-38);
 		end;
 		OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2*side(player));
-			LoadActor( THEME:GetPathG("", "_grade models/"..PlayerTier[player] ) );
+			LoadActor( THEME:GetPathG("", "_grade models/"..PlayerTier[player]..".lua" ) );
 		};
 end
 
