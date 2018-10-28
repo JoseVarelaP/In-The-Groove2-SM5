@@ -34,7 +34,7 @@ for player in ivalues(PlayerNumber) do
 			self:sleep(1/60):queuecommand("UpdateScore")
 		end;
 		OffCommand=function(self)
-			self:accelerate(0.8):addy(-100)
+			self:sleep(1):accelerate(0.8):addy(-100)
 		end;
 	};
 
@@ -126,7 +126,7 @@ t[#t+1] = Def.ActorFrame{
 	if not GAMESTATE:IsCourseMode() then
 		self:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	else
-			self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." -"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
+		self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." -"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	end
 	self:maxwidth(SCREEN_WIDTH+20)
 	end,
@@ -136,7 +136,7 @@ t[#t+1] = Def.ActorFrame{
 -- Draw on top of the rest
 	
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(diffuse,color("#000000");stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,1;linear,0.3;diffusealpha,0)
+	OnCommand=cmd(diffuse,color("#000000");FullScreen;diffusealpha,1;linear,0.3;diffusealpha,0)
 };
 
 t[#t+1] = LoadActor("../_song credit display")..{
@@ -149,7 +149,7 @@ t[#t+1] = Def.ActorFrame{
 	Condition=GAMESTATE:IsDemonstration(),
 
 	LoadActor("demonstration gradient")..{
-		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_HEIGHT;diffusealpha,0.8);
+		OnCommand=cmd(FullScreen;diffusealpha,0.8);
 	};
 	LoadActor("demonstration logo")..{
 		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-180;pulse;effectmagnitude,1.0,0.9,0;effectclock,"bgm";effectperiod,1);

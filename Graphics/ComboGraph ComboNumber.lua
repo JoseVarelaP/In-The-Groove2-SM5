@@ -1,3 +1,3 @@
 return LoadFont("_eurostile normal") .. {
-	InitCommand=cmd(zoom, 0.65;);
+	InitCommand=cmd(zoom, 0.35;);
 };

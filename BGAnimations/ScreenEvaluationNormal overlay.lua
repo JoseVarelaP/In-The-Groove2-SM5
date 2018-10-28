@@ -1,7 +1,112 @@
-local GradeP1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()
-local GradeP2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetGrade()
 
-return Def.ActorFrame{
+-- fuck it i'll make my own grade tier system
+local GradePercentages = {
+	-- quad star
+	1.00,
+	-- triple star
+	0.99,
+	-- double star
+	0.98,
+	-- single star
+	0.96,
+	-- S+
+	0.94,
+	-- S
+	0.92,
+	-- S-
+	0.89,
+	-- A+
+	0.86,
+	-- A
+	0.83,
+	-- A-
+	0.80,
+	-- B+
+	0.76,
+	-- B
+	0.72,
+	-- B-
+	0.68,
+	-- C+
+	0.64,
+	-- C
+	0.60,
+	-- C-
+	0.55,
+};
+
+PlayerTier = {
+	["PlayerNumber_P1"] = 17,
+	["PlayerNumber_P2"] = 17,
+};
+
+for player in ivalues(PlayerNumber) do
+	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+	for index, Perc in ipairs(GradePercentages) do
+		-- If the player fails, give them a big F.
+		if PSS:GetFailed( player ) then
+			PlayerTier[player] = "Grade_Failed"
+			break
+		end
+		if (CalPerNum( player ) >= Perc) then
+			PlayerTier[player] = "Grade_Tier"..index
+			break
+		end
+	end
+end
+
+local t = Def.ActorFrame{};
+
+local function side(pn)
+	local s = 1
+	if pn == PLAYER_1 then return s end
+	return s*(-1)
+end
+
+local function Gradeside(pn)
+	local s = -230
+	if pn == PLAYER_2 then s = 56 end
+	return s
+end
+
+local function pnum(pn)
+	if pn == PLAYER_2 then return 2 end
+	return 1
+end
+
+-- Grade and Frame Info
+for player in ivalues(PlayerNumber) do
+	t[#t+1] = Def.ActorFrame{
+	Condition=GAMESTATE:IsPlayerEnabled(player);
+		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
+		InitCommand=function(self)
+		self:xy(SCREEN_CENTER_X+(-145*side(player)),SCREEN_CENTER_Y+54)
+		end,
+		OnCommand=function(self)
+			self:addx( (-SCREEN_WIDTH/2)*side(player) )
+			:sleep(3):decelerate(0.3)
+			:addx( (SCREEN_WIDTH/2)*side(player) )
+		end;
+		OffCommand=function(self)
+			self:accelerate(0.3):addx( (-SCREEN_WIDTH/2)*side(player) )
+		end;
+		};
+	};
+
+	t[#t+1] = Def.ActorFrame{
+		Condition=GAMESTATE:IsPlayerEnabled(player);
+		BeginCommand=function(self)
+			self:xy(SCREEN_CENTER_X+(-145*side(player)),SCREEN_CENTER_Y-60)
+			:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
+			:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
+			self:xy(SCREEN_CENTER_X+Gradeside(player),SCREEN_CENTER_Y-38);
+		end;
+		OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2*side(player));
+			LoadActor( THEME:GetPathG("", "_grade models/"..PlayerTier[player] ) );
+		};
+end
+
+t[#t+1] = Def.ActorFrame{
 	-- The biggest challenge here was to compesate the positions because of SM5's TextureFiltering.
 	-- It is different from 3.95/OpenITG's filters, which differ a lot with the original positions.
 	-- IN ADDITION of the different x and y handling anyways.
@@ -51,40 +156,6 @@ return Def.ActorFrame{
 	OnCommand=cmd(y,SCREEN_TOP-100;sleep,3;decelerate,0.3;y,SCREEN_CENTER_Y-124);
 	OffCommand=cmd(accelerate,0.3;addy,-SCREEN_CENTER_X);
 	},
-
-	-- This is the score frames
-	Def.ActorFrame{
-	Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
-
-		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame p1") )..{
-		InitCommand=function(self)
-		self:xy(SCREEN_CENTER_X-145,SCREEN_CENTER_Y+54)
-		end,
-		OnCommand=cmd(addx,-SCREEN_WIDTH/2;sleep,3;decelerate,0.3;addx,SCREEN_WIDTH/2);
-		OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2);
-		},
-
-		LoadActor( THEME:GetPathG("", "_grade models/"..GradeP1 ), GradeP1 )..{
-			BeginCommand=cmd(x,SCREEN_CENTER_X-145;y,SCREEN_CENTER_Y-60;zoom,2;addx,-SCREEN_WIDTH;decelerate,0.5;addx,SCREEN_WIDTH;sleep,2.2;decelerate,0.5;zoom,0.9;x,SCREEN_CENTER_X-230;y,SCREEN_CENTER_Y-38);
-			OffCommand=cmd(accelerate,0.3;addx,-SCREEN_WIDTH/2);
-		},
-	},
-
-	Def.ActorFrame{
-	Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
-		
-		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame p2") )..{
-		InitCommand=function(self)
-		self:xy(SCREEN_CENTER_X+145,SCREEN_CENTER_Y+54)
-		end,
-		OnCommand=cmd(addx,SCREEN_WIDTH/2;sleep,3;decelerate,0.3;addx,-SCREEN_WIDTH/2);
-		OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH/2);
-		},
-
-		LoadActor( THEME:GetPathG("", "_grade models/"..GradeP2 ), GradeP2 )..{
-			BeginCommand=cmd(x,SCREEN_CENTER_X+145;y,SCREEN_CENTER_Y-60;zoom,2;addx,SCREEN_WIDTH;decelerate,0.5;addx,-SCREEN_WIDTH;sleep,2.2;decelerate,0.5;zoom,0.9;x,SCREEN_CENTER_X+56;y,SCREEN_CENTER_Y-38);
-			OffCommand=cmd(accelerate,0.3;addx,SCREEN_WIDTH/2);
-		},		
-
-	},
 }
+
+return t;
