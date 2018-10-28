@@ -36,8 +36,8 @@ local GradePercentages = {
 };
 
 PlayerTier = {
-	["PlayerNumber_P1"] = 17,
-	["PlayerNumber_P2"] = 17,
+	["PlayerNumber_P1"] = "Grade_Tier17",
+	["PlayerNumber_P2"] = "Grade_Tier17",
 };
 
 for player in ivalues(PlayerNumber) do
