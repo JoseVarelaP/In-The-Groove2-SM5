@@ -15,5 +15,5 @@ Materials: 2
 0 0 0 1
 12.799999
 1.000000
-"flag green.png"
+"flag orange.png"
 "flag sphere add.png"

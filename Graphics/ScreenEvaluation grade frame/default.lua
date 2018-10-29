@@ -20,6 +20,7 @@ end
 -- This is to set the Combo award.
 -- We begin with an empty set.
 local ComboAward = "_empty"
+local DiffAward = "_empty"
 
 -- If we do get an award, then return the value it gives.
 -- I know this is a shit method, but I've tried some others with no success.
@@ -27,6 +28,11 @@ if GetPSStageStats(player):GetPeakComboAward() ~= nil then
 	if string.len( GetPSStageStats(player):GetPeakComboAward() ) > 1 then
 		ComboAward = GetPSStageStats(player):GetPeakComboAward()
 	end
+end
+
+-- time for checks for each PerDifficulty award.
+if GetPSStageStats(player):GetStageAward() ~= nil then
+	DiffAward = GetPSStageStats(player):GetStageAward()
 end
 
 local function side(pn)
@@ -59,9 +65,10 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;x,-38*side(player);horizalign,player == PLAYER_1 and left or right;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):x( -38*side(player) )
+				:halign( pnum(player)-1 ):playcommand("Update");
+			end;
 			UpdateCommand=function(self)
 					local steps = TrailOrSteps(player):GetDifficulty();
 						if GAMESTATE:IsCourseMode() then
@@ -76,8 +83,6 @@ t[#t+1] = Def.ActorFrame{
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=cmd(zoom,0.5;x,36*side(player);horizalign,player == PLAYER_1 and right or left;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
 			UpdateCommand=function(self)
 					self:settext( TrailOrSteps(player):GetMeter() )
 					self:diffuse( ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
@@ -116,6 +121,7 @@ t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(xy,45,-65;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
 
 	LoadActor( "../ComboAwards/"..ComboAward..".lua" ),
+	LoadActor( "../ComboAwards/"..DiffAward..".lua" ),
 };
 
 -- Info regarding all judgment data
@@ -133,22 +139,26 @@ for index, ValTC in ipairs(JudgmentInfo.Names) do
 	};
 end
 
+local PColor = {
+	["PlayerNumber_P1"] = color("#836002"),
+	["PlayerNumber_P2"] = color("#2F8425"),
+};
+
 for index, ScWin in ipairs(JudgmentInfo.Types) do
 	t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self) self:xy(-18,31-16) end;
 		Def.BitmapText{ Font="ScreenEvaluation judge",
 		OnCommand=function(self)
 			self:y(16*index):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
-			self:settext( string.format( "% 4d", GetPSStageStats(player):GetTapNoteScores("TapNoteScore_"..ScWin) ) )
+			local sco = GetPSStageStats(player):GetTapNoteScores("TapNoteScore_"..ScWin)
+			self:settext(("%04.0f"):format( sco )):diffuse( PlayerColor(player) )
+			local leadingZeroAttr = { Length=4-tonumber(tostring(sco):len()); Diffuse=PColor[player] }
+			self:AddAttribute(0, leadingZeroAttr )
 		end;
 		};
 	};
 end
 
-local PColor = {
-	["PlayerNumber_P1"] = color("#836002"),
-	["PlayerNumber_P2"] = color("#2F8425"),
-};
 
 for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 	local performance = GetPSStageStats(player):GetRadarActual():GetValue( "RadarCategory_"..RCType )
@@ -201,7 +211,12 @@ t[#t+1] = Def.ActorFrame{
 	Def.BitmapText{ Font="ScreenEvaluation judge";
 	OnCommand=function(self)
 		self:xy( 128, 16*7-1 ):zoom(0.5):halign(1)
-		self:settext( ("% 5.0f"):format( GetPSStageStats(player):MaxCombo() ) )
+		local combo = GetPSStageStats(player):MaxCombo()
+		self:settext( ("%05.0f"):format( combo ) )
+
+		local leadingZeroAttr = { Length=5-tonumber(tostring(combo):len()); Diffuse=PColor[player] }
+		self:AddAttribute(0, leadingZeroAttr )
+
 		:diffuse( PlayerColor(player) )
 	end;
 	};

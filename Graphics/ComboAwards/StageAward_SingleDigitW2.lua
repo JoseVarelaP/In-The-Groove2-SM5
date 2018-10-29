@@ -1,0 +1,16 @@
+local t = Def.ActorFrame{}
+
+t[#t+1] = Def.Model{
+    Meshes="_award models/plaque meshes.txt",
+    Materials="_award models/plaque materials silver.txt",
+    Bones="_award models/bones.txt",
+    OnCommand=cmd(zoom,0.6;wag;effectmagnitude,0,15,0;effectperiod,8;x,110;y,-25;zoom,1/1.8);
+};
+
+t[#t+1] = Def.BitmapText{
+    Text="Single Digit Excellents";
+    File="_eurostile normal";
+    OnCommand=cmd(horizalign,right;zoom,0.5;y,12;x,135;shadowlength,2);
+};
+
+return t;
