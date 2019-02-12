@@ -16,38 +16,64 @@ local LabelMinZoom = THEME:GetMetric("Combo", "LabelMinZoom");
 local LabelMaxZoom = THEME:GetMetric("Combo", "LabelMaxZoom");
 
 local t = Def.ActorFrame {
-	InitCommand=cmd(vertalign,bottom);
+	InitCommand=function(self)
+		self:vertalign(bottom)
+	end;
 	
 	-- These are behind the combo and label for obvious reasons.
 	-- 100 Combo milestone
 	LoadActor("explosion")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	HundredMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,90;zoom,2;diffusealpha,0);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	HundredMilestoneCommand=function(self)
+		self:rotationz(0):zoom(2.6):diffusealpha(0.5):linear(0.5):rotationz(90):zoom(2):diffusealpha(0)
+	end;
 	},
 
 	LoadActor("explosion")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	HundredMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,-90;zoom,2;diffusealpha,0);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	HundredMilestoneCommand=function(self)
+		self:rotationz(0):zoom(2.6):diffusealpha(0.5):linear(0.5):rotationz(-90):zoom(2):diffusealpha(0)
+	end;
 	},
 
 	-- 1000 Combo milestone
 	LoadActor("explosion")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	ThousandMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,90;zoom,2;diffusealpha,0);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	ThousandMilestoneCommand=function(self)
+		self:rotationz(0):zoom(2.6):diffusealpha(0.5):linear(0.5):rotationz(90):zoom(2):diffusealpha(0)
+	end;
 	},
 
 	LoadActor("explosion")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	ThousandMilestoneCommand=cmd(rotationz,0;zoom,2.6;diffusealpha,0.5;linear,0.5;rotationz,-90;zoom,2;diffusealpha,0);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	ThousandMilestoneCommand=function(self)
+		self:rotationz(0):zoom(2.6):diffusealpha(0.5):linear(0.5):rotationz(-90):zoom(2):diffusealpha(0)
+	end;
 	},
 
 	LoadActor("shot")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	ThousandMilestoneCommand=cmd(zoomx,-2;zoomy,2;diffusealpha,1;x,0;linear,0.5;diffusealpha,0;x,-150);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	ThousandMilestoneCommand=function(self)
+		self:zoomx(-2):zoomy(2):diffusealpha(1):x(0):linear(0.5):diffusealpha(0):x(-150)
+	end;
 	},
 	LoadActor("shot")..{
-	InitCommand=cmd(diffusealpha,0;blend,"BlendMode_Add");
-	ThousandMilestoneCommand=cmd(zoomx,2;zoomy,2;diffusealpha,1;x,0;linear,0.5;diffusealpha,0;x,150);
+	InitCommand=function(self)
+		self:diffusealpha(0):blend("BlendMode_Add")
+	end;
+	ThousandMilestoneCommand=function(self)
+		self:zoomx(2):zoomy(2):diffusealpha(1):x(0):linear(0.5):diffusealpha(0):x(150)
+	end;
 	},
 
 	LoadFont( "_xenotron", "metal" ) .. {
@@ -113,11 +139,11 @@ local t = Def.ActorFrame {
 		c.Number:settext( string.format("%i", iCombo) );
 		-- FullCombo Rewards
 		if param.FullComboW1 then
-			(cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#94EBFE");effectperiod,0.5))(c.Number);
-			(cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#94EBFE");effectperiod,0.5))(c.Label);
+			c.Number:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#94EBFE")):effectperiod(0.5);
+			c.Label:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#94EBFE")):effectperiod(0.5);
 		elseif param.FullComboW2 then
-			(cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FDD599");effectperiod,0.5))(c.Number);
-			(cmd(diffuseshift;effectcolor1,color("#FFFFFF");effectcolor2,color("#FDD599");effectperiod,0.5))(c.Label);
+			c.Number:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FDD599")):effectperiod(0.5);
+			c.Label:diffuseshift():effectcolor1(color("#FFFFFF")):effectcolor2(color("#FDD599")):effectperiod(0.5);
 		elseif param.FullComboW3 then
 			c.Number:stopeffect();
 			c.Label:stopeffect();
@@ -126,7 +152,7 @@ local t = Def.ActorFrame {
 			c.Number:stopeffect();
 			c.Label:stopeffect();
 			c.Misses:visible(false);
-			(cmd(diffuse,Color("White");))(c.Label);
+			c.Label:diffuse(Color("White"));
 		else
 			c.Number:diffuse(color("#ff0000"));
 			c.Label:visible(false);

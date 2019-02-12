@@ -3,11 +3,17 @@ return Def.ActorFrame{
 	LoadActor("../_shared underlay arrows"),
 
 	Def.ActorFrame{
-	OnCommand=cmd(x,SCREEN_CENTER_X+80;y,SCREEN_CENTER_Y+60;z,-100;zoom,1.3);
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X+80):y(SCREEN_CENTER_Y+60):z(-100):zoom(1.3)
+	end;
 
 		LoadActor("char")..{
-			OnCommand=cmd(ztest,1;glow,1,1,1,0;diffusealpha,0;linear,0.3;glow,1,1,1,1;sleep,0.001;diffusealpha,1;linear,0.3;glow,1,1,1,0);
-			OffCommand=cmd(linear,0.3;diffusealpha,0);
+			OnCommand=function(self)
+				self:ztest(1):glow(1,1,1,0):diffusealpha(0):linear(0.3):glow(1,1,1,1):sleep(0.001):diffusealpha(1):linear(0.3):glow(1,1,1,0)
+			end;
+			OffCommand=function(self)
+				self:linear(0.3):diffusealpha(0)
+			end;
 		},
 	},
 

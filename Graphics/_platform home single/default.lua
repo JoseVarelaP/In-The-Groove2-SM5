@@ -3,6 +3,8 @@ return Def.ActorFrame{
       Materials = "platform materials.txt",
       Meshes = "platform meshes.txt",
       Bones = "platform bones.txt",
-      InitCommand=cmd(rotationy,180);
+      InitCommand=function(self)
+      	self:rotationy(180)
+      end;
   };
 }

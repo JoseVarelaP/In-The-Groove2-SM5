@@ -2,8 +2,12 @@ return Def.ActorFrame{
 	Def.BitmapText{
 	Font="_eurostile outline",
 	Text="???",
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-86;shadowlength,2;zoom,1;playcommand, "Refresh");
-		CoinModeChangedMessageCommand=cmd(playcommand, "Refresh");
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-86):shadowlength(2):zoom(1):playcommand("Refresh")
+	end;
+		CoinModeChangedMessageCommand=function(self)
+			self:playcommand("Refresh")
+		end;
 		RefreshCommand=function(self) 
 				if GAMESTATE:GetCoinMode()=='CoinMode_Home' then
 					self:settext('');
@@ -17,7 +21,9 @@ return Def.ActorFrame{
 					self:playcommand("InsertCoin");
 				end 
 			end,
-		InsertCoinCommand=cmd(settext,"INSERT COIN";diffuseshift;effectcolor1,1,1,1,0;effectcolor2,1,1,1,1;effectperiod,2;effectoffset,1;);
+		InsertCoinCommand=function(self)
+			self:settext("INSERT COIN"):diffuseshift():effectcolor1(1,1,1,0):effectcolor2(1,1,1,1):effectperiod(2):effectoffset(1)
+		end;
 		PressStartCommand=function(self)
 				self:settext('PRESS &START;')
 				self:diffuseblink()
@@ -30,7 +36,9 @@ return Def.ActorFrame{
 	Def.BitmapText{
 	Font="_eurostile outline",
 	Text="???",
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-56;shadowlength,2;zoom,0.8;diffuse,0.7,0.7,0.7,1;diffusebottomedge,color("#DFB629D0");playcommand, "Refresh");
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-56):shadowlength(2):zoom(0.8):diffuse(0.7,0.7,0.7,1):diffusebottomedge(color("#DFB629D0")):playcommand("Refresh")
+	end;
 		RefreshCommand=function(self)
 			if GAMESTATE:IsEventMode() and GAMESTATE:GetCoinMode()~='CoinMode_Home' then self:settext('EVENT MODE') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end
@@ -45,7 +53,11 @@ return Def.ActorFrame{
 			s = s..remainder..'/'..coinsPerCredit
 			self:settext(s)
 		end,
-		CoinInsertedMessageCommand=cmd(playcommand,"Refresh");
-		CoinModeChangedMessageCommand=cmd(playcommand,"Refresh");
+		CoinInsertedMessageCommand=function(self)
+			self:playcommand("Refresh")
+		end;
+		CoinModeChangedMessageCommand=function(self)
+			self:playcommand("Refresh")
+		end;
 	},
 }

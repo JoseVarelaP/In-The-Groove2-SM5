@@ -13,13 +13,21 @@ return Def.ActorFrame{
 		end;
 		Def.Quad{
 			Name="DeadP1";
-			InitCommand=cmd(diffuse,color("0,0,0,0.5");faderight,.3;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM;diffusealpha,0;player,PLAYER_1);
-			ShowCommand=cmd(diffusealpha,0.5);
+			InitCommand=function(self)
+				self:diffuse(color("0,0,0,0.5")):faderight(.3):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_1)
+			end;
+			ShowCommand=function(self)
+				self:diffusealpha(0.5)
+			end;
 		};
 		Def.Quad{
 			Name="DeadP2";
-			InitCommand=cmd(diffuse,color("0,0,0,0.5");fadeleft,.3;stretchto,SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,0;player,PLAYER_2);
-			ShowCommand=cmd(diffusealpha,0.5);
+			InitCommand=function(self)
+				self:diffuse(color("0,0,0,0.5")):fadeleft(.3):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0):player(PLAYER_2)
+			end;
+			ShowCommand=function(self)
+				self:diffusealpha(0.5)
+			end;
 		};
 	};
 
@@ -33,12 +41,16 @@ return Def.ActorFrame{
 		end;
 		HealthStateChangedMessageCommand=function(self, param)
 			if param.HealthState == "HealthState_Dead" then
-				self:RunCommandsOnChildren(cmd(playcommand,"Show"))
+				self:RunCommandsOnChildren(function(self) self:playcommand("Show") end)
 			end
 		end;
 		Def.Quad{
-			InitCommand=cmd(diffuse,color("0,0,0,0.5");fadeleft,.2;faderight,.2;FullScreen;diffusealpha,0);
-			ShowCommand=cmd(linear,0.2;diffusealpha,0.5);
+			InitCommand=function(self)
+				self:diffuse(color("0,0,0,0.5")):fadeleft(.2):faderight(.2):FullScreen():diffusealpha(0)
+			end;
+			ShowCommand=function(self)
+				self:linear(0.2):diffusealpha(0.5)
+			end;
 		};
 	};
 };

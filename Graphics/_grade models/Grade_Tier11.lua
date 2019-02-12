@@ -1,10 +1,19 @@
 return Def.ActorFrame{
-	OnCommand=cmd(zoom,0.7;rotationy,-90;spin;effectmagnitude,0,40,0);
-	LoadActor("b.txt")..{ OnCommand=cmd(x,-20) },
+	OnCommand=function(self)
+		self:zoom(0.7):rotationy(-90):spin():effectmagnitude(0,40,0)
+	end;
+	
+	LoadActor("b.txt")..{
+		 OnCommand=function(self)
+			self:x(-20)
+		end
+	},
 	Def.Model{
 		Meshes="plus.txt",
 		Materials="b.txt",
 		Bones="plus.txt",
-		OnCommand=cmd(x,35)
+		OnCommand=function(self)
+			self:x(35)
+		end
 	},
 }

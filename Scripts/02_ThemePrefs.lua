@@ -24,6 +24,13 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+
+	CompareScores =
+	{
+		Default = true,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

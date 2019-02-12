@@ -1,7 +1,9 @@
 return Def.ActorFrame{
 
 	Def.ActorFrame{
-	OnCommand=cmd(fov,58;x,-10;y,2;zoomy,0.985;rotationy,-20;addx,450;decelerate,0.75;addx,-450);
+	OnCommand=function(self)
+		self:fov(58):x(-10):y(2):zoomy(0.985):rotationy(-20):addx(450):decelerate(0.75):addx(-450)
+	end;
 	OffCommand=function(self)
 	self:accelerate(0.75);
 	if IsUsingWideScreen() then
@@ -12,13 +14,19 @@ return Def.ActorFrame{
 	end,
 
   		Def.ActorFrame{
-		InitCommand=cmd(x,40;y,-110);
+		InitCommand=function(self)
+			self:x(40):y(-110)
+		end;
 
 			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=cmd(zoom,1.12;x,17;y,8;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+				InitCommand=function(self)
+					self:zoom(1.12):x(17):y(8):zwrite(true):z(1):blend("BlendMode_NoEffect")
+				end;
 			};
 			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=cmd(zoom,1.12;zoomx,-1.12;x,187;y,8;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+				InitCommand=function(self)
+					self:zoom(1.12):zoomx(-1.12):x(187):y(8):zwrite(true):z(1):blend("BlendMode_NoEffect")
+				end;
 			};
 			Def.ActorProxy{
 				BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('Banner'); self:SetTarget(banner); end,
@@ -32,11 +40,15 @@ return Def.ActorFrame{
 			};
 
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{
-				OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
+				OnCommand=function(self)
+					self:y(126):zoomx(1):zoomy(0.94)
+				end
 			},
 
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{
-				OnCommand=cmd(y,126;zoomx,1;zoomy,0.94;)
+				OnCommand=function(self)
+					self:y(126):zoomx(1):zoomy(0.94)
+				end
 			},
 
 		Def.ActorFrame{
@@ -45,8 +57,12 @@ return Def.ActorFrame{
 			Def.BitmapText{
 			Text=THEME:GetString("Balloons","ITGLong"),
 			Font="_big blue glow",
-			OnCommand=cmd(shadowlength,2;zoom,1;x,05;y,200;diffuseshift;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0);
+			OnCommand=function(self)
+				self:shadowlength(2):zoom(1):x(05):y(200):diffuseshift():playcommand("Hide")
+			end;
+			HideCommand=function(self)
+				self:diffusealpha(0)
+			end;
 			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGLong") ); end,
 			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGMarathon") ); end,
 			CurrentSongChangedMessageCommand=function(self)
@@ -66,10 +82,18 @@ return Def.ActorFrame{
 			-- Long/Marathon labels - OITG style
 
 			LoadActor( "OITG Balloon" )..{
-			HideCommand=cmd(diffusealpha,0);
-			LongCommand=cmd(diffusealpha,1;diffuseshift;effectcolor1,0.8,0.8,0.8,1;effectcolor2,0.5,0.5,0.5,1;);
-			MaraCommand=cmd(diffusealpha,1;diffuseshift;effectcolor1,1,0.3,0.3,1;effectcolor2,0.7,0.1,0.1,1;);
-			OnCommand=cmd(shadowlength,2;zoom,1;zoomx,1.3;x,-200;horizalign,left;y,45;effectclock,"bgm";diffuseshift;effectcolor1,1,1,1,1;effectcolor2,0.7,0.7,0.7,1;playcommand,"Hide");
+			HideCommand=function(self)
+				self:diffusealpha(0)
+			end;
+			LongCommand=function(self)
+				self:diffusealpha(1):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.5,0.5,0.5,1)
+			end;
+			MaraCommand=function(self)
+				self:diffusealpha(1):diffuseshift():effectcolor1(1,0.3,0.3,1):effectcolor2(0.7,0.1,0.1,1)
+			end;
+			OnCommand=function(self)
+				self:shadowlength(2):zoom(1):zoomx(1.3):x(-200):horizalign(left):y(45):effectclock("bgm"):diffuseshift():effectcolor1(1,1,1,1):effectcolor2(0.7,0.7,0.7,1):playcommand("Hide")
+			end;
 			CurrentSongChangedMessageCommand=function(self)
 			self:queuecommand("Hide")
 			if GAMESTATE:GetCurrentSong() then
@@ -83,8 +107,12 @@ return Def.ActorFrame{
 			Def.BitmapText{
 			Text=THEME:GetString("Balloons","OITGLong"),
 			Font="_eurostile normal",
-			OnCommand=cmd(shadowlength,1;zoom,0.5;zoomx,0.55;x,-180;horizalign,left;y,45;playcommand,"Hide");
-			HideCommand=cmd(diffusealpha,0);
+			OnCommand=function(self)
+				self:shadowlength(1):zoom(0.5):zoomx(0.55):x(-180):horizalign(left):y(45):playcommand("Hide")
+			end;
+			HideCommand=function(self)
+				self:diffusealpha(0)
+			end;
 			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGLong") ); end,
 			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGMarathon") ); end,
 			CurrentSongChangedMessageCommand=function(self)
@@ -101,20 +129,28 @@ return Def.ActorFrame{
 		};
 
 		LoadActor("right frame edge")..{
-		OnCommand=cmd(x,-200;horizalign,left;zoomx,1);
+		OnCommand=function(self)
+			self:x(-200):horizalign(left):zoomx(1)
+		end;
 		},
 
 		LoadActor("right frame middle")..{
-		OnCommand=cmd(x,-200+158;horizalign,left;zoomx,40);
+		OnCommand=function(self)
+			self:x(-200+158):horizalign(left):zoomx(40)
+		end;
 		},
 
 		LoadActor("right frame right")..{
-		OnCommand=cmd(x,200+78;horizalign,left);
+		OnCommand=function(self)
+			self:x(200+78):horizalign(left)
+		end;
 		},
 	},
 
 	Def.ActorFrame{
-	OnCommand=cmd(y,1;addx,500;decelerate,0.75;addx,-500);
+	OnCommand=function(self)
+		self:y(1):addx(500):decelerate(0.75):addx(-500)
+	end;
 	OffCommand=function(self)
 	self:accelerate(0.75);
 	if IsUsingWideScreen() then
@@ -128,13 +164,17 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text=string.upper(THEME:GetString("BannerFrame","Artist"));
 		Font="_eurostile normal",
-		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.5;x,-165;y,-38;diffusealpha,0.5);
+		OnCommand=function(self)
+			self:horizalign(left):shadowlength(2):zoom(0.5):x(-165):y(-38):diffusealpha(0.5)
+		end;
 		},
 
 		Def.BitmapText{
 		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.6;x,-165;y,-22;diffusealpha,1);
+		OnCommand=function(self)
+			self:horizalign(left):shadowlength(2):zoom(0.6):x(-165):y(-22):diffusealpha(1)
+		end;
 		CurrentSongChangedMessageCommand=function(self)
 		local songCourse = GAMESTATE:GetCurrentSong()
 		if songCourse then
@@ -148,13 +188,17 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text="BPM",
 		Font="_eurostile normal",
-		OnCommand=cmd(shadowlength,2;zoom,0.5;x,55;y,-32;diffusealpha,0.5);
+		OnCommand=function(self)
+			self:shadowlength(2):zoom(0.5):x(55):y(-32):diffusealpha(0.5)
+		end;
 		},
 
 		Def.BitmapText{
 		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=cmd(horizalign,left;shadowlength,2;zoom,0.6;x,40;y,-18;diffusealpha,1);
+		OnCommand=function(self)
+			self:horizalign(left):shadowlength(2):zoom(0.6):x(40):y(-18):diffusealpha(1)
+		end;
 		CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local val
@@ -183,10 +227,14 @@ return Def.ActorFrame{
 
 	},
 	LoadActor( "../ScreenSelectMusic wheel mask" ) .. {
-				InitCommand=cmd(x,-420;y,1;zwrite,true;z,1;blend,"BlendMode_NoEffect");
+				InitCommand=function(self)
+					self:x(-420):y(1):zwrite(true):z(1):blend("BlendMode_NoEffect")
+				end;
 			},
 	LoadActor("left frame")..{
-	OnCommand=cmd(x,-380;y,1;addx,-150;decelerate,0.5;addx,150);
+	OnCommand=function(self)
+		self:x(-380):y(1):addx(-150):decelerate(0.5):addx(150)
+	end;
 	OffCommand=function(self)
 	self:sleep(0.2);
 	self:accelerate(0.6);

@@ -57,9 +57,13 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor("base frame"),
 
 	Def.ActorFrame{
-	OnCommand=cmd(xy,-95*side(player),-149);
+	OnCommand=function(self)
+		self:xy(-95*side(player),-149)
+	end;
 		LoadActor( THEME:GetPathG('','_difficulty icons') )..{
-			OnCommand=cmd(xy,0,0;animate,0;playcommand, "Update");
+			OnCommand=function(self)
+				self:xy(0,0):animate(0):playcommand("Update")
+			end;
 			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player) ) end,
 		},
 
@@ -82,7 +86,9 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;x,36*side(player);horizalign,player == PLAYER_1 and right or left;playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):x(36*side(player)):horizalign(player == PLAYER_1 and right or left):playcommand("Update")
+			end;
 			UpdateCommand=function(self)
 					self:settext( TrailOrSteps(player):GetMeter() )
 					self:diffuse( ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
@@ -91,7 +97,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 		Def.GraphDisplay{
-			InitCommand=cmd(y,-36),
+			InitCommand=function(self)
+				self:y(-36)
+			end,
 			BeginCommand=function(self)
 				self:Load("GraphDisplayP"..pnum(player))
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
@@ -101,7 +109,9 @@ t[#t+1] = Def.ActorFrame{
 		},
 
 		Def.ComboGraph{
-			InitCommand=cmd(y,-7),
+			InitCommand=function(self)
+				self:y(-7)
+			end,
 			BeginCommand=function(self)
 				self:Load("ComboGraphP"..pnum(player))
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
@@ -112,13 +122,25 @@ t[#t+1] = Def.ActorFrame{
 
 	-- Grade time
 
-	Def.BitmapText{ Font="_futurist metalic", Text=CalculatePercentage(player), OnCommand=cmd(horizalign,right;xy,115,-82;diffuse,PlayerColor(player)); },
+	
+	Def.BitmapText{
+		 Font="_futurist metalic", Text=CalculatePercentage(player), OnCommand=function(self)
+			self:horizalign(right):xy(115,-82):diffuse(PlayerColor(player))
+		end
+	},
 
-	Def.BitmapText{ Font="_eurostile normal", Text=optionslist, OnCommand=cmd(xy,45,-112;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
+	
+	Def.BitmapText{
+		 Font="_eurostile normal", Text=optionslist, OnCommand=function(self)
+			self:xy(45,-112):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
+		end
+	},
 
 	Def.BitmapText{ Font="_eurostile blue glow", Text="Disqualified from ranking",
 	Condition=GetPSStageStats(player):IsDisqualified();
-	OnCommand=cmd(xy,45,-65;zoom,0.5;shadowlength,2;wrapwidthpixels,400); },
+	OnCommand=function(self)
+		self:xy(45,-65):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
+	end,
 
 	LoadActor( "../ComboAwards/"..ComboAward..".lua" ),
 	LoadActor( "../ComboAwards/"..DiffAward..".lua" ),
@@ -135,7 +157,9 @@ for index, ValTC in ipairs(JudgmentInfo.Names) do
 	t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self) self:xy(-128,31-18) end;
 		Def.BitmapText{ Font="_eurostile normal", Text=ValTC,
-		OnCommand=cmd(y,16*index;zoom,0.5;horizalign,left;shadowlength,0); };
+		OnCommand=function(self)
+			self:y(16*index):zoom(0.5):horizalign(left):shadowlength(0)
+		end;
 	};
 end
 

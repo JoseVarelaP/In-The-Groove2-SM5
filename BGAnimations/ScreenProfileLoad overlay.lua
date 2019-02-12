@@ -1,6 +1,8 @@
 local x = Def.ActorFrame{
 	LoadActor("_moveon")..{
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y)
+	end;
 	};
 };
 

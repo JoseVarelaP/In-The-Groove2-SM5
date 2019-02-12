@@ -10,5 +10,10 @@ return Def.ActorFrame{
 		end
 	end
 	},
-	LoadActor( "icon p1" )..{ OnCommand=cmd(shadowlength,2;x,44;y,-4); },
+	
+	LoadActor( "icon p1" )..{
+		 OnCommand=function(self)
+			self:shadowlength(2):x(44):y(-4)
+		end
+	},
 }

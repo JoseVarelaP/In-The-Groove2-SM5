@@ -1,3 +1,5 @@
 return LoadFont("_eurostile normal") .. {
-	InitCommand=cmd(zoom, 0.35;);
+	InitCommand=function(self)
+		self:zoom(0.35)
+	end;
 };

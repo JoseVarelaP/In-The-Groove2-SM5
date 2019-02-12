@@ -1,6 +1,8 @@
 return Def.ActorFrame{
 	Def.Quad{ Condition=not GAMESTATE:PlayerUsingBothSides();
-		OnCommand=cmd(faderight,.1;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM;diffuseshift;effectcolor1,1,0,0,0.3;effectcolor2,1,0,0,0.8);
+		OnCommand=function(self)
+			self:faderight(.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffuseshift():effectcolor1(1,0,0,0.3):effectcolor2(1,0,0,0.8)
+		end;
 	},
 }
 

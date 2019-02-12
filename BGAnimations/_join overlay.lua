@@ -20,14 +20,26 @@ return Def.ActorFrame{
 	Def.BitmapText{
 	Font="_eurostile outline",
 	Text="???",
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-56;shadowlength,2;zoom,0.9;diffuseshift;effectcolor1,color("#FFE58BFF");effectcolor2,color("#FFE58B00");playcommand, "Refresh");
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-56):shadowlength(2):zoom(0.9):diffuseshift():effectcolor1(color("#FFE58BFF")):effectcolor2(color("#FFE58B00")):playcommand("Refresh")
+	end;
 	RefreshCommand=function(self)
 		self:settext(Get2PlayerJoinMessage())
 	end;
-	JoinedCommand=cmd(linear,.2;diffusealpha,0);
-	PlayerJoinedMessageCommand=cmd(playcommand,"Joined");
-	CurrentStyleChangedMessageCommand=cmd(playcommand,"Refresh");
-	CoinInsertedMessageCommand=cmd(playcommand,"Refresh");
-	CoinModeChangedMessageCommand=cmd(playcommand,"Refresh");
+	JoinedCommand=function(self)
+		self:linear(.2):diffusealpha(0)
+	end;
+	PlayerJoinedMessageCommand=function(self)
+		self:playcommand("Joined")
+	end;
+	CurrentStyleChangedMessageCommand=function(self)
+		self:playcommand("Refresh")
+	end;
+	CoinInsertedMessageCommand=function(self)
+		self:playcommand("Refresh")
+	end;
+	CoinModeChangedMessageCommand=function(self)
+		self:playcommand("Refresh")
+	end;
 	},
 }

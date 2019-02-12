@@ -12,26 +12,44 @@ return Def.ActorFrame{
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_1 then
 					if param.HealthState == "HealthState_Danger" then
-						self:RunCommandsOnChildren(cmd(playcommand,"ShowP1"))
+						self:RunCommandsOnChildren(function(self) self:playcommand("ShowP1") end)
 					else
-						self:RunCommandsOnChildren(cmd(playcommand,"HideP1"))
+						self:RunCommandsOnChildren(function(self) self:playcommand("HideP1") end)
 					end
 				end
 			end;
 			Def.Quad{
-				InitCommand=cmd(faderight,.1;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowP1Command=cmd(diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideP1Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:faderight(.1):stretchto(SCREEN_LEFT,SCREEN_TOP,SCREEN_CENTER_X,SCREEN_BOTTOM):diffusealpha(0)
+				end;
+				ShowP1Command=function(self)
+					self:diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8"))
+				end;
+				HideP1Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 			LoadActor("Danger Text/danger text")..{
-				InitCommand=cmd(x,SCREEN_CENTER_X-SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+10;diffusealpha,0;);
-				ShowP1Command=cmd(diffusealpha,1;);
-				HideP1Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+10):diffusealpha(0)
+				end;
+				ShowP1Command=function(self)
+					self:diffusealpha(1)
+				end;
+				HideP1Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 			LoadActor("Danger Text/danger glow")..{
-				InitCommand=cmd(x,SCREEN_CENTER_X-SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+10;cropleft,-0.3;cropright,1;faderight,.1;fadeleft,.1;);
-				ShowP1Command=cmd(sleep,0.5;linear,0.7;cropleft,1;cropright,-0.3;sleep,0.8;queuecommand,"Show");
-				HideP1Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:x(SCREEN_CENTER_X-SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+10):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1)
+				end;
+				ShowP1Command=function(self)
+					self:sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show")
+				end;
+				HideP1Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 		};
 	};
@@ -49,26 +67,44 @@ return Def.ActorFrame{
 			HealthStateChangedMessageCommand=function(self, param)
 				if param.PlayerNumber == PLAYER_2 then
 					if param.HealthState == "HealthState_Danger" then
-						self:RunCommandsOnChildren(cmd(playcommand,"ShowP2"))
+						self:RunCommandsOnChildren(function(self) self:playcommand("ShowP2") end)
 					else
-						self:RunCommandsOnChildren(cmd(playcommand,"HideP2"))
+						self:RunCommandsOnChildren(function(self) self:playcommand("HideP2") end)
 					end
 				end
 			end;
 			Def.Quad{
-				InitCommand=cmd(fadeleft,.1;stretchto,SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,0;);
-				ShowP2Command=cmd(diffusealpha,1;diffuseshift;effectcolor1,color("1,0,0,0.3");effectcolor2,color("1,0,0,0.8"));
-				HideP2Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:fadeleft(.1):stretchto(SCREEN_CENTER_X,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0)
+				end;
+				ShowP2Command=function(self)
+					self:diffusealpha(1):diffuseshift():effectcolor1(color("1,0,0,0.3")):effectcolor2(color("1,0,0,0.8"))
+				end;
+				HideP2Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 			LoadActor("Danger Text/danger text")..{
-				InitCommand=cmd(x,SCREEN_CENTER_X+SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+10;diffusealpha,0;);
-				ShowP2Command=cmd(diffusealpha,1;);
-				HideP2Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+10):diffusealpha(0)
+				end;
+				ShowP2Command=function(self)
+					self:diffusealpha(1)
+				end;
+				HideP2Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 			LoadActor("Danger Text/danger glow")..{
-				InitCommand=cmd(x,SCREEN_CENTER_X+SCREEN_WIDTH/4;y,SCREEN_CENTER_Y+10;cropleft,-0.3;cropright,1;faderight,.1;fadeleft,.1;);
-				ShowP2Command=cmd(sleep,0.5;linear,0.7;cropleft,1;cropright,-0.3;sleep,0.8;queuecommand,"Show");
-				HideP2Command=cmd(stopeffect;stoptweening;linear,.5;diffusealpha,0);
+				InitCommand=function(self)
+					self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4):y(SCREEN_CENTER_Y+10):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1)
+				end;
+				ShowP2Command=function(self)
+					self:sleep(0.5):linear(0.7):cropleft(1):cropright(-0.3):sleep(0.8):queuecommand("Show")
+				end;
+				HideP2Command=function(self)
+					self:stopeffect():stoptweening():linear(.5):diffusealpha(0)
+				end;
 			};
 		};
 	};

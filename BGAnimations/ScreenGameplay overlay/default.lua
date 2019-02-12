@@ -10,11 +10,11 @@ for player in ivalues(PlayerNumber) do
 		OnCommand=function(self)
 			self:x( player == PLAYER_1 and SCREEN_CENTER_X-224 or SCREEN_CENTER_X+224 )
 			self:y( SCREEN_TOP+53 )
-			:diffuse( Color.Black ):zoom(0.5):maxwidth(100):addy(-100):sleep(0.7)
-			:decelerate(0.5):addy(100)
+			:diffuse( Color.Black ):zoom(0.5):maxwidth(100):addy(-100):sleep(0.5)
+			:decelerate(0.8):addy(100)
 		end;
 		OffCommand=function(self)
-			self:accelerate(0.8):addy(-100)
+			self:sleep(1):accelerate(0.8):addy(-100)
 		end;
 	};
 
@@ -27,11 +27,20 @@ for player in ivalues(PlayerNumber) do
 			self:y( SCREEN_TOP+56 )
 			:diffuse( player == PLAYER_1 and color("#FBBE03") or color("#56FF48") ):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
-			:queuecommand("UpdateScore")
+			if ThemePrefs.Get("CompareScores") and GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+				self:pulse():effectclock("bgm"):effectmagnitude(1.05,0.95,0):effectperiod(1)
+			end
 		end;
-		UpdateScoreCommand=function(self)
+		JudgmentMessageCommand=function(self)
 			self:settext( CalculatePercentage(player) )
-			self:sleep(1/60):queuecommand("UpdateScore")
+			-- time to check who's winning
+			if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+				if CalPerNum(player) < CalPerNum(player == PLAYER_1 and 1 or 0) then
+					self:effectmagnitude(1,1,0)
+				else
+					self:effectmagnitude(1.05,0.95,0)
+				end
+			end
 		end;
 		OffCommand=function(self)
 			self:sleep(1):accelerate(0.8):addy(-100)
@@ -39,10 +48,18 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.ActorFrame{
-		OnCommand=cmd(sleep,0.5;queuecommand, "TweenOn");
-		OffCommand=cmd(sleep,1;queuecommand, "TweenOff");
-		ShowGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOn");
-		HideGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOff");
+		OnCommand=function(self)
+			self:sleep(0.5):queuecommand("TweenOn")
+		end;
+		OffCommand=function(self)
+			self:sleep(1):queuecommand("TweenOff")
+		end;
+		ShowGameplayTopFrameMessageCommand=function(self)
+			self:playcommand("TweenOn")
+		end;
+		HideGameplayTopFrameMessageCommand=function(self)
+			self:playcommand("TweenOff")
+		end;
 
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(player);
@@ -67,9 +84,15 @@ for player in ivalues(PlayerNumber) do
 	
 				Def.BitmapText{
 				Font="Common Normal",
-				OnCommand=cmd(zoom,0.5;xy,-36,0;horizalign,left;playcommand, "Update");
-				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+				OnCommand=function(self)
+					self:zoom(0.5):xy(-36,0):horizalign(left):playcommand("Update")
+				end;
+				CurrentStepsP1ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
+				CurrentStepsP2ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
 				UpdateCommand=function(self)
 						if GAMESTATE:GetCurrentSteps(player) then
 							local steps = GAMESTATE:GetCurrentSteps(player):GetDifficulty();
@@ -82,9 +105,15 @@ for player in ivalues(PlayerNumber) do
 	
 				Def.BitmapText{
 				Font="Common Normal",
-				OnCommand=cmd(zoom,0.5;xy,35,0;horizalign,right;playcommand, "Update");
-				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+				OnCommand=function(self)
+					self:zoom(0.5):xy(35,0):horizalign(right):playcommand("Update")
+				end;
+				CurrentStepsP1ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
+				CurrentStepsP2ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
 				UpdateCommand=function(self)
 					if GAMESTATE:GetCurrentSteps(player) then
 						local steps = GAMESTATE:GetCurrentSteps(player)
@@ -102,17 +131,34 @@ end
 t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen(); };
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+24;addy,-100;sleep,0.5;queuecommand, "TweenOn");
-	OffCommand=cmd(sleep,1;queuecommand, "TweenOff");
-	TweenOnCommand=cmd(decelerate,0.8;addy,100);
-	TweenOffCommand=cmd(accelerate,0.8;addy,-100);
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
+	end;
+	OffCommand=function(self)
+		self:sleep(1):queuecommand("TweenOff")
+	end;
+	TweenOnCommand=function(self)
+		self:decelerate(0.8):addy(100)
+	end;
+	TweenOffCommand=function(self)
+		self:accelerate(0.8):addy(-100)
+	end;
 
 		Def.SongMeterDisplay{
 		Condition=not IsUsingWideScreen();
-        InitCommand=cmd(SetStreamWidth,390);
-        Stream=LoadActor("meter stream")..{InitCommand=cmd(diffusealpha,1)};
+        InitCommand=function(self)
+        	self:SetStreamWidth(390)
+        end;
+        
+        Stream=LoadActor("meter stream")..{
+        	InitCommand=function(self)
+        		self:diffusealpha(1)
+        	end
+        };
         Tip=LoadActor("tip")..{
-            OnCommand=cmd(diffuseshift;effectcolor1,1,1,1,0.6;effectcolor2,1,1,1,1.0);
+            OnCommand=function(self)
+            	self:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0)
+            end;
         },
     };
 
@@ -120,8 +166,12 @@ t[#t+1] = Def.ActorFrame{
 	
 	Def.BitmapText{
 	Font="_eurostile normal",
-	OnCommand=cmd(y,1;zoom,.5;shadowlength,0);
-	CurrentSongChangedMessageCommand=cmd(playcommand, "Update");
+	OnCommand=function(self)
+		self:y(1):zoom(.5):shadowlength(0)
+	end;
+	CurrentSongChangedMessageCommand=function(self)
+		self:playcommand("Update")
+	end;
 	UpdateCommand=function(self)
 	if not GAMESTATE:IsCourseMode() then
 		self:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
@@ -136,12 +186,16 @@ t[#t+1] = Def.ActorFrame{
 -- Draw on top of the rest
 	
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(diffuse,color("#000000");FullScreen;diffusealpha,1;linear,0.3;diffusealpha,0)
+	OnCommand=function(self)
+		self:diffuse(color("#000000")):FullScreen():diffusealpha(1):linear(0.3):diffusealpha(0)
+	end
 };
 
 t[#t+1] = LoadActor("../_song credit display")..{
 	Condition=not GAMESTATE:IsDemonstration();
-	OnCommand=cmd(sleep,2.5;linear,0.3;diffusealpha,0);
+	OnCommand=function(self)
+		self:sleep(2.5):linear(0.3):diffusealpha(0)
+	end;
 };
 
 -- demonstration stuff
@@ -149,10 +203,14 @@ t[#t+1] = Def.ActorFrame{
 	Condition=GAMESTATE:IsDemonstration(),
 
 	LoadActor("demonstration gradient")..{
-		OnCommand=cmd(FullScreen;diffusealpha,0.8);
+		OnCommand=function(self)
+			self:FullScreen():diffusealpha(0.8)
+		end;
 	};
 	LoadActor("demonstration logo")..{
-		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-180;pulse;effectmagnitude,1.0,0.9,0;effectclock,"bgm";effectperiod,1);
+		OnCommand=function(self)
+			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-180):pulse():effectmagnitude(1.0,0.9,0):effectclock("bgm"):effectperiod(1)
+		end;
 	};
 };
 

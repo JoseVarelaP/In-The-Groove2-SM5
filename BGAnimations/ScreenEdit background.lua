@@ -10,5 +10,10 @@ return Def.ActorFrame{
 	end,
 	},
 
-	Def.Quad{ OnCommand=cmd(FullScreen;diffuse,0,0,0,0.2;Center); },
+	
+	Def.Quad{
+		 OnCommand=function(self)
+			self:FullScreen():diffuse(0,0,0,0.2):Center()
+		end
+	},
 }

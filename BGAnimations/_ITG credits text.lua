@@ -149,7 +149,9 @@ local af = Def.ActorScroller {
 	SecondsPerItem = 0.28,
 	NumItemsToDraw = 21,
 	TransformFunction = function( self, offset, itemIndex, numItems) self:y(offset*24) end,
-	OnCommand=cmd(scrollwithpadding,6,9);
+	OnCommand=function(self)
+		self:scrollwithpadding(6,9)
+	end;
 };
 
 for i=1,table.getn(ITGCredits_Table) do

@@ -1,7 +1,16 @@
 return Def.ActorFrame {
 		Def.Quad {
-			InitCommand=cmd(FullScreen);
-			OnCommand=cmd(diffuse,Color.Black;sleep,1.5;linear,0.25);
+			InitCommand=function(self)
+				self:FullScreen()
+			end;
+			OnCommand=function(self)
+				self:diffuse(Color.Black):sleep(1.5):linear(0.25)
+			end;
 		};
-		LoadActor("splash")..{ OnCommand=cmd(Center); },
+		
+		LoadActor("splash")..{
+			 OnCommand=function(self)
+				self:Center()
+			end
+		},
 	};

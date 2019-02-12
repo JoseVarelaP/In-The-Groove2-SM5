@@ -1,3 +1,8 @@
 return Def.ActorFrame{
-	Def.Quad{ OnCommand=cmd(diffusealpha,0;linear,0.3); },
+	
+	Def.Quad{
+		 OnCommand=function(self)
+			self:diffusealpha(0):linear(0.3)
+		end
+	},
 }

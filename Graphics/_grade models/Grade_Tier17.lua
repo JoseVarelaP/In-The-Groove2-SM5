@@ -1,5 +1,7 @@
 return Def.ActorFrame{
 	LoadActor("d.txt")..{
-	OnCommand=cmd(zoom,0.85;wag;effectmagnitude,0,0,10);
+	OnCommand=function(self)
+		self:zoom(0.85):wag():effectmagnitude(0,0,10)
+	end;
 	},
 }

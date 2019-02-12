@@ -1,3 +1,8 @@
 return Def.ActorFrame{
-	LoadActor("EditMenu Left")..{ OnCommand=cmd(zoomx,-1) },
+	
+	LoadActor("EditMenu Left")..{
+		 OnCommand=function(self)
+			self:zoomx(-1)
+		end
+	},
 }

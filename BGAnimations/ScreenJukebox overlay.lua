@@ -1,28 +1,55 @@
 return Def.ActorFrame{
 	LoadActor("ScreenGameplay overlay/demonstration gradient")..{
-		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_HEIGHT;diffusealpha,0.8);
+		OnCommand=function(self)
+			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):diffusealpha(0.8)
+		end;
 	},
 
 	Def.ActorFrame{
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+24;addy,-100;sleep,0.5;queuecommand, "TweenOn");
-	OffCommand=cmd(queuecommand, "TweenOff");
-	ShowGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOn");
-	HideGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOff");
-	TweenOnCommand=cmd(decelerate,0.8;addy,100);
-	TweenOffCommand=cmd(accelerate,0.8;addy,-100);
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
+	end;
+	OffCommand=function(self)
+		self:queuecommand("TweenOff")
+	end;
+	ShowGameplayTopFrameMessageCommand=function(self)
+		self:playcommand("TweenOn")
+	end;
+	HideGameplayTopFrameMessageCommand=function(self)
+		self:playcommand("TweenOff")
+	end;
+	TweenOnCommand=function(self)
+		self:decelerate(0.8):addy(100)
+	end;
+	TweenOffCommand=function(self)
+		self:accelerate(0.8):addy(-100)
+	end;
 
 		Def.SongMeterDisplay{
-        InitCommand=cmd(SetStreamWidth,SCREEN_WIDTH/1.17);
-        Stream=LoadActor("ScreenGameplay overlay/meter stream")..{InitCommand=cmd(diffusealpha,1)};
+        InitCommand=function(self)
+        	self:SetStreamWidth(SCREEN_WIDTH/1.17)
+        end;
+        
+        Stream=LoadActor("ScreenGameplay overlay/meter stream")..{
+        	InitCommand=function(self)
+        		self:diffusealpha(1)
+        	end
+        };
         Tip=LoadActor("ScreenGameplay overlay/tip")..{
-            OnCommand=cmd(diffuseshift;effectcolor1,1,1,1,0.6;effectcolor2,1,1,1,1.0);
+            OnCommand=function(self)
+            	self:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0)
+            end;
         },
     },
 
     Def.BitmapText{
 		Font="_eurostile normal",
-		OnCommand=cmd(y,1;zoom,.5;shadowlength,0);
-		CurrentSongChangedMessageCommand=cmd(playcommand, "Update");
+		OnCommand=function(self)
+			self:y(1):zoom(.5):shadowlength(0)
+		end;
+		CurrentSongChangedMessageCommand=function(self)
+			self:playcommand("Update")
+		end;
 		UpdateCommand=function(self)
 		if not GAMESTATE:IsCourseMode() then
 			self:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
@@ -40,38 +67,79 @@ return Def.ActorFrame{
     -- I kept the code I did for this, and now it is used for Widescreen SM setups.
     																						-- Jose_Varela
 
-    	LoadActor("ScreenGameplay overlay/meter frame")..{ OnCommand=cmd(zoomtowidth,SCREEN_WIDTH/2;cropleft,0.5;x,SCREEN_WIDTH/5); },
-    	LoadActor("ScreenGameplay overlay/meter frame")..{ OnCommand=cmd(zoomtowidth,SCREEN_WIDTH/2;cropright,0.5;x,SCREEN_WIDTH/-5); },
-    	LoadActor("ScreenGameplay overlay/meter frame")..{ OnCommand=cmd(zoomtowidth,SCREEN_WIDTH/2;cropright,0.1;cropleft,0.1;x,0); },
+    	
+    	LoadActor("ScreenGameplay overlay/meter frame")..{
+    		 OnCommand=function(self)
+    			self:zoomtowidth(SCREEN_WIDTH/2):cropleft(0.5):x(SCREEN_WIDTH/5)
+    		end
+    	},
+    	
+    	LoadActor("ScreenGameplay overlay/meter frame")..{
+    		 OnCommand=function(self)
+    			self:zoomtowidth(SCREEN_WIDTH/2):cropright(0.5):x(SCREEN_WIDTH/-5)
+    		end
+    	},
+    	
+    	LoadActor("ScreenGameplay overlay/meter frame")..{
+    		 OnCommand=function(self)
+    			self:zoomtowidth(SCREEN_WIDTH/2):cropright(0.1):cropleft(0.1):x(0)
+    		end
+    	},
 	},
 
 
 
 	-- Difficulty time
 	Def.ActorFrame{
-	OnCommand=cmd(sleep,0.5;queuecommand, "TweenOn");
-	OffCommand=cmd(queuecommand, "TweenOff");
-	ShowGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOn");
-	HideGameplayTopFrameMessageCommand=cmd(playcommand, "TweenOff");
+	OnCommand=function(self)
+		self:sleep(0.5):queuecommand("TweenOn")
+	end;
+	OffCommand=function(self)
+		self:queuecommand("TweenOff")
+	end;
+	ShowGameplayTopFrameMessageCommand=function(self)
+		self:playcommand("TweenOn")
+	end;
+	HideGameplayTopFrameMessageCommand=function(self)
+		self:playcommand("TweenOff")
+	end;
 
 		Def.ActorFrame{
 		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1),
-		OnCommand=cmd(x,SCREEN_LEFT+150;y,SCREEN_TOP+60;addx,-250);
-		TweenOnCommand=cmd(decelerate,0.8;addx,250);
-		TweenOffCommand=cmd(accelerate,0.8;addx,-250);
+		OnCommand=function(self)
+			self:x(SCREEN_LEFT+150):y(SCREEN_TOP+60):addx(-250)
+		end;
+		TweenOnCommand=function(self)
+			self:decelerate(0.8):addx(250)
+		end;
+		TweenOffCommand=function(self)
+			self:accelerate(0.8):addx(-250)
+		end;
 
 			LoadActor( THEME:GetPathG('','_difficulty icons') )..{
-				OnCommand=cmd(animate,0;playcommand, "Update");
-				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+				OnCommand=function(self)
+					self:animate(0):playcommand("Update")
+				end;
+				CurrentStepsP1ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
+				CurrentStepsP2ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
 				UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(PLAYER_1) ) end,
 			},
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-35,0;horizalign,left;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):xy(-35,0):horizalign(left):playcommand("Update")
+			end;
+			CurrentStepsP1ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
+			CurrentStepsP2ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
 					self:settext( DifficultyName("Steps", PLAYER_1) )
@@ -81,9 +149,15 @@ return Def.ActorFrame{
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,35,0;horizalign,right;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):xy(35,0):horizalign(right):playcommand("Update")
+			end;
+			CurrentStepsP1ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
+			CurrentStepsP2ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty();
 					self:settext( GAMESTATE:GetCurrentSteps(PLAYER_1):GetMeter() )
@@ -95,22 +169,40 @@ return Def.ActorFrame{
 
 		Def.ActorFrame{
 		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2),
-		OnCommand=cmd(x,SCREEN_RIGHT-150;y,SCREEN_TOP+60;addx,250);
-		TweenOnCommand=cmd(decelerate,0.8;addx,-250);
-		TweenOffCommand=cmd(accelerate,0.8;addx,250);
+		OnCommand=function(self)
+			self:x(SCREEN_RIGHT-150):y(SCREEN_TOP+60):addx(250)
+		end;
+		TweenOnCommand=function(self)
+			self:decelerate(0.8):addx(-250)
+		end;
+		TweenOffCommand=function(self)
+			self:accelerate(0.8):addx(250)
+		end;
 
 			LoadActor( THEME:GetPathG('','_difficulty icons') )..{
-				OnCommand=cmd(animate,0;playcommand, "Update");
-				CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-				CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+				OnCommand=function(self)
+					self:animate(0):playcommand("Update")
+				end;
+				CurrentStepsP1ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
+				CurrentStepsP2ChangedMessageCommand=function(self)
+					self:playcommand("Update")
+				end;
 				UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(PLAYER_2) ) end,
 			},
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,-35,0;horizalign,left;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):xy(-35,0):horizalign(left):playcommand("Update")
+			end;
+			CurrentStepsP1ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
+			CurrentStepsP2ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
 					self:settext( DifficultyName("Steps", PLAYER_2) )
@@ -120,9 +212,15 @@ return Def.ActorFrame{
 
 			Def.BitmapText{
 			Font="Common Normal",
-			OnCommand=cmd(zoom,0.5;xy,35,0;horizalign,right;playcommand, "Update");
-			CurrentStepsP1ChangedMessageCommand=cmd(playcommand, "Update");
-			CurrentStepsP2ChangedMessageCommand=cmd(playcommand, "Update");
+			OnCommand=function(self)
+				self:zoom(0.5):xy(35,0):horizalign(right):playcommand("Update")
+			end;
+			CurrentStepsP1ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
+			CurrentStepsP2ChangedMessageCommand=function(self)
+				self:playcommand("Update")
+			end;
 			UpdateCommand=function(self)
 					local steps = GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty();
 					self:settext( GAMESTATE:GetCurrentSteps(PLAYER_2):GetMeter() )
@@ -136,6 +234,8 @@ return Def.ActorFrame{
 
 
 	Def.Quad{
-	OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_HEIGHT;diffuse,0,0,0,1;sleep,0.5;linear,0.5;diffusealpha,0);
+	OnCommand=function(self)
+		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):diffuse(0,0,0,1):sleep(0.5):linear(0.5):diffusealpha(0)
+	end;
 	},
 }

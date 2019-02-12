@@ -1,10 +1,16 @@
 return Def.ActorFrame{
-	OnCommand=cmd(ztest,1;addx,-420;sleep,0.35;linear,0.5;addx,420);
-	OffCommand=cmd(linear,0.5;addx,-420);
+	OnCommand=function(self)
+		self:ztest(1):addx(-420):sleep(0.35):linear(0.5):addx(420)
+	end;
+	OffCommand=function(self)
+		self:linear(0.5):addx(-420)
+	end;
 
 	LoadActor("WheelItems/WheelSong NormalPart"),
 	Def.BitmapText{
-	Font="_eurostile normal", InitCommand=cmd(zoom,1;y,0;x,100;maxwidth,280;);
+	Font="_eurostile normal", InitCommand=function(self)
+		self:zoom(1):y(0):x(100):maxwidth(280)
+	end;
 	SetMessageCommand=function(self,params)
 	self:shadowlength(1)
 	local song = params.Song;
@@ -22,7 +28,9 @@ return Def.ActorFrame{
 	end
 	},
 	Def.BitmapText{
-	Font="_eurostile normal", InitCommand=cmd(zoom,1;y,-10;x,-110;maxwidth,480);
+	Font="_eurostile normal", InitCommand=function(self)
+		self:zoom(1):y(-10):x(-110):maxwidth(480)
+	end;
 	SetMessageCommand=function(self,params)
 	self:shadowlength(1)
 	local song = params.Song;

@@ -1,3 +1,5 @@
 return Def.Quad{
-	InitCommand=cmd(zoomy,14;diffuse,color("#FBBE03"));
+	InitCommand=function(self)
+		self:zoomy(14):diffuse(color("#FBBE03"))
+	end;
 }

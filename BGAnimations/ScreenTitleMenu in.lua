@@ -1,9 +1,13 @@
 return Def.ActorFrame{
 	LoadActor("_logo.ogg")..{
-		OnCommand=cmd(play);
+		OnCommand=function(self)
+			self:play()
+		end;
 	},
 	
 	Def.Quad{
-		OnCommand=cmd(FullScreen;linear,0.3;diffusealpha,0);
+		OnCommand=function(self)
+			self:FullScreen():linear(0.3):diffusealpha(0)
+		end;
 	},
 }
