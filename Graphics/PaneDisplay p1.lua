@@ -1,3 +1,4 @@
+local args=...
 function RadarValue(pn,n)
 	-- 'RadarCategory_Stream'			0
 	-- 'RadarCategory_Voltage'			1
@@ -11,132 +12,137 @@ function RadarValue(pn,n)
 	-- 'RadarCategory_Mines'			9
 	-- 'RadarCategory_Hands'			10
 	-- 'RadarCategory_Rolls'			11
-	-- 'RadarCategory_Lifts'			12
 	-- 'RadarCategory_Fakes'			13
-	if GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:IsHumanPlayer(pn) then
-		return GAMESTATE:GetCurrentSteps(pn):GetRadarValues(pn):GetValue(n)
-	else
-		return 0
+	-- 'RadarCategory_Lifts'			12
+	if GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCurrentSteps(pn) then
+		if GAMESTATE:GetCurrentSteps(pn):GetRadarValues(pn) then
+			return GAMESTATE:GetCurrentSteps(pn):GetRadarValues(pn):GetValue(n)
+		end
 	end
+	return 0
 end
 
-return Def.ActorFrame{
+local function PercentScore(pn,scoremethod)
+	local SongOrCourse, StepsOrTrail;
+	if GAMESTATE:IsCourseMode() then
+		SongOrCourse = GAMESTATE:GetCurrentCourse();
+		StepsOrTrail = GAMESTATE:GetCurrentTrail(pn);
+	else
+		SongOrCourse = GAMESTATE:GetCurrentSong();
+		StepsOrTrail = GAMESTATE:GetCurrentSteps(pn);
+	end;
+	local profile, scorelist;
+	local text,Rname = "","Best";
+	if SongOrCourse and StepsOrTrail then
+		if PROFILEMAN:IsPersistentProfile(pn) then
+			-- args profile
+			profile = PROFILEMAN:GetProfile(pn);
+		else
+			-- machine profile
+			profile = PROFILEMAN:GetMachineProfile();
+		end;
+		scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail);
+		assert(scorelist)
+		local scores = scorelist:GetHighScores();
+		local topscore = scores[1];
+		if topscore then
+			text = string.format("%.2f%%", topscore:GetPercentDP()*100.0);
+			Rname = topscore:GetName()
+			-- 100% hack
+			if text == "100.00%" then
+				text = "100%";
+			end;
+		else
+			text = string.format("%.2f%%", 0);
+		end;
+	else
+		text = "";
+	end;
+	return {text,Rname}
+end
+
+local t = Def.ActorFrame{
 	LoadActor( THEME:GetPathG('PaneDisplay','Frame') ),
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Steps", InitCommand=function(self)
-			self:x(-125):y(-24+14*0)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(-25):y(-24+14*0)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 5) ) else self:settext("?") end end, },
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Holds", InitCommand=function(self)
-			self:x(-125):y(-24+14*1)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(-25):y(-24+14*1)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 8) ) else self:settext("?") end end, },
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Best", InitCommand=function(self)
-			self:x(-125):y(-24+14*2)
-		end
-	},
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Card", InitCommand=function(self)
-			self:x(-125):y(-24+14*3)
-		end
-	},
-
-	Def.BitmapText{ Font="_futurist normal", Text="number", InitCommand=function(self)
-		self:x(100):y(-24+13)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self)
-	if GAMESTATE:IsCourseMode() then
-		if GAMESTATE:GetCurrentTrail(PLAYER_1) then
-			self:settext( GAMESTATE:GetCurrentTrail(PLAYER_1):GetMeter() )
-			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_1):GetDifficulty() ) )
-		end
-	else
-		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
-			self:settext( GAMESTATE:GetCurrentSteps(PLAYER_1):GetMeter() )
-			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
-		end
-	end
-	end,
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="diff", InitCommand=function(self)
-		self:x(100):y(-24+38)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self)
-	self:maxwidth(90)
-	if GAMESTATE:IsCourseMode() then
-		if GAMESTATE:GetCurrentTrail(PLAYER_1) then
-			self:settext( string.upper( DifficultyName( "Trail", PLAYER_1 ) ) )
-			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(PLAYER_1):GetDifficulty() ) )
-		end
-	else
-		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
-			self:settext( string.upper( DifficultyName( "Steps", PLAYER_1 ) ) )
-			self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
-		end
-	end
-	end,
-
-	},
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Jumps", InitCommand=function(self)
-			self:x(-15):y(-24+14*0)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(70):y(-24+14*0)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 7) ) else self:settext("?") end end, },
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Mines", InitCommand=function(self)
-			self:x(-15):y(-24+14*1)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(70):y(-24+14*1)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 9) ) else self:settext("?") end end, },
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Hands", InitCommand=function(self)
-			self:x(-15):y(-24+14*2)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(70):y(-24+14*2)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 10) ) else self:settext("?") end end, },
-
-	
-	Def.BitmapText{
-		 Font="_eurostile normal", Text="Rolls", InitCommand=function(self)
-			self:x(-15):y(-24+14*3)
-		end
-	},
-	Def.BitmapText{ Font="_eurostile normal", Text="number", InitCommand=function(self)
-		self:x(70):y(-24+14*3)
-	end;
-	CurrentStepsP1ChangedMessageCommand=function(self) if GAMESTATE:GetCurrentSteps(PLAYER_1) then self:settext( RadarValue(PLAYER_1, 11) ) else self:settext("?") end end, },
-
 }
+
+if GAMESTATE:IsPlayerEnabled(args) then
+	local StepsOrCourse = function() return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(args) or GAMESTATE:GetCurrentSteps(args) end
+	local ObtainData = {
+		--LEFT SIDE
+		{
+			{"Steps", function() return StepsOrCourse() and RadarValue(args, 5) or 0 end },
+			{"Holds", function() return StepsOrCourse() and RadarValue(args, 8) or 0 end },
+			{function() return PercentScore(args)[2] end, function() return PercentScore(args)[1] end },
+			{"Card", function() return PercentScore(args)[1] end },
+			xpos = {-125,-25},
+		},
+		--RIGHT SIDE
+		{
+			{"Jumps", function() return StepsOrCourse() and RadarValue(args, 7) or 0 end },
+			{"Mines", function() return StepsOrCourse() and RadarValue(args, 9) or 0 end },
+			{"Hands", function() return StepsOrCourse() and RadarValue(args, 10) or 0 end },
+			{"Rolls", function() return StepsOrCourse() and RadarValue(args, 11) or 0 end },
+			xpos = {-15,70},
+		},
+		DiffPlacement = args == PLAYER_1 and 102 or -102
+	}
+	for ind,content in ipairs(ObtainData) do
+		for vind,val in ipairs( ObtainData[ind] ) do
+			t[#t+1] = Def.BitmapText{
+				Font="_eurostile normal",
+				Text=val[1],
+				InitCommand=function(self)
+					self:zoom(0.5):xy(
+						ObtainData[ind].xpos[1] + (args == PLAYER_2 and 55 or 0)
+						,-24+14*(vind-1)):halign(0)
+				end;
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+					-- replace
+					if GAMESTATE:GetCurrentSteps(args) and val[1] and type(val[1]) == "function" then
+						self:settext( val[1]() )
+					end
+				end;
+			};
+			t[#t+1] = Def.BitmapText{
+				Font="_eurostile normal",
+				Text=val[2],
+				InitCommand=function(self)
+					self:zoom(0.5):xy(
+						ObtainData[ind].xpos[2] + (args == PLAYER_2 and 55 or 0)
+						,-24+14*(vind-1)):halign(1)
+				end;
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+					if GAMESTATE:GetCurrentSteps(args) and val[2] then
+						self:settext( val[2]() )
+					end
+				end;
+			};
+		end
+	end
+	t[#t+1] = Def.BitmapText{
+		Font="_futurist normal",
+		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
+		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+		if StepsOrCourse() then
+			self:settext( StepsOrCourse():GetMeter() )
+			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
+		end
+	end
+	};
+	t[#t+1] = Def.BitmapText{
+		Font="_eurostile normal",
+		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+38):maxwidth(90):zoom(0.6) end;
+		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+		if StepsOrCourse() then
+			self:settext(
+				string.upper( 
+					THEME:GetString("Difficulty", ToEnumShortString( StepsOrCourse():GetDifficulty() ) )
+				)
+			)
+			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
+		end
+	end
+	};
+end
+
+return t;

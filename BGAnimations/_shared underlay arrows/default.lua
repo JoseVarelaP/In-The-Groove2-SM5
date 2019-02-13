@@ -21,7 +21,7 @@ return Def.ActorFrame{
 	MadeChoiceP2MessageCommand=function(self)
 		self:playcommand("GoOff")
 	end;
-	GoOffCommand=function(self)
+	OffCommand=function(self)
 		self:accelerate(0.5):addx(-200)
 	end;
 	},
@@ -47,7 +47,7 @@ return Def.ActorFrame{
 	MadeChoiceP2MessageCommand=function(self)
 		self:playcommand("GoOff")
 	end;
-	GoOffCommand=function(self)
+	OffCommand=function(self)
 		self:accelerate(0.5):addx(200)
 	end;
 	},

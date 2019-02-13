@@ -141,6 +141,7 @@ t[#t+1] = Def.ActorFrame{
 	OnCommand=function(self)
 		self:xy(45,-65):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
 	end,
+	},
 
 	LoadActor( "../ComboAwards/"..ComboAward..".lua" ),
 	LoadActor( "../ComboAwards/"..DiffAward..".lua" ),
@@ -160,6 +161,7 @@ for index, ValTC in ipairs(JudgmentInfo.Names) do
 		OnCommand=function(self)
 			self:y(16*index):zoom(0.5):horizalign(left):shadowlength(0)
 		end;
+		};
 	};
 end
 

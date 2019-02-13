@@ -1,7 +1,13 @@
 return Def.ActorFrame{
+	ModeNotChosenMessageCommand=function(self)
+		self:linear(0.5):zoom(0):sleep(5)
+	end;
+	ModesingleChosenMessageCommand=function(self)
+		self:linear(0.4):zoom(1.01):addy(-30):sleep(1):linear(0.4):zoom(0):sleep(3)
+	end;
 	Def.ActorFrame{
 		OnCommand=function(self)
-			self:y(30):zoom(1.6):fov(30)
+			self:y(30):zoom(1.6)
 		end;
 		GainFocusCommand=function(self)
 			self:wag():effectmagnitude(0,10,0)

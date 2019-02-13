@@ -69,3 +69,36 @@ function CalPerNum(pn)
 	end
 	return 0
 end
+
+-- Branch Overrides
+Branch.StartGame = function()
+	-- Check to see if there are 0 songs installed. Also make sure to check
+	-- that the additional song count is also 0, because there is
+	-- a possibility someone will use their existing StepMania simfile
+	-- collection with sm-ssc via AdditionalFolders/AdditionalSongFolders.
+	if SONGMAN:GetNumSongs() == 0 and SONGMAN:GetNumAdditionalSongs() == 0 then
+		return "ScreenHowToInstallSongs"
+	end
+	if PROFILEMAN:GetNumLocalProfiles() >= 2 then
+		return "ScreenSelectProfile"
+	else
+		if IsNetConnected() then
+			return "ITG_StyleSelect"
+		else
+			if THEME:GetMetric("Common","AutoSetStyle") == false then
+				return "ITG_StyleSelect"
+			else
+				return "ScreenProfileLoad"
+			end
+		end
+	end
+end
+
+Branch.AfterSelectProfile = function()
+	if ( THEME:GetMetric("Common","AutoSetStyle") == true ) then
+		-- use SelectStyle in online...
+		return IsNetConnected() and "ITG_StyleSelect" or "ScreenSelectPlayMode"
+	else
+		return "ITG_StyleSelect"
+	end
+end

@@ -1,6 +1,7 @@
 local ModeMenuAvailable = THEME:GetMetric("ScreenSelectMusic","ModeMenuAvailable")
 
-return Def.ActorFrame{
+local t=Def.ActorFrame{}
+t[#t+1] = Def.ActorFrame{
 
 	LoadActor( THEME:GetPathG("","ScreenSelectMusic wheel mask") )..{
 		InitCommand=function(self)
@@ -45,26 +46,6 @@ return Def.ActorFrame{
 		end;
 		},
 
-	},
-
-
-	LoadActor( THEME:GetPathG('PaneDisplay','p1') )..{
-		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
-		OnCommand=function(self)
-			self:x(SCREEN_CENTER_X-155):y(SCREEN_BOTTOM-95):zoomy(0):sleep(0.5):linear(0.3):zoomy(1)
-		end;
-		OffCommand=function(self)
-			self:linear(0.3):zoomy(0)
-		end;
-	},
-	LoadActor( THEME:GetPathG('PaneDisplay','p2') )..{
-		Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
-		OnCommand=function(self)
-			self:x(SCREEN_CENTER_X+155):y(SCREEN_BOTTOM-95):zoomy(0):sleep(0.5):linear(0.3):zoomy(1)
-		end;
-		OffCommand=function(self)
-			self:linear(0.3):zoomy(0)
-		end;
 	},
 
 	Def.HelpDisplay {
@@ -190,4 +171,19 @@ return Def.ActorFrame{
 	},
 
 
-}
+};
+
+for player in ivalues(PlayerNumber) do
+	t[#t+1] = LoadActor( THEME:GetPathG('PaneDisplay','p1'), player )..{
+		Condition=GAMESTATE:IsHumanPlayer(player);
+		OnCommand=function(self)
+			self:x(player == PLAYER_1 and SCREEN_CENTER_X-155 or SCREEN_CENTER_X+155)
+			:y(SCREEN_BOTTOM-95):zoomy(0):sleep(0.5):linear(0.3):zoomy(1)
+		end;
+		OffCommand=function(self)
+			self:linear(0.3):zoomy(0)
+		end;
+	};
+end
+
+return t;

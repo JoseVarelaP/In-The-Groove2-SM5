@@ -1,3 +1,3 @@
 return Def.ActorFrame{
-	LoadActor("ScreenGameplay failed")
+    LoadActor("ITG_PlayModeSelect");
 }

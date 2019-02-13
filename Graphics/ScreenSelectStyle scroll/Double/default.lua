@@ -5,11 +5,17 @@ return Def.ActorFrame{
 	MadeChoiceP2MessageCommand=function(self)
 		self:playcommand("GoOff")
 	end;
+	ModeNotChosenMessageCommand=function(self)
+		self:linear(0.5):zoom(0):sleep(5)
+	end;
+	ModedoubleChosenMessageCommand=function(self)
+		self:linear(0.4):zoom(1.01):addy(-30):sleep(1):linear(0.4):zoom(0):sleep(3)
+	end;
 	GoOffCommand=function(self) self:linear(0.5); local bHasFocus=math.abs(self:GetZoomZ()-1.1)<0.01 if bHasFocus then self:x(0); self:y(0); self:glowblink(); self:sleep(0.5); self:linear(0.5); self:zoom(0); else self:x(0); self:y(0); self:z(0); self:zoom(0); end self:sleep(5) end,
 
 		Def.ActorFrame{
 		OnCommand=function(self)
-			self:y(30):zoom(1.6):fov(30)
+			self:y(30):zoom(1.6)
 		end;
 		GainFocusCommand=function(self)
 			self:wag():effectmagnitude(0,10,0)
