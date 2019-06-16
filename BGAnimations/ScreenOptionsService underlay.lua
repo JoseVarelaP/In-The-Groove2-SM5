@@ -16,6 +16,7 @@ t[#t+1] = Def.ActorFrame {
 	};
 
 	Def.BitmapText{
+		Font="Common Normal";
 		Text="&START; OK\n&BACK; Salir";
 		OnCommand=function(self)
 			self:x(SCREEN_RIGHT-180):y(SCREEN_BOTTOM-60):halign(0)
