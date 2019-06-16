@@ -9,31 +9,20 @@ t[#t+1] = Def.ActorFrame {
         ThemePrefs.Save()
     end;
 
-    LoadActor( "ScreenWithMenuElements underlay" ),
+    LoadActor("_frame 3x1",{"explanation metal",SCREEN_WIDTH/1.15})..{
+		OnCommand=function(self)
+			self:CenterX():y(SCREEN_BOTTOM-60)
+		end;
+	};
 
-	LoadActor( THEME:GetPathG("","_options system page") )..{
-	InitCommand=function(self)
-		self:Center():addy(18)
-	end;
-	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	},
+	Def.BitmapText{
+		Text="&START; OK\n&BACK; Salir";
+		OnCommand=function(self)
+			self:x(SCREEN_RIGHT-180):y(SCREEN_BOTTOM-60):halign(0)
+			:diffuseblink():shadowlength(2):zoom(0.9)
+		end;
+	};
 
-	LoadActor("ScreenOptions overlay/ScreenOptions frame")..{
-	InitCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):addy(18)
-	end;
-	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	},
 };
 
 return t;

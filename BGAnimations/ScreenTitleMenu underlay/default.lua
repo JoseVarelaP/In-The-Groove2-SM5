@@ -19,5 +19,6 @@ return Def.ActorFrame{
 			self:y(SCREEN_CENTER_Y+165):x(SCREEN_LEFT-64):rotationz(0):linear(1):x(SCREEN_RIGHT+64):rotationz(360)
 		end
 	},
+
 	LoadActor("../ScreenWithMenuElements underlay"),
 }

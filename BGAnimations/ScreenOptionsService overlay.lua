@@ -1,18 +1,6 @@
 return Def.ActorFrame{
 
-	LoadActor( "ScreenWithMenuElements underlay" ),
-
-	LoadActor("ScreenOptions overlay/ScreenOptions frame")..{
-	InitCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):addy(18)
-	end;
-	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addx(SCREEN_WIDTH)
-	end;
-	},
+	
 
 	Def.ActorFrame{
 		OnCommand=function(self)
@@ -22,7 +10,7 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Font="_eurostile blue glow",
 		Text="SERVICE OPTIONS",
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
