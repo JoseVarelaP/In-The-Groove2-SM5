@@ -23,18 +23,18 @@ for player in ivalues(PlayerNumber) do
 		Font="_futurist metalic";
 		Text=" 0.00%";
 		OnCommand=function(self)
-			self:x( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180 )
-			self:y( SCREEN_TOP+56 )
+			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_TOP+56 )
 			:diffuse( player == PLAYER_1 and color("#FBBE03") or color("#56FF48") ):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
-			if ThemePrefs.Get("CompareScores") and GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+			if ThemePrefs.Get("CompareScores") and GAMESTATE:GetNumPlayersEnabled() == 2 then
 				self:pulse():effectclock("bgm"):effectmagnitude(1.05,0.95,0):effectperiod(1)
 			end
 		end;
-		JudgmentMessageCommand=function(self)
+		JudgmentMessageCommand=function(self) self:queuecommand("UpdateScore") end;
+		UpdateScoreCommand=function(self)
 			self:settext( CalculatePercentage(player) )
 			-- time to check who's winning
-			if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+			if GAMESTATE:GetNumPlayersEnabled() == 2 then
 				if CalPerNum(player) < CalPerNum(player == PLAYER_1 and 1 or 0) then
 					self:effectmagnitude(1,1,0)
 				else
@@ -176,7 +176,7 @@ t[#t+1] = Def.ActorFrame{
 	if not GAMESTATE:IsCourseMode() then
 		self:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	else
-		self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." -"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
+		self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." - "..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	end
 	self:maxwidth(SCREEN_WIDTH+20)
 	end,
@@ -209,7 +209,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 	LoadActor("demonstration logo")..{
 		OnCommand=function(self)
-			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-180):pulse():effectmagnitude(1.0,0.9,0):effectclock("bgm"):effectperiod(1)
+			self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-180):pulse():effectmagnitude(1.0,0.9,0):effectclock("bgm"):effectperiod(1)
 		end;
 	};
 };
