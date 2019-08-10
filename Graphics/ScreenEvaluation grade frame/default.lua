@@ -54,13 +54,14 @@ end
 local t = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor("base frame"),
+	Def.Sprite{ Texture="base frame" },
 
 	Def.ActorFrame{
 	OnCommand=function(self)
 		self:xy(-95*side(player),-149)
 	end;
-		LoadActor( THEME:GetPathG('','_difficulty icons') )..{
+		Def.Sprite{
+			Texture=THEME:GetPathG('','_difficulty icons'),
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end;

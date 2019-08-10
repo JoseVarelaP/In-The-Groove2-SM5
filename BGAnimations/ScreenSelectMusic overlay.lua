@@ -174,7 +174,7 @@ t[#t+1] = Def.ActorFrame{
 };
 
 for player in ivalues(PlayerNumber) do
-	t[#t+1] = LoadActor( THEME:GetPathG('PaneDisplay','p1'), player )..{
+	t[#t+1] = LoadActor( THEME:GetPathG('ScreenSelectMusic','PaneDisplay'), player )..{
 		Condition=GAMESTATE:IsHumanPlayer(player);
 		OnCommand=function(self)
 			self:x(player == PLAYER_1 and SCREEN_CENTER_X-155 or SCREEN_CENTER_X+155)

@@ -3,7 +3,8 @@ return Def.ActorFrame{
 		self:y(SCREEN_BOTTOM-34)
 	end;
 	
-	LoadActor("streak")..{
+	Def.Sprite{
+	Texture="streak",
 	InitCommand=function(self)
 		self:x(SCREEN_CENTER_X):zoomtowidth(SCREEN_WIDTH):cropleft(-0.2):cropright(-0.2)
 	end;
@@ -15,7 +16,8 @@ return Def.ActorFrame{
 	end;
 	},
 
-	LoadActor("flare")..{
+	Def.Sprite{
+	Texture="flare",
 	InitCommand=function(self)
 		self:x(SCREEN_LEFT-128)
 	end;

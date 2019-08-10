@@ -1,18 +1,15 @@
-<ActorFrame>
-	<children>
-		<ActorFrame
-			OnCommand="zoom,0.7;wag;EffectMagnitude,0,10,0"
-		>
-			<children>
-				<Actor
-					File="c.txt"
-					OnCommand="x,-25"
-				/>
-				<Actor
-					File="c minus.model"
-					OnCommand="x,35"
-				/>
-			</children>
-		</ActorFrame>
-	</children>
-</ActorFrame>
+return Def.ActorFrame{
+	OnCommand=function(self)
+		self:zoom(0.7):wag():effectmagnitude(0,10,0)
+	end;
+
+	LoadActor("c.txt")..{ OnCommand=function(s) s:x(-25) end};
+	Def.Model{
+		Meshes="minus.txt",
+		Materials="c.txt",
+		Bones="minus.txt",
+		OnCommand=function(self)
+			self:x(35)
+		end
+	},
+}

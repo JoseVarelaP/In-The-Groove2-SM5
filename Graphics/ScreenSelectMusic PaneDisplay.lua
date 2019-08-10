@@ -98,29 +98,29 @@ if GAMESTATE:IsPlayerEnabled(args) then
 			t[#t+1] = Def.BitmapText{
 				Font="_eurostile normal",
 				Text=val[1],
-				InitCommand=function(s)
-					s:zoom(0.5):xy(
+				InitCommand=function(self)
+					self:zoom(0.5):xy(
 						ObtainData[ind].xpos[1] + (args == PLAYER_2 and 55 or 0)
 						,-24+14*(vind-1)):halign(0)
 				end;
-				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 					-- replace
 					if GAMESTATE:GetCurrentSteps(args) and val[1] and type(val[1]) == "function" then
-						s:settext( val[1]() )
+						self:settext( val[1]() )
 					end
 				end;
 			};
 			t[#t+1] = Def.BitmapText{
 				Font="_eurostile normal",
 				Text=val[2],
-				InitCommand=function(s)
-					s:zoom(0.5):xy(
+				InitCommand=function(self)
+					self:zoom(0.5):xy(
 						ObtainData[ind].xpos[2] + (args == PLAYER_2 and 55 or 0)
 						,-24+14*(vind-1)):halign(1)
 				end;
-				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 					if GAMESTATE:GetCurrentSteps(args) and val[2] then
-						s:settext( val[2]() )
+						self:settext( val[2]() )
 					end
 				end;
 			};
@@ -128,25 +128,25 @@ if GAMESTATE:IsPlayerEnabled(args) then
 	end
 	t[#t+1] = Def.BitmapText{
 		Font="_futurist normal",
-		InitCommand=function(s) s:x(ObtainData.DiffPlacement):y(-24+13) end;
-		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
+		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 		if StepsOrCourse() then
-			s:settext( StepsOrCourse():GetMeter() )
-			:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
+			self:settext( StepsOrCourse():GetMeter() )
+			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
 		end
 	end
 	};
 	t[#t+1] = Def.BitmapText{
 		Font="_eurostile normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+38):maxwidth(90):zoom(0.6) end;
-		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 		if StepsOrCourse() then
-			s:settext(
+			self:settext(
 				string.upper( 
 					THEME:GetString("Difficulty", ToEnumShortString( StepsOrCourse():GetDifficulty() ) )
 				)
 			)
-			:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
+			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
 		end
 	end
 	};
