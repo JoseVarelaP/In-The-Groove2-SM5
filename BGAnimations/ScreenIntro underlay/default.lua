@@ -1,4 +1,4 @@
-function GetRandomSongNames( num )
+local function GetRandomSongNames( num )
 	local s = "";
 	for i = 1,num do
 		local song = SONGMAN:GetRandomSong();
@@ -7,7 +7,7 @@ function GetRandomSongNames( num )
 	return s
 end
 
-function GetRandomCourseNames( num )
+local function GetRandomCourseNames( num )
 	local s = "";
 	for i = 1,num do
 		local course = SONGMAN:GetRandomCourse();
@@ -16,7 +16,7 @@ function GetRandomCourseNames( num )
 	return s
 end
 
-function GetModifierNames( num )
+local function GetModifierNames( num )
 	local mods = {
 		"x1","x1.5","x2","x2.5","x3","x4","x5","x6","x8","c300","c450",
 		"Incoming","Overhead","Space","Hallway","Distant",
@@ -39,7 +39,7 @@ function GetModifierNames( num )
 	return s
 end
 
-function GetStepChartFacts()
+local function GetStepChartFacts()
 	local s = "";
 	s = s .. "In The Groove:\n"
 	s = s .. "  71 single easy\n"
@@ -66,14 +66,15 @@ end
 return Def.ActorFrame{
 	Def.Quad{
 	OnCommand=function(self)
-		self:FullScreen():diffuse(0,0,0,1)
+		self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse(0,0,0,1)
 	end;
 	},
 
 	
-	LoadActor("rave")..{
+	Def.Sprite{
+		Texture="rave";
 		 OnCommand=function(self)
-			self:FullScreen():zoomtoheight(SCREEN_WIDTH/4*3*1.1):sleep(30):diffusealpha(0)
+			self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):sleep(30):diffusealpha(0)
 		end
 	},
 
@@ -81,7 +82,8 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:Center():rotationz(180):linear(1):rotationz(0)
 	end;
-		LoadActor("ring")..{
+		Def.Sprite{
+			Texture="ring",
 		OnCommand=function(self)
 			self:shadowlength(4):zoom(3):diffusealpha(0):linear(1):zoomx(1.1):zoomy(-1.1):diffusealpha(1):linear(2):zoomx(1.0):zoomy(-1.0):linear(0.3):diffusealpha(0)
 		end;
@@ -98,7 +100,7 @@ return Def.ActorFrame{
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+SCREEN_WIDTH/2):y(SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(3):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
+		self:xy(SCREEN_RIGHT+SCREEN_WIDTH/2,SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(3):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
 	end;
 	},
 
@@ -106,24 +108,25 @@ return Def.ActorFrame{
 	Font="_eurostile normal",
 	Text="In The Groove 2",
 	OnCommand=function(self)
-		self:x(SCREEN_LEFT+200):y(SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(3.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
+		self:xy(SCREEN_LEFT+200,SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(3.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
 	end;
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-0):y(SCREEN_CENTER_Y):sleep(3.5):linear(4):addx(30)
+		self:xy(SCREEN_RIGHT-0,SCREEN_CENTER_Y):sleep(3.5):linear(4):addx(30)
 	end;
-		LoadActor("2")..{
+		Def.Sprite{
+			Texture="2",
 			OnCommand=function(self)
-				self:horizalign(right):skewx(-0.05):diffusealpha(0):sleep(3):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(1):skewx(-0.05):diffusealpha(0):sleep(3):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+SCREEN_WIDTH/2):y(SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(11):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
+		self:xy(SCREEN_RIGHT+SCREEN_WIDTH/2,SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(11):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
 	end;
 	},
 
@@ -131,37 +134,38 @@ return Def.ActorFrame{
 	Font="_eurostile normal",
 	Text="135 songs",
 	OnCommand=function(self)
-		self:x(SCREEN_LEFT+200):y(SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(11.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
+		self:xy(SCREEN_LEFT+200,SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(11.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
 	end;
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-0):y(SCREEN_CENTER_Y+50):sleep(11):linear(4):addx(30)
+		self:xy(SCREEN_RIGHT,SCREEN_CENTER_Y+50):sleep(11):linear(4):addx(30)
 	end;
-		LoadActor("135")..{
+		Def.Sprite{
+			Texture="135",
 			OnCommand=function(self)
-				self:horizalign(right):skewx(-0.05):diffusealpha(0):sleep(11):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(1):skewx(-0.05):diffusealpha(0):sleep(11):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-270):y(SCREEN_BOTTOM-200):sleep(11):linear(4):y(SCREEN_TOP+200)
+		self:xy(SCREEN_RIGHT-270,SCREEN_BOTTOM-200):sleep(11):linear(4):y(SCREEN_TOP+200)
 	end;
 		Def.BitmapText{
 		Font="_eurostile normal",
 		Text=GetRandomSongNames(23),
 			OnCommand=function(self)
-				self:horizalign(left):zoom(0.8):diffusealpha(0):sleep(11):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(0):zoom(0.8):diffusealpha(0):sleep(11):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+SCREEN_WIDTH/2):y(SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(15):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
+		self:xy(SCREEN_RIGHT+SCREEN_WIDTH/2,SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(15):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
 	end;
 	},
 
@@ -169,37 +173,38 @@ return Def.ActorFrame{
 	Font="_eurostile normal",
 	Text="1,000 step charts",
 		OnCommand=function(self)
-			self:x(SCREEN_LEFT+200):y(SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(15.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
+			self:xy(SCREEN_LEFT+200,SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(15.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
 		end;
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-0):y(SCREEN_CENTER_Y+50):sleep(15):linear(4):addx(30)
+		self:xy(SCREEN_RIGHT-0,SCREEN_CENTER_Y+50):sleep(15):linear(4):addx(30)
 	end;
-		LoadActor("1000")..{
+		Def.Sprite{
+			Texture="1000",
 			OnCommand=function(self)
-				self:horizalign(right):skewx(-0.05):diffusealpha(0):sleep(15):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(1):skewx(-0.05):diffusealpha(0):sleep(15):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-270):y(SCREEN_BOTTOM-200):sleep(15):linear(4):y(SCREEN_TOP+200)
+		self:xy(SCREEN_RIGHT-270,SCREEN_BOTTOM-200):sleep(15):linear(4):y(SCREEN_TOP+200)
 	end;
 		Def.BitmapText{
 			Font="_eurostile normal",
 			Text=GetStepChartFacts(),
 			OnCommand=function(self)
-				self:horizalign(left):zoom(0.8):diffusealpha(0):sleep(15):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(0):zoom(0.8):diffusealpha(0):sleep(15):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+SCREEN_WIDTH/2):y(SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(19):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
+		self:xy(SCREEN_RIGHT+SCREEN_WIDTH/2,SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(19):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
 	end;
 	},
 
@@ -207,37 +212,38 @@ return Def.ActorFrame{
 	Font="_eurostile normal",
 	Text="45 courses",
 		OnCommand=function(self)
-			self:x(SCREEN_LEFT+200):y(SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(19.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
+			self:xy(SCREEN_LEFT+200,SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(19.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
 		end;
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-0):y(SCREEN_CENTER_Y+50):sleep(19):linear(4):addx(30)
+		self:xy(SCREEN_RIGHT-0,SCREEN_CENTER_Y+50):sleep(19):linear(4):addx(30)
 	end;
-		LoadActor("45")..{
+		Def.Sprite{
+			Texture="45",
 			OnCommand=function(self)
-				self:horizalign(right):skewx(-0.05):diffusealpha(0):sleep(19):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(1):skewx(-0.05):diffusealpha(0):sleep(19):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-250):y(SCREEN_BOTTOM-200):sleep(19):linear(4):y(SCREEN_TOP+200)
+		self:xy(SCREEN_RIGHT-250,SCREEN_BOTTOM-200):sleep(19):linear(4):y(SCREEN_TOP+200)
 	end;
 		Def.BitmapText{
 			Font="_eurostile normal",
 			Text=GetRandomCourseNames(23),
 			OnCommand=function(self)
-				self:horizalign(left):zoom(0.8):diffusealpha(0):sleep(19):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(0):zoom(0.8):diffusealpha(0):sleep(19):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+SCREEN_WIDTH/2):y(SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(23):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
+		self:xy(SCREEN_RIGHT+SCREEN_WIDTH/2,SCREEN_TOP+110):zoomtowidth(SCREEN_WIDTH):zoomtoheight(60):diffuse(1,1,1,0.5):sleep(23):bounceend(0.5):fadeleft(0.3):faderight(0.3):x(0):linear(3):addx(100):accelerate(0.5):addx(-SCREEN_WIDTH)
 	end;
 	},
 
@@ -245,47 +251,48 @@ return Def.ActorFrame{
 	Font="_eurostile normal",
 	Text="50 modifiers",
 		OnCommand=function(self)
-			self:x(SCREEN_LEFT+200):y(SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(23.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
+			self:xy(SCREEN_LEFT+200,SCREEN_TOP+110):skewx(-0.2):shadowlength(4):diffusealpha(0):sleep(23.5):linear(0.3):diffusealpha(1):sleep(3):linear(0.3):diffusealpha(0)
 		end;
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-0):y(SCREEN_CENTER_Y+50):sleep(23):linear(4):addx(30)
+		self:xy(SCREEN_RIGHT-0,SCREEN_CENTER_Y+50):sleep(23):linear(4):addx(30)
 	end;
-		LoadActor("50")..{
+		Def.Sprite{
+			Texture="50",
 			OnCommand=function(self)
-				self:horizalign(right):skewx(-0.05):diffusealpha(0):sleep(23):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(1):skewx(-0.05):diffusealpha(0):sleep(23):linear(0.5):diffusealpha(0.5):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-250):y(SCREEN_BOTTOM-200):sleep(23):linear(4):y(SCREEN_TOP+200)
+		self:xy(SCREEN_RIGHT-250,SCREEN_BOTTOM-200):sleep(23):linear(4):y(SCREEN_TOP+200)
 	end;
 		Def.BitmapText{
 			Font="_eurostile normal",
 			Text=GetModifierNames(23),
 			OnCommand=function(self)
-				self:horizalign(left):zoom(0.8):diffusealpha(0):sleep(23):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
+				self:halign(0):zoom(0.8):diffusealpha(0):sleep(23):linear(0.5):diffusealpha(0.3):linear(3):linear(0.5):diffusealpha(0.0)
 			end;
 		},
 	},
 
 	Def.Quad{
 	OnCommand=function(self)
-		self:vertalign(top):x(SCREEN_CENTER_X):y(SCREEN_TOP):zoomtowidth(SCREEN_WIDTH):zoomtoheight((SCREEN_HEIGHT-SCREEN_WIDTH/4*3*0.705)/2):diffuse(0,0,0,1)
+		self:vertalign(top):xy(SCREEN_CENTER_X,SCREEN_TOP):zoomto(SCREEN_WIDTH,80):diffuse(0,0,0,1)
 	end;
 	},
 	Def.Quad{
 	OnCommand=function(self)
-		self:vertalign(bottom):x(SCREEN_CENTER_X):y(SCREEN_BOTTOM):zoomtowidth(SCREEN_WIDTH):zoomtoheight((SCREEN_HEIGHT-SCREEN_WIDTH/4*3*0.705)/2):diffuse(0,0,0,1)
+		self:vertalign(bottom):xy(SCREEN_CENTER_X,SCREEN_BOTTOM):zoomto(SCREEN_WIDTH,80):diffuse(0,0,0,1)
 	end;
 	},
 	Def.Quad{
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):diffusealpha(0):hibernate(29.5):linear(0.5):diffusealpha(1):linear(0.5):diffusealpha(0)
+		self:Center():zoomtowidth(SCREEN_WIDTH):zoomtoheight(SCREEN_HEIGHT):diffusealpha(0):hibernate(29.5):linear(0.5):diffusealpha(1):linear(0.5):diffusealpha(0)
 	end;
 	},
 }	

@@ -17,7 +17,7 @@ return Def.ActorFrame{
 		end;
 		},
 
-		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..ToEnumShortString(GAMESTATE:GetCurrentStage() ) ) )..{
+		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()) )..{
 		OnCommand=function(self)
 			self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 		end;

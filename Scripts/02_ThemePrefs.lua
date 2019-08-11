@@ -31,6 +31,27 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+	
+	CharacterList =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
+	
+	HideStockNoteSkins =
+	{
+		Default = "Show",
+		Choices = { OptionNameString("OnlyITG"), OptionNameString("On"), OptionNameString("Off") },
+		Values = { "OnlyITG", "Hide", "Show" }
+	},
+
+	StockITGSpeeds =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

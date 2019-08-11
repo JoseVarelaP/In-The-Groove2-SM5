@@ -112,7 +112,7 @@ return Def.ActorFrame{
 
 		LoadActor("../ScreenGameplay underlay/panelglow")..{
 		OnCommand=function(self)
-			self:x(-45):blend("BlendMode_Add"):diffuseblink():effectperiod(0.5):diffusealpha(0):sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
+			self:y(-45):blend("BlendMode_Add"):diffuseblink():effectperiod(0.5):diffusealpha(0):sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
 		end;
 		},
 	},

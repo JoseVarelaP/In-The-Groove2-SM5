@@ -2,7 +2,7 @@ local t = Def.ActorFrame{};
 
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.BitmapText{
-		Condition=GAMESTATE:IsHumanPlayer(player) and GAMESTATE:GetPlayMode() == "PlayMode_Rave";
+		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() == "PlayMode_Rave";
 		Font="Common Normal";
 		InitCommand=function(self)
 			self:settext( GAMESTATE:GetPlayerDisplayName(player) )

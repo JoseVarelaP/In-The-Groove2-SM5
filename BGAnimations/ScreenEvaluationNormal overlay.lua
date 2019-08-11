@@ -131,8 +131,11 @@ t[#t+1] = Def.ActorFrame{
 			end;
 		},
 
-		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..ToEnumShortString(GAMESTATE:GetCurrentStage() ) ) )..{
+		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)) )..{
 		OnCommand=function(self)
+			if GAMESTATE:GetCurrentStage() == "Stage_Final" then
+				self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
+			end
 			self:x(30):y(34):addx(-SCREEN_WIDTH):sleep(3):decelerate(0.3):addx(SCREEN_WIDTH)
 		end;
 		OffCommand=function(self)

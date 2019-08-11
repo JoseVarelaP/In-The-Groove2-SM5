@@ -103,11 +103,11 @@ if GAMESTATE:IsPlayerEnabled(args) then
 						ObtainData[ind].xpos[1] + (args == PLAYER_2 and 55 or 0)
 						,-24+14*(vind-1)):halign(0)
 				end;
-				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
-					-- replace
-					if GAMESTATE:GetCurrentSteps(args) and val[1] and type(val[1]) == "function" then
-						self:settext( val[1]() )
-					end
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+					if GAMESTATE:GetCurrentSteps(args) and val[1] and type(val[1]) == "function" then s:settext( val[1]() ) end
+				end;
+				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+					if GAMESTATE:GetCurrentTrail(args) and val[1] and type(val[1]) == "function" then s:settext( val[1]() ) end
 				end;
 			};
 			t[#t+1] = Def.BitmapText{
@@ -118,10 +118,11 @@ if GAMESTATE:IsPlayerEnabled(args) then
 						ObtainData[ind].xpos[2] + (args == PLAYER_2 and 55 or 0)
 						,-24+14*(vind-1)):halign(1)
 				end;
-				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
-					if GAMESTATE:GetCurrentSteps(args) and val[2] then
-						self:settext( val[2]() )
-					end
+				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+					if GAMESTATE:GetCurrentSteps(args) and val[2] then s:settext( val[2]() ) end
+				end;
+				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
+					if GAMESTATE:GetCurrentTrail(args) and val[2] then s:settext( val[2]() ) end
 				end;
 			};
 		end
