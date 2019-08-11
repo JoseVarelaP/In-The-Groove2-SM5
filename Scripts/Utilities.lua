@@ -11,8 +11,7 @@ function DifficultyName( name, pn )
 end
 
 function MenuTimerSet(self)
-	self:draworder(101)
-	:zoom(1.1)
+	self:draworder(101):zoom(1.1)
 	:visible( (PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG") and true or false )
 	:addx(200):decelerate(0.3):addx(-200)
 end
@@ -130,6 +129,7 @@ function StageIndexBySegment(toggleless)
 		I = GAMESTATE:GetCurrentStageIndex()
 	}
 
+	if CurrentStage.S == "Stage_Event" then return "event" end
 	if CurrentStage.S == "Stage_Final" then return ToEnumShortString(CurrentStage.S) end
 	return toggleless and CurrentStage.I or CurrentStage.I+1
 end
