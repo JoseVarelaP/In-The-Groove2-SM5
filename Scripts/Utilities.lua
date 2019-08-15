@@ -31,7 +31,7 @@ function SetFrameDifficulty( pn, ResultsScreen )
 end
 
 function PlayerOptionsList()
-	local list = "1,2,3A,3B,4,5,6,R1,R2,7,8,9,10,11".. (ThemePrefs.Get("HideSM5Options") and ",12" or "") .. ",13,14,16" .. (ThemePrefs.Get("HideSM5Options") and ",17" or "")
+	local list = "1,2,3A,3B,4,5,6,R1,R2,7,8,9,10,11".. (ThemePrefs.Get("HideSM5Options") and "" or ",12") .. ",13,14,16" .. (ThemePrefs.Get("HideSM5Options") and "" or ",17")
 	return list
 end
 
