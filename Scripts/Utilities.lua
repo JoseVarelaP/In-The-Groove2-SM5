@@ -16,19 +16,23 @@ function MenuTimerSet(self)
 	:addx(200):decelerate(0.3):addx(-200)
 end
 
-function SetFrameDifficulty( pn )
-	if GAMESTATE:GetCurrentSteps(pn) then
-		local steps = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
-		local difficulties = {"Beginner","Easy","Medium","Hard","Challenge","Edit"}
-		for i,v in ipairs(difficulties) do if steps == "Difficulty_"..v then return i-1 end end
-	else
-		return 0
+function SetFrameDifficulty( pn, ResultsScreen )
+	local data = {
+		difficulties = {"Beginner","Easy","Medium","Hard","Challenge","Edit"},
+		result = {nil,nil},
+		types = {GAMESTATE:GetCurrentSteps(pn),GAMESTATE:GetCurrentTrail(pn)}
+	}
+	for a,t in ipairs(data.types) do
+		for i,v in ipairs(data.difficulties) do
+			if t then if t:GetDifficulty() == "Difficulty_"..v then data.result[a] = i-1 end end
+		end
 	end
+	return ResultsScreen and data.result[2] or (data.result and data.result[1] or 0)
 end
 
 function PlayerOptionsList()
-	local list = "1,2,3A,3B,4,5,6,R1,R2,7,8,9,10,11,12,13,14,16"
-	return ThemePrefs.Get("CharacterList") and list..",17" or list
+	local list = "1,2,3A,3B,4,5,6,R1,R2,7,8,9,10,11".. (ThemePrefs.Get("HideSM5Options") and ",12" or "") .. ",13,14,16" .. (ThemePrefs.Get("HideSM5Options") and ",17" or "")
+	return list
 end
 
 function SpeedMods()

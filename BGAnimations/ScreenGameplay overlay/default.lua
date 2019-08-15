@@ -1,5 +1,4 @@
 local t = Def.ActorFrame{};
-
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.BitmapText{
 		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() == "PlayMode_Rave";
@@ -8,8 +7,7 @@ for player in ivalues(PlayerNumber) do
 			self:settext( GAMESTATE:GetPlayerDisplayName(player) )
 		end;
 		OnCommand=function(self)
-			self:x( player == PLAYER_1 and SCREEN_CENTER_X-224 or SCREEN_CENTER_X+224 )
-			self:y( SCREEN_TOP+53 )
+			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-224 or SCREEN_CENTER_X+224, SCREEN_TOP+53 )
 			:diffuse( Color.Black ):zoom(0.5):maxwidth(100):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
 		end;
@@ -47,6 +45,21 @@ for player in ivalues(PlayerNumber) do
 		end;
 	};
 
+	t[#t+1] = LoadActor( "Lifebar", player )..{
+		Condition=GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar"),
+		OnCommand=function(self)
+			local tsns = ToEnumShortString(player)
+			self:xy( THEME:GetMetric("ScreenGameplay","Life"..tsns.."X") , THEME:GetMetric("ScreenGameplay","Life"..tsns.."Y") )
+			:addx( player == PLAYER_1 and -100 or 100)
+			:sleep(0.5):decelerate(0.8)
+			:addx( player == PLAYER_1 and 100 or -100)
+		end;
+		OffCommand=function(s)
+			s:sleep(1):accelerate(0.8)
+			:addx( player == PLAYER_1 and -100 or 100)
+		end;
+	};
+
 	t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self)
 			self:sleep(0.5):queuecommand("TweenOn")
@@ -74,11 +87,13 @@ for player in ivalues(PlayerNumber) do
 				self:accelerate(0.8):addx( player == PLAYER_1 and  -250 or 250 );
 			end;
 	
-				LoadActor( THEME:GetPathG('','_difficulty icons') )..{
+				Def.Sprite{
+					Texture=THEME:GetPathG('','_difficulty icons');
 					OnCommand=function(self)
 						self:pause():playcommand("Update");
 					end;
-					CurrentStepsP1ChangedMessageCommand=function(self) self:playcommand("Update"); end;
+					-- Update Difficulty frame when update begins.
+					["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self) self:playcommand("Update"); end;
 					UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player) ) end,
 				},
 	
@@ -87,17 +102,13 @@ for player in ivalues(PlayerNumber) do
 				OnCommand=function(self)
 					self:zoom(0.5):xy(-36,0):horizalign(left):playcommand("Update")
 				end;
-				CurrentStepsP1ChangedMessageCommand=function(self)
-					self:playcommand("Update")
-				end;
-				CurrentStepsP2ChangedMessageCommand=function(self)
+				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self)
 					self:playcommand("Update")
 				end;
 				UpdateCommand=function(self)
 						if GAMESTATE:GetCurrentSteps(player) then
 							local steps = GAMESTATE:GetCurrentSteps(player):GetDifficulty();
-							self:settext( DifficultyName("Steps", player) )
-							:maxwidth(100)
+							self:settext( DifficultyName("Steps", player) ):maxwidth(100)
 							:diffuse( ContrastingDifficultyColor( steps ) )
 						end
 					end,
@@ -108,10 +119,7 @@ for player in ivalues(PlayerNumber) do
 				OnCommand=function(self)
 					self:zoom(0.5):xy(35,0):horizalign(right):playcommand("Update")
 				end;
-				CurrentStepsP1ChangedMessageCommand=function(self)
-					self:playcommand("Update")
-				end;
-				CurrentStepsP2ChangedMessageCommand=function(self)
+				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(self)
 					self:playcommand("Update")
 				end;
 				UpdateCommand=function(self)
@@ -123,16 +131,15 @@ for player in ivalues(PlayerNumber) do
 					end,
 				},
 	
-			},
+		},
 	};
-	
 end
 
 t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen(); };
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
+		self:xy(SCREEN_CENTER_X,SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
 	end;
 	OffCommand=function(self)
 		self:sleep(1):queuecommand("TweenOff")
@@ -150,19 +157,15 @@ t[#t+1] = Def.ActorFrame{
         	self:SetStreamWidth(390)
         end;
         
-        Stream=LoadActor("meter stream")..{
-        	InitCommand=function(self)
-        		self:diffusealpha(1)
-        	end
-        };
-        Tip=LoadActor("tip")..{
-            OnCommand=function(self)
-            	self:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0)
-            end;
+        Stream=Def.Sprite{ Texture="meter stream",
+        	InitCommand=function(self) self:diffusealpha(1) end
+        },
+        Tip=Def.Sprite{ Texture="tip",
+            OnCommand=function(self) self:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0) end;
         },
     };
 
-    LoadActor("meter frame")..{ Condition=not IsUsingWideScreen(); },
+    Def.Sprite{ Texture="meter frame", Condition=not IsUsingWideScreen(); },
 	
 	Def.BitmapText{
 	Font="_eurostile normal",
@@ -187,7 +190,7 @@ t[#t+1] = Def.ActorFrame{
 	
 t[#t+1] = Def.Quad{
 	OnCommand=function(self)
-		self:diffuse(color("#000000")):FullScreen():diffusealpha(1):linear(0.3):diffusealpha(0)
+		self:diffuse(color("#000000")):stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(1):linear(0.3):diffusealpha(0)
 	end
 };
 
@@ -202,16 +205,37 @@ t[#t+1] = LoadActor("../_song credit display")..{
 t[#t+1] = Def.ActorFrame{
 	Condition=GAMESTATE:IsDemonstration(),
 
-	LoadActor("demonstration gradient")..{
+	Def.Sprite{
+		Texture="demonstration gradient",
 		OnCommand=function(self)
 			self:FullScreen():diffusealpha(0.8)
 		end;
 	};
-	LoadActor("demonstration logo")..{
+	Def.Sprite{
+		Texture="demonstration logo",
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-180):pulse():effectmagnitude(1.0,0.9,0):effectclock("bgm"):effectperiod(1)
 		end;
 	};
 };
+
+if GAMESTATE:IsCourseMode() then
+	local StageNum = 1
+	t[#t+1] = Def.ActorFrame{
+			OnCommand=function(self) self:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40) end;
+			OffCommand=function(self) self:accelerate(0.8):addy(150) end;
+			BeforeLoadingNextCourseSongMessageCommand=function(self)
+				self:finishtweening():linear(0.3):Center():zoom(1):sleep(0.5):zoom(0.25):y(SCREEN_BOTTOM-40)
+			end,
+			Def.Sprite{
+			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum),
+			OnCommand=function(self) self:animate(0) end;
+			BeforeLoadingNextCourseSongMessageCommand=function(self)
+				StageNum = StageNum + 1
+				self:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum) )
+			end,
+			},
+		};
+end
 
 return t;

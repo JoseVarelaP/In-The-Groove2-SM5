@@ -13,13 +13,15 @@ local t = Def.ActorFrame{
 
 if not GAMESTATE:IsCourseMode() then
 t[#t+1] = Def.ActorFrame{
-		LoadActor("../ScreenGameplay in/ScreenGameplay stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage()) )..{
+		Def.Sprite{
+			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay","stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage())),
 			OnCommand=function(self)
 				self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):cropright(1.3):linear(1):cropright(-0.3)
 			end;
 		},
 
-		LoadActor("_white ScreenGameplay stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage()) )..{
+		Def.Sprite{
+			Texture="_white ScreenGameplay stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage()),
 			OnCommand=function(self)
 				self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoom(1.05):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):linear(1):cropleft(1):cropright(-0.3)
 			end;
@@ -36,13 +38,15 @@ end
 
 if GAMESTATE:IsCourseMode() then
 t[#t+1] = Def.ActorFrame{
-		LoadActor("../ScreenGameplay in/ScreenGameplay course song 1")..{
+		Def.Sprite{
+			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course song","1" ),
 			OnCommand=function(self)
 				self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):cropright(1.3):linear(1):cropright(-0.3)
 			end;
 		},
 
-		LoadActor("_white ScreenGameplay course song 1")..{
+		Def.Sprite{
+			Texture="_white ScreenGameplay course song 1",
 			OnCommand=function(self)
 				self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoom(1.05):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):linear(1):cropleft(1):cropright(-0.3)
 			end;

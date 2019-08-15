@@ -1,38 +1,22 @@
 
 -- fuck it i'll make my own grade tier system
 local GradePercentages = {
-	-- quad star
-	1.00,
-	-- triple star
-	0.99,
-	-- double star
-	0.98,
-	-- single star
-	0.96,
-	-- S+
-	0.94,
-	-- S
-	0.92,
-	-- S-
-	0.89,
-	-- A+
-	0.86,
-	-- A
-	0.83,
-	-- A-
-	0.80,
-	-- B+
-	0.76,
-	-- B
-	0.72,
-	-- B-
-	0.68,
-	-- C+
-	0.64,
-	-- C
-	0.60,
-	-- C-
-	0.55,
+	1.00, -- quad star
+	0.99, -- triple star
+	0.98, -- double star
+	0.96, -- single star
+	0.94, -- S+
+	0.92, -- S
+	0.89, -- S-
+	0.86, -- A+
+	0.83, -- A
+	0.80, -- A-
+	0.76, -- B+
+	0.72, -- B
+	0.68, -- B-
+	0.64, -- C+
+	0.60, -- C
+	0.55, -- C-
 };
 
 PlayerTier = {
@@ -131,7 +115,8 @@ t[#t+1] = Def.ActorFrame{
 			end;
 		},
 
-		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)) )..{
+		Def.Sprite{
+		Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)),
 		OnCommand=function(self)
 			if GAMESTATE:GetCurrentStage() == "Stage_Final" then
 				self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
@@ -185,4 +170,6 @@ t[#t+1] = Def.ActorFrame{
 	},
 }
 
+
+collectgarbage();
 return t;

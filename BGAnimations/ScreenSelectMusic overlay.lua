@@ -3,7 +3,8 @@ local ModeMenuAvailable = THEME:GetMetric("ScreenSelectMusic","ModeMenuAvailable
 local t=Def.ActorFrame{}
 t[#t+1] = Def.ActorFrame{
 
-	LoadActor( THEME:GetPathG("","ScreenSelectMusic wheel mask") )..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMusic wheel","mask"),
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X-385):y(SCREEN_CENTER_Y-10):zoom(1.1):zoomy(1.2):zwrite(true):z(1):blend("BlendMode_NoEffect")
 		end;
@@ -14,7 +15,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self) end,
 	},
 
-	LoadActor( THEME:GetPathG('ScreenSelectMusic','banner frame') )..{
+	LoadActor( THEME:GetPathG('ScreenSelectMusic','banner frame' ) )..{
 		OnCommand=function(self)
 			self:x(SCREEN_CENTER_X-320+444):y(SCREEN_CENTER_Y-240+222)
 		end
@@ -27,7 +28,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.BitmapText{
 		Font="_eurostile blue glow",
-		Text=THEME:GetString("ScreenSelectMusic","HeaderText"),
+		Text=GAMESTATE:IsCourseMode() and THEME:GetString("ScreenSelectMusicCourse","HeaderText") or Screen.String("HeaderText"),
 		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
@@ -37,7 +38,9 @@ t[#t+1] = Def.ActorFrame{
 		end;
 		},
 
-		LoadActor( THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()) )..{
+		Def.Sprite{
+		Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()),
+		Condition=not GAMESTATE:IsCourseMode(),
 		OnCommand=function(self)
 			self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 		end;
@@ -155,7 +158,8 @@ t[#t+1] = Def.ActorFrame{
 
 	};
 
-	LoadActor(THEME:GetPathG("ScreenSelectMusic","Options Message"))..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMusic","Options Message"),
 		InitCommand=function(self)
 			self:Center():pause():diffusealpha(0)
 		end;

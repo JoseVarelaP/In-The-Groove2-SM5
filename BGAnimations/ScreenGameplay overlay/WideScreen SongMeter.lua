@@ -1,36 +1,36 @@
 return Def.ActorFrame{
-	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
+	OnCommand=function(s)
+		s:xy(SCREEN_CENTER_X,SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
 	end;
-	OffCommand=function(self)
-		self:sleep(1):queuecommand("TweenOff")
+	OffCommand=function(s)
+		s:sleep(1):queuecommand("TweenOff")
 	end;
-	ShowGameplayTopFrameMessageCommand=function(self)
-		self:playcommand("TweenOn")
+	ShowGameplayTopFrameMessageCommand=function(s)
+		s:playcommand("TweenOn")
 	end;
-	HideGameplayTopFrameMessageCommand=function(self)
-		self:playcommand("TweenOff")
+	HideGameplayTopFrameMessageCommand=function(s)
+		s:playcommand("TweenOff")
 	end;
-	TweenOnCommand=function(self)
-		self:decelerate(0.8):addy(100)
+	TweenOnCommand=function(s)
+		s:decelerate(0.8):addy(100)
 	end;
-	TweenOffCommand=function(self)
-		self:accelerate(0.8):addy(-100)
+	TweenOffCommand=function(s)
+		s:accelerate(0.8):addy(-100)
 	end;
 
 		Def.SongMeterDisplay{
-        InitCommand=function(self)
-        	self:SetStreamWidth(SCREEN_WIDTH/1.58)
+        InitCommand=function(s)
+        	s:SetStreamWidth(SCREEN_WIDTH/1.58)
         end;
         
         Stream=LoadActor("meter stream")..{
-        	InitCommand=function(self)
-        		self:diffusealpha(1)
+        	InitCommand=function(s)
+        		s:diffusealpha(1)
         	end
         };
         Tip=LoadActor("tip")..{
-            OnCommand=function(self)
-            	self:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0)
+            OnCommand=function(s)
+            	s:diffuseshift():effectcolor1(1,1,1,0.6):effectcolor2(1,1,1,1.0)
             end;
         },
     },
@@ -44,20 +44,20 @@ return Def.ActorFrame{
 
     	
     	LoadActor("meter frame")..{
-    		 OnCommand=function(self)
-    			self:zoomtowidth(SCREEN_WIDTH/2):cropleft(0.5):x(SCREEN_WIDTH/11.5)
+    		 OnCommand=function(s)
+    			s:zoomtowidth(SCREEN_WIDTH/2):cropleft(0.5):x(SCREEN_WIDTH/11.5)
     		end
     	},
     	
     	LoadActor("meter frame")..{
-    		 OnCommand=function(self)
-    			self:zoomtowidth(SCREEN_WIDTH/2):cropright(0.5):x(SCREEN_WIDTH/-11.5)
+    		 OnCommand=function(s)
+    			s:zoomtowidth(SCREEN_WIDTH/2):cropright(0.5):x(SCREEN_WIDTH/-11.5)
     		end
     	},
     	
     	LoadActor("meter frame")..{
-    		 OnCommand=function(self)
-    			self:zoomtowidth(SCREEN_WIDTH/2):cropright(0.326):cropleft(0.326):x(0)
+    		 OnCommand=function(s)
+    			s:zoomtowidth(SCREEN_WIDTH/2):cropright(0.326):cropleft(0.326):x(0)
     		end
     	},
 }

@@ -65,7 +65,7 @@ t[#t+1] = Def.ActorFrame{
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end;
-			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player) ) end,
+			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player,true) ) end,
 		},
 
 		Def.BitmapText{

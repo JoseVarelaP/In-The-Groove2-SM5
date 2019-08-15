@@ -60,8 +60,8 @@ return Def.ActorFrame{
 	},
 
 	Def.ActorFrame{
-		Condition=GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 2/VerTex^2');
 		OnCommand=function(self)
+			self:visible( GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong() == SONGMAN:FindSong('In The Groove 2/VerTex^2') )
 			self:rotationz(-30):x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):sleep(6):accelerate(0.5):addx(SCREEN_WIDTH*1.3):addy(-SCREEN_HEIGHT)
 		end;
 		Def.Sprite{

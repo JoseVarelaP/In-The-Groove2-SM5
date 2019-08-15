@@ -32,7 +32,7 @@ local Prefs =
 		Values = { true, false }
 	},
 	
-	CharacterList =
+	HideSM5Options =
 	{
 		Default = false,
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
@@ -47,6 +47,20 @@ local Prefs =
 	},
 
 	StockITGSpeeds =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
+
+	ExperimentalLifebar =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
+	
+	StepArtist = 
 	{
 		Default = false,
 		Choices = { OptionNameString("On"), OptionNameString("Off") },

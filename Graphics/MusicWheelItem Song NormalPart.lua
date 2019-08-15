@@ -1,49 +1,46 @@
 return Def.ActorFrame{
-	OnCommand=function(self)
-		self:ztest(1):addx(-420):sleep(0.35):linear(0.5):addx(420)
+	OnCommand=function(s)
+		s:ztest(1):addx(-420):sleep(0.35):linear(0.5):addx(420)
 	end;
-	OffCommand=function(self)
-		self:linear(0.5):addx(-420)
+	OffCommand=function(s)
+		s:linear(0.5):addx(-420)
 	end;
 
-	LoadActor("WheelItems/WheelSong NormalPart"),
+	Def.Sprite{ Texture="WheelItems/WheelSong NormalPart" },
 	Def.BitmapText{
-	Font="_eurostile normal", InitCommand=function(self)
-		self:zoom(1):y(0):x(100):maxwidth(280)
+	Font="_eurostile normal", InitCommand=function(s)
+		s:zoom(1):x(100):maxwidth(280)
 	end;
-	SetMessageCommand=function(self,params)
-	self:shadowlength(1)
+	SetMessageCommand=function(s,params)
+	s:shadowlength(1)
 	local song = params.Song;
 		if song then
-			self:settext(song:GetDisplayMainTitle())
+			s:diffuse( params.Color )
+			:settext(song:GetDisplayMainTitle())
 			if string.len( song:GetDisplaySubTitle() ) > 2 then
-				self:zoom(0.9)
-				self:y(-7)
+				s:zoom(0.9):y(-7)
 			else
-				self:zoom(0.95)
-				self:y(0)
+				s:zoom(0.95):y(0)
 			end
 		end
-		self:horizalign('right')
+		s:halign(1)
 	end
 	},
 	Def.BitmapText{
-	Font="_eurostile normal", InitCommand=function(self)
-		self:zoom(1):y(-10):x(-110):maxwidth(480)
+	Font="_eurostile normal", InitCommand=function(s)
+		s:zoom(1):xy(-110,-10):maxwidth(460)
 	end;
-	SetMessageCommand=function(self,params)
-	self:shadowlength(1)
+	SetMessageCommand=function(s,params)
+	s:shadowlength(1)
 	local song = params.Song;
 		if song then
-			self:settext(song:GetDisplaySubTitle())
-			self:zoom(0)
+			s:diffuse( params.Color )
+			:settext(song:GetDisplaySubTitle()):zoom(0)
 			if string.len( song:GetDisplaySubTitle() ) > 2 then
-				self:zoom(0.6)
-				self:y(8)
-				self:x(100)
+				s:zoom(0.6):xy(100,8)
 			end
 		end
-		self:horizalign('right')
+		s:halign(1)
 	end
 	},
 }

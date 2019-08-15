@@ -1,5 +1,7 @@
 local args=...
 function RadarValue(pn,n)
+	-- Maybe categorize this in another format
+
 	-- 'RadarCategory_Stream'			0
 	-- 'RadarCategory_Voltage'			1
 	-- 'RadarCategory_Air'				2
@@ -41,13 +43,8 @@ local function PercentScore(pn,scoremethod)
 	local profile, scorelist;
 	local text,Rname = "","Best";
 	if SongOrCourse and StepsOrTrail then
-		if PROFILEMAN:IsPersistentProfile(pn) then
-			-- args profile
-			profile = PROFILEMAN:GetProfile(pn);
-		else
-			-- machine profile
-			profile = PROFILEMAN:GetMachineProfile();
-		end;
+		-- args profile
+		profile = PROFILEMAN:IsPersistentProfile(pn) and PROFILEMAN:GetProfile(pn) or PROFILEMAN:GetMachineProfile();
 		scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail);
 		assert(scorelist)
 		local scores = scorelist:GetHighScores();
@@ -55,10 +52,7 @@ local function PercentScore(pn,scoremethod)
 		if topscore then
 			text = string.format("%.2f%%", topscore:GetPercentDP()*100.0);
 			Rname = topscore:GetName()
-			-- 100% hack
-			if text == "100.00%" then
-				text = "100%";
-			end;
+			text = text == "100.00%" and "100%" or text -- 100% hack
 		else
 			text = string.format("%.2f%%", 0);
 		end;
