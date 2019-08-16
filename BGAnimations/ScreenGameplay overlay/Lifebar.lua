@@ -5,16 +5,14 @@ local player=...
 -- Demand that 'player' exists. Otherwise, stop anything on the script by this point.
 assert(player);
 local t = Def.ActorFrame{}
-local Life,Streams = {},{"Normal","Hot"}
+local Life,Streams = {},{"Hot","Normal"}
 -- MeterBody
 -- We'll load this into memory, to avoid some confusion and memory switching.
 
 -- Lifebar back body
 t[#t+1] = Def.Sprite{ Texture=THEME:GetPathG("LifeMeterBar","under"), OnCommand=function(s) s:rotationz(-90) end; };
 -- I'll explain about the mask eventually.
-t[#t+1] = Def.Quad{
-    Name="QuadUpdater",
-    OnCommand=function(s) s:zoomto(28,272):y(272/2):MaskSource():vertalign("bottom") end;
+t[#t+1] = Def.Quad{ Name="QuadUpdater", OnCommand=function(s) s:zoomto(28,272):y(272/2):MaskSource():vertalign("bottom") end;
     UpdateAllCommand=function(s)
         local calculation = math.sin( s:GetParent():GetChild("LifeAux"..player):getaux() )/10
         s:stoptweening():spring(1/2):cropbottom( Life[player]+(calculation/10) ):sleep(1/30):queuecommand("UpdateAll")
@@ -29,15 +27,13 @@ t[#t+1] = Def.Sprite{ Texture=THEME:GetPathG("LifeMeterBar","over"), OnCommand=f
 -- Actor specifically made for aux values.
 t[#t+1] = Def.Actor{ OnCommand=function(s) s:aux(50):queuecommand("tweentest") end; Name="LifeAux"..player,
 tweentestCommand=function(s)
-    s:aux( s:getaux() > 50 and 50 or (s:getaux() > 0 and s:getaux()-0.2 or s:getaux()) )
-    s:sleep(1/60):queuecommand("tweentest")
+    s:aux( s:getaux() > 50 and 50 or (s:getaux() > 0 and s:getaux()-0.2 or s:getaux()) ):sleep(1/60):queuecommand("tweentest")
 end;
 };
 
 t.OnCommand=function(s)
     -- Set both StreamDisplays to begin scrolling.
-    s:GetChild("LifeNormal"):zoomx(1.22):texcoordvelocity( -1,0 )
-    s:GetChild("LifeHot"):zoomx(1.22):texcoordvelocity( -1,0 ):diffusealpha(0)
+    for v in ivalues(Streams) do s:GetChild("Life"..v):zoomx(1.22):texcoordvelocity( -1,0 ) end
     -- Here comes the fun part.
     s:GetChild("QuadUpdater"):playcommand("UpdateAll")
     s:playcommand("BPMCheck")

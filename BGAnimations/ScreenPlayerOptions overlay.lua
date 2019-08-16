@@ -46,5 +46,20 @@ return Def.ActorFrame{
 		end;
 	},
 
+	Def.HelpDisplay {
+		File="_eurostile normal",
+		OnCommand=function(self)
+			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink()
+		end;
+		InitCommand=function(self)
+			local s = THEME:GetString("ScreenPlayerOptions","HelpText") .. "::".. THEME:GetString("ScreenPlayerOptions","SelectAvailableHelpTextAppend")
+			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+			self:SetTipsColonSeparated(s);
+		end;
+		OffCommand=function(self)
+			self:linear(0.5):zoomy(0)
+		end;
+		},
+
 
 }

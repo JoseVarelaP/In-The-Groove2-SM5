@@ -57,7 +57,9 @@ t[#t+1] = Def.ActorFrame{
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.75):diffuseblink()
 	end;
 	InitCommand=function(self)
-		local s = THEME:GetString("ScreenSelectMusic","CompleteString");
+		local s = THEME:GetString("ScreenSelectMusic","HelpTextNormal") .. "::" ..
+			THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend") .. "::" ..
+			THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend")
 		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 		self:SetTipsColonSeparated(s);
 	end;

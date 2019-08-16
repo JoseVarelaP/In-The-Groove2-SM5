@@ -168,6 +168,22 @@ t[#t+1] = Def.ActorFrame{
 		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 	end;
 	},
+
+	Def.HelpDisplay {
+		File="_eurostile normal",
+		OnCommand=function(self)
+			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink()
+			:zoomy(0):sleep(2.5):linear(0.5):zoomy(0.7)
+		end;
+		InitCommand=function(self)
+			local s = THEME:GetString("ScreenEvaluation","HelpTextNormal") .. "::" .. THEME:GetString("ScreenEvaluation","TakeScreenshotHelpTextAppend")
+			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+			self:SetTipsColonSeparated(s);
+		end;
+		OffCommand=function(self)
+			self:linear(0.5):zoomy(0)
+		end;
+	},
 }
 
 
