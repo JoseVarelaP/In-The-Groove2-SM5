@@ -28,7 +28,7 @@ function RadarValue(pn,n)
 	if GAMESTATE:IsPlayerEnabled(pn) and (SongOrCourse and StepsOrTrail) then
 		Result = StepsOrTrail:GetRadarValues(pn):GetValue(n)
 	end
-	return Result and (Result > 0 and Result or "???") or 0
+	return Result and (Result >= 0 and Result or "???") or 0
 end
 
 local function PercentScore(pn,scoremethod)
@@ -126,8 +126,10 @@ if GAMESTATE:IsPlayerEnabled(args) then
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
-				self:settext( GAMESTATE:GetCurrentSteps(args):GetMeter() )
-				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+				if GAMESTATE:GetCurrentSteps(args) then
+					self:settext( GAMESTATE:GetCurrentSteps(args):GetMeter() )
+					self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+				end
 			end
 		end;
 		["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
@@ -141,13 +143,15 @@ if GAMESTATE:IsPlayerEnabled(args) then
 		Font="_eurostile normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+38):maxwidth(90):zoom(0.6) end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
-			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode(9) then
-				self:settext(
-					string.upper( 
-						THEME:GetString("Difficulty", ToEnumShortString( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
+				if GAMESTATE:GetCurrentSteps(args) then
+					self:settext(
+						string.upper( 
+							THEME:GetString("Difficulty", ToEnumShortString( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+						)
 					)
-				)
-				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+					self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+				end
 			end
 		end;
 		["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
