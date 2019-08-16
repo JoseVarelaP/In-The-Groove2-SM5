@@ -55,8 +55,8 @@ return Def.CourseContentsList {
 				self:Load("CourseTextBanner"):zoom(0.75):halign(0):SetFromString("", "", "", "", "", "")
 			end;
 			SetSongCommand=function(self, params)
-				if params.Song then
-					self:SetFromSong( params.Song );
+				if params.Song and not params.Secret then
+					self:SetFromSong( params.Song )
 				else
 					self:SetFromString( "??????????", "??????????", "", "", "", "" );
 				end

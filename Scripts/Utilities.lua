@@ -6,7 +6,7 @@ function DifficultyName( name, pn )
 
 	if ToGet[name] then
 		local Shorten = ToEnumShortString( ToGet[name]:GetDifficulty() )
-		return THEME:GetString("Difficulty", Shorten)
+		return name == "Trail" and THEME:GetString("CourseDifficulty", Shorten) or THEME:GetString("Difficulty", Shorten)
 	end
 end
 

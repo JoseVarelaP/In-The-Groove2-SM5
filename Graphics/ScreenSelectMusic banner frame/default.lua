@@ -124,6 +124,16 @@ return Def.ActorFrame{
 			end,
 			},
 
+			Def.BitmapText{ Text="MODS", Font="_eurostile normal",
+			OnCommand=function(s)
+				s:shadowlength(2):zoom(1.3):xy(-130,35):diffuseshift():effectcolor1(color("0.4,0.4,0.4,1")):visible(false)
+				s:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) and true or false )
+			end;
+			CurrentCourseChangedMessageCommand=function(s)
+				s:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) and true or false )
+			end;
+			},
+
 		},
 
 		};
@@ -176,13 +186,37 @@ return Def.ActorFrame{
 			self:horizalign(left):shadowlength(2):zoom(0.6):x(-165):y(-22):diffusealpha(1)
 		end;
 		CurrentSongChangedMessageCommand=function(self)
-		local songCourse = GAMESTATE:GetCurrentSong()
-		if songCourse then
-			self:settext(GAMESTATE:GetCurrentSong():GetDisplayArtist())
-		else
-			self:settext("")
+		self:settext("")
+		if GAMESTATE:GetCurrentSong() then
+			self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )			
 		end
 		end,
+		},
+
+		Def.HelpDisplay {
+			File="_eurostile normal",
+			OnCommand=function(self)
+				self:horizalign(left):shadowlength(2):zoom(0.6):x(-165):y(-22):diffusealpha(1)
+				self:SetSecsBetweenSwitches(1.5)
+			end;
+			OffCommand=function(self)
+				self:linear(0.5):zoomy(0)
+			end;
+			CurrentCourseChangedMessageCommand=function(s)
+				if GAMESTATE:GetCurrentCourse() then
+					local Artists = GAMESTATE:GetCurrentCourse():GetCourseEntries()
+					rec_print_table(Artists)
+					local complete = ""
+					for v in ivalues(Artists) do
+						if v and v:GetSong() then
+							complete = complete .. v:GetSong():GetDisplayArtist() .. "::"
+						else
+							complete = "???"
+						end
+					end
+					s:SetTipsColonSeparated(complete)
+				end
+			end;
 		},
 
 		Def.BitmapText{
@@ -215,15 +249,52 @@ return Def.ActorFrame{
 			end
 			self:settext(val)
 		end;
+		CurrentCourseChangedMessageCommand=function(self)
+			local course = GAMESTATE:GetCurrentCourse()
+			local val = {0,0}
+			if course then
+				local entries = course:GetCourseEntries()
+				for v in ivalues(entries) do
+					if v and v:GetSong() then
+						local bpms = v:GetSong():GetDisplayBpms()
+						for i=1,2 do
+							if bpms[i] > val[i] then val[i] = bpms[i] end
+						end
+					end
+				end
+				if val[1] == val[2] then
+					val = string.format("%i",val[1])
+				else
+					val = string.format("%i-%i",val[1],val[2])
+				end
+				self:settext(val == "0" and "???" or val)
+			end
+		end;
 		},
 
 		-- need to figure out how to get pop
 
-		-- Def.BitmapText{
-		-- Text="POP",
-		-- Font="_eurostile normal",
-		-- OnCommand=cmd(shadowlength,2;zoom,0.5;x,150;y,-30;diffusealpha,0.5);
-		-- },
+		Def.BitmapText{ Text="POP", Font="_eurostile normal",
+		OnCommand=function(s)
+			s:shadowlength(2):zoom(0.5):xy(150,-30):diffusealpha(0.5)
+		end;
+		},
+
+		Def.BitmapText{ Text="POP", Font="_eurostile normal",
+		OnCommand=function(s)
+			s:shadowlength(2):zoom(0.6):xy(138,-16):diffusealpha(1):halign(0)
+		end;
+		CurrentSongChangedMessageCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			local val
+			if song then
+				val = SONGMAN:GetSongRank(song)
+			else
+				val = " "
+			end
+			self:settext(val)
+		end;
+		},
 
 	},
 	LoadActor( "../ScreenSelectMusic wheel mask" ) .. {

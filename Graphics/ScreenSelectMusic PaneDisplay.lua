@@ -16,7 +16,7 @@ function RadarValue(pn,n)
 	-- 'RadarCategory_Rolls'			11
 	-- 'RadarCategory_Fakes'			13
 	-- 'RadarCategory_Lifts'			12
-	local SongOrCourse, StepsOrTrail;
+	local SongOrCourse, StepsOrTrail, Result;
 	if GAMESTATE:IsCourseMode() then
 		SongOrCourse = GAMESTATE:GetCurrentCourse();
 		StepsOrTrail = GAMESTATE:GetCurrentTrail(pn);
@@ -26,9 +26,9 @@ function RadarValue(pn,n)
 	end;
 
 	if GAMESTATE:IsPlayerEnabled(pn) and (SongOrCourse and StepsOrTrail) then
-		return StepsOrTrail:GetRadarValues(pn):GetValue(n)
+		Result = StepsOrTrail:GetRadarValues(pn):GetValue(n)
 	end
-	return 0
+	return Result and (Result > 0 and Result or "???") or 0
 end
 
 local function PercentScore(pn,scoremethod)
@@ -125,25 +125,41 @@ if GAMESTATE:IsPlayerEnabled(args) then
 		Font="_futurist normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
-		if StepsOrCourse() then
-			self:settext( StepsOrCourse():GetMeter() )
-			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
-		end
-	end
+			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
+				self:settext( GAMESTATE:GetCurrentSteps(args):GetMeter() )
+				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+			end
+		end;
+		["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+			if GAMESTATE:GetCurrentCourse() then
+				self:settext( GAMESTATE:GetCurrentTrail(args):GetMeter() )
+				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(args):GetDifficulty() ) )
+			end
+		end;
 	};
 	t[#t+1] = Def.BitmapText{
 		Font="_eurostile normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+38):maxwidth(90):zoom(0.6) end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
-		if StepsOrCourse() then
-			self:settext(
-				string.upper( 
-					THEME:GetString("Difficulty", ToEnumShortString( StepsOrCourse():GetDifficulty() ) )
+			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode(9) then
+				self:settext(
+					string.upper( 
+						THEME:GetString("Difficulty", ToEnumShortString( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+					)
 				)
-			)
-			self:diffuse( DifficultyColor( StepsOrCourse():GetDifficulty() ) )
-		end
-	end
+				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentSteps(args):GetDifficulty() ) )
+			end
+		end;
+		["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+			if GAMESTATE:GetCurrentCourse() then
+				self:settext(
+					string.upper( 
+						THEME:GetString("CourseDifficulty", ToEnumShortString( GAMESTATE:GetCurrentTrail(args):GetDifficulty() ) )
+					)
+				)
+				self:diffuse( DifficultyColor( GAMESTATE:GetCurrentTrail(args):GetDifficulty() ) )
+			end
+		end;
 	};
 end
 
