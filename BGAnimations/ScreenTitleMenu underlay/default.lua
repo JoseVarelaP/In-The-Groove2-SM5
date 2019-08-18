@@ -47,9 +47,6 @@ return Def.ActorFrame{
 		OffCommand=function(self)
 			self:linear(0.5):zoomy(0)
 		end;
-		ResetTextCommand=function(self)
-			self:SetTipsColonSeparated( THEME:GetString("ScreenTitleMenu","HelpText") );
-		end;
 	},
 
 	LoadActor("../ScreenWithMenuElements underlay"),

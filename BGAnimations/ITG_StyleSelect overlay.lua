@@ -269,4 +269,15 @@ t[#t+1] = Def.HelpDisplay {
     end;
 };
 
+t[#t+1] = LoadActor("_menu out")..{
+    OnCommand=function(s)
+        s:Center():diffusealpha(0)
+    end;
+    OffCommand=function(s)
+        if not GAMESTATE:Env()["WorkoutMode"] then
+            s:sleep(1.5):linear(0.3):diffusealpha(1)
+        end
+    end;
+}
+
 return t;

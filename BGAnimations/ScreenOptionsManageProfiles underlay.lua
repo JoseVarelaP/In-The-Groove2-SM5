@@ -34,7 +34,7 @@ return Def.ActorFrame{
 
 		Def.BitmapText{
 			Font="Common Normal";
-			OnCommand=function(self) self:y(50):zoom(0.4) end;
+			OnCommand=function(self) self:y(30):zoom(0.4) end;
 			ProfileSelectedMessageCommand=function(s,p)
 				s:settext("")
 				local Profiles = PROFILEMAN:GetNumLocalProfiles()
@@ -48,9 +48,14 @@ return Def.ActorFrame{
 							local Items = {
 								{ {"ScreenOptionsManageProfiles","Total Songs Played"}, current:GetNumTotalSongsPlayed() },
 								{ {"ScreenEvaluation","Calories Burned"}, current:GetTotalCaloriesBurned() },
+								{ {"ScreenEvaluation","Total Play Time"}, SecondsToMMSS(current:GetTotalGameplaySeconds()) },
+								{ {"ScreenWorkoutMenu","Weight"}, current:GetWeightPounds() .. " Lb" },
+								{ "GUID", current:GetGUID() },
 							}
 							for v in ivalues(Items) do
-								Complete = Complete .. string.format( "%i "..THEME:GetString(v[1][1],v[1][2]), v[2] ) .. "\n"
+								Complete = Complete .. string.format( (type(v[2]) == "string" and v[2].." - " or "%i - ")..
+								(type(v[1]) == "table" and THEME:GetString(v[1][1],v[1][2]) or v[1])
+								, v[2] ) .. "\n"
 							end
 							s:settext(Complete)
 						end
