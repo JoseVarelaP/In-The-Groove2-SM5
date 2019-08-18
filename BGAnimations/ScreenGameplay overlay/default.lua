@@ -80,7 +80,7 @@ for player in ivalues(PlayerNumber) do
 
 	-- Workout mode calories indicator
 	t[#t+1] = Def.BitmapText{
-		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:Env()["WorkoutMode"];
+		Condition=(GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:Env()["WorkoutMode"] ~= nil);
 		Font="_futurist metalic";
 		OnCommand=function(self)
 			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_TOP+56 )
@@ -104,7 +104,7 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.ActorFrame{
-		Condition=GAMESTATE:Env()["WorkoutMode"] and GAMESTATE:IsPlayerEnabled(player),
+		Condition=(GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:Env()["WorkoutMode"] ~= nil),
 		OnCommand=function(s)
 			s:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_BOTTOM-48 )
 			:addy(100):sleep(0.5):decelerate(0.8):addy(-100)
