@@ -2,6 +2,7 @@ return Def.ActorFrame{
 	InitCommand=function(self)
 		self:fov(58):ztest(1):addx(-500):sleep(0.4):linear(0.45):addx(500)
 	end;
+	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:linear(0.5):addx(-500) end end;
 	
 	LoadActor("WheelItems/Wheel highlight")..{
 		 OnCommand=function(self)

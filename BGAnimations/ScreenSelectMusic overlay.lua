@@ -41,9 +41,8 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
-		OffCommand=function(self)
-			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
-		end;
+		OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+		CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end end;
 		},
 
 		Def.Sprite{
@@ -52,9 +51,8 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self)
 			self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 		end;
-		OffCommand=function(self)
-			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
-		end;
+		OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+		CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end end;
 		},
 
 	},
@@ -83,9 +81,8 @@ t[#t+1] = Def.ActorFrame{
 	SelectMenuClosedMessageCommand=function(self)
 		self:stoptweening():bouncebegin(0.2):zoomy(0.75)
 	end;
-	OffCommand=function(self)
-		self:linear(0.5):zoomy(0)
-	end;
+	OffCommand=function(self) self:linear(0.5):zoomy(0) end;
+	CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:linear(0.5):zoomy(0) end end;
 	},
 
 	Def.ActorFrame{
@@ -197,9 +194,8 @@ for player in ivalues(PlayerNumber) do
 			self:x(player == PLAYER_1 and SCREEN_CENTER_X-155 or SCREEN_CENTER_X+155)
 			:y(SCREEN_BOTTOM-95):zoomy(0):sleep(0.5):linear(0.3):zoomy(1)
 		end;
-		OffCommand=function(self)
-			self:linear(0.3):zoomy(0)
-		end;
+		OffCommand=function(self) self:linear(0.3):zoomy(0) end;
+		CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:linear(0.3):zoomy(0) end end;
 	};
 end
 

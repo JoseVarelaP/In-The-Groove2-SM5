@@ -4,14 +4,8 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:fov(58):x(-10):y(2):zoomy(0.985):rotationy(-20):addx(450):decelerate(0.75):addx(-450)
 	end;
-	OffCommand=function(self)
-	self:accelerate(0.75);
-	if IsUsingWideScreen() then
-		self:addx(500);
-	else
-		self:addx(450);
-	end
-	end,
+	OffCommand=function(s) s:accelerate(0.75):addx( IsUsingWideScreen() and 500 or 450); end,
+	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:accelerate(0.75):addx( IsUsingWideScreen() and 500 or 450); end end,
 
   		Def.ActorFrame{
 		InitCommand=function(self)
@@ -159,15 +153,9 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:y(1):addx(500):decelerate(0.75):addx(-500)
 	end;
-	OffCommand=function(self)
-	self:accelerate(0.75);
-	if IsUsingWideScreen() then
-		-- FIVE FIVE FIVE GUYS
-		self:addx(555);
-	else
-		self:addx(450);
-	end
-	end,
+	-- FIVE FIVE FIVE GUYS
+	OffCommand=function(s) s:accelerate(0.75):addx( IsUsingWideScreen() and 555 or 450); end,
+	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:accelerate(0.75):addx( IsUsingWideScreen() and 555 or 450); end end,
 
 		Def.BitmapText{
 		Text=string.upper(THEME:GetString("BannerFrame","Artist"));
@@ -304,14 +292,7 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:x(-380):y(1):addx(-150):decelerate(0.5):addx(150)
 	end;
-	OffCommand=function(self)
-	self:sleep(0.2);
-	self:accelerate(0.6);
-	if IsUsingWideScreen() then
-		self:addx(-225);
-	else
-		self:addx(-150);
-	end
-	end,
+	OffCommand=function(s) s:sleep(0.2):accelerate(0.6):addx( IsUsingWideScreen() and -225 or -150) end,
+	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:sleep(0.2):accelerate(0.6):addx( IsUsingWideScreen() and -225 or -150) end end,
 	},
 }

@@ -7,7 +7,7 @@ for player in ivalues(PlayerNumber) do
 			s:addx(-SCREEN_WIDTH)
 			:decelerate(0.3):addx(SCREEN_WIDTH)
 		end;
-		OffCommand=function(s) s:accelerate(0.3):addx(SCREEN_WIDTH) end;
+		OffCommand=function(s) s:accelerate(0.3):addx(SCREEN_WIDTH) SOUND:DimMusic(0,2) end;
 		CancelMessageCommand=function(s) s:accelerate(0.3):addx(SCREEN_WIDTH) end;
 
 		LoadActor( THEME:GetPathG("","_name ".. ToEnumShortString(player) ) )..{

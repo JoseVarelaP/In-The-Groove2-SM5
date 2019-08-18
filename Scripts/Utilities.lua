@@ -177,6 +177,25 @@ Branch.AfterProfileLoad = function()
 	end
 end
 
+Branch.TitleMenu = function()
+	if GAMESTATE:GetCoinMode() == "CoinMode_Home" then
+		if GAMESTATE:Env()["WorkoutMode"] then
+			return "ScreenWorkoutMenu"
+		else
+			return "ScreenTitleMenu"
+		end
+	end
+	-- arcade junk:
+	if GAMESTATE:GetCoinsNeededToJoin() > GAMESTATE:GetCoins() then
+		-- if no credits are inserted, don't show the Join screen. SM4 has
+		-- this as the initial screen, but that means we'd be stuck in a
+		-- loop with ScreenInit. No good.
+		return "ScreenTitleJoin"
+	else
+		return "ScreenTitleJoin"
+	end
+end
+
 Branch.AfterTitleMenu = function() return Branch.AfterProfileLoad() end
 
 -- Branch Overrides
@@ -286,14 +305,19 @@ function WorkoutSelector(OptionToSelect)
 			SelectType = "SelectOne",
 			OneChoiceForAllPlayers = false,
 			ExportOnChange = true,
-			Choices = { THEME:GetString("OptionNames","None"), THEME:GetString("OptionNames","CalorieBurn"), THEME:GetString("OptionNames","PlayTime") },
-			Values = { "none","calories","time" },
+			Choices = { THEME:GetString("OptionNames","CalorieBurn"), THEME:GetString("OptionNames","PlayTime"), THEME:GetString("OptionNames","None") },
+			Values = { "calories","time","none" },
 			NotifyOfSelection= function(self, pn, choice)
 				GAMESTATE:Env()["NewTimingMode"] = self.Values[choice]
 				MESSAGEMAN:Broadcast("GoalTypeChanged")
 			end,
 			LoadSelections = function(s, list, pn)
+				if PROFILEMAN:GetProfile(pn):GetGoalType() ~= 2 then
+					list[ PROFILEMAN:GetProfile(pn):GetGoalType()+1 ] = true
+					return
+				end
 				list[1] = true
+				return
 			end,
 			SaveSelections = function(s, list, pn)
 			end
@@ -329,6 +353,9 @@ function WorkoutSelector(OptionToSelect)
 					end
 					list[13] = true	-- 150 cals
 				end
+				if GAMESTATE:Env()["NewTimingMode"] == "none" then
+					list[1] = true
+				end
 			end,
 			SaveSelections = function(s, list, pn)
 				local profile = PROFILEMAN:GetProfile(pn)
@@ -339,6 +366,9 @@ function WorkoutSelector(OptionToSelect)
 						end
 						if GAMESTATE:Env()["NewTimingMode"] == "time" then
 							PROFILEMAN:GetProfile(pn):SetGoalType(1):SetGoalSeconds( IndexToSeconds(i) )
+						end
+						if GAMESTATE:Env()["NewTimingMode"] == "none" then
+							PROFILEMAN:GetProfile(pn):SetGoalType(2)
 						end
 						return
 					end
@@ -351,7 +381,7 @@ function WorkoutSelector(OptionToSelect)
 				local Types = {
 					["calories"] = CaloriesList(),
 					["time"] = SecondsList(),
-					["none"] = SecondsList(),
+					["none"] = { THEME:GetString("OptionNames","None") },
 				}
 
 				self.Choices = Types[ GAMESTATE:Env()["NewTimingMode"] ]
@@ -400,7 +430,7 @@ function WorkoutSelector(OptionToSelect)
 			SelectType = "SelectOne",
 			OneChoiceForAllPlayers = false,
 			ExportOnChange = true,
-			Choices = { "no", "yes" },
+			Choices = { THEME:GetString("OptionNames","No"), THEME:GetString("OptionNames","Yes") },
 			Values = { false, true },
 			LoadSelections = function(s, list, pn)
 				list[1] = true
@@ -429,7 +459,7 @@ function WorkoutSelector(OptionToSelect)
 				local chnew = {
 					"playmode,regular",
 					"playmode,nonstop",
-					"playmode,endless;difficulty,easy"
+					"playmode,endless;setenv,sMode,Endless"
 				}
 				for i, choice in ipairs(s.Choices) do
 					if list[i] then
