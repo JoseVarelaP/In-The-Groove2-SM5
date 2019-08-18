@@ -10,7 +10,7 @@ t[#t+1] = Def.Model{
 };
 
 t[#t+1] = Def.BitmapText{
-    Text="One Excellent";
+    Text=THEME:GetString("PerDifficultyAward","OneW2"),
     File="_eurostile normal";
     OnCommand=function(self)
     	self:horizalign(right):zoom(0.5):y(12):x(135):shadowlength(2)

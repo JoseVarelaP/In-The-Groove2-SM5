@@ -169,6 +169,16 @@ function CalPerNum(pn)
 	return 0
 end
 
+Branch.AfterProfileLoad = function()
+	if PREFSMAN:GetPreference("ShowCaution") or GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+		return "ScreenCaution"
+	else
+		return Branch.StartGame()
+	end
+end
+
+Branch.AfterTitleMenu = function() return Branch.AfterProfileLoad() end
+
 -- Branch Overrides
 Branch.StartGame = function()
 	-- Check to see if there are 0 songs installed. Also make sure to check
@@ -178,16 +188,16 @@ Branch.StartGame = function()
 	if SONGMAN:GetNumSongs() == 0 and SONGMAN:GetNumAdditionalSongs() == 0 then
 		return "ScreenHowToInstallSongs"
 	end
-	if PROFILEMAN:GetNumLocalProfiles() >= 2 then
+	if ThemePrefs.Get("ShowProfileSelect") and PROFILEMAN:GetNumLocalProfiles() >= 2 then
 		return "ScreenSelectProfile"
 	else
 		if IsNetConnected() then
 			return "ITG_StyleSelect"
 		else
-			if THEME:GetMetric("Common","AutoSetStyle") == false then
-				return "ITG_StyleSelect"
+			if (THEME:GetMetric("Common","AutoSetStyle") == false or GAMESTATE:GetCoinMode() == "CoinMode_Pay") and not GAMESTATE:GetPlayMode() and not GAMESTATE:Env()["WorkoutMode"] then
+				return "ITG_PlayModeSelect"
 			else
-				return "ScreenProfileLoad"
+				return "ITG_StyleSelect"
 			end
 		end
 	end
@@ -199,5 +209,240 @@ Branch.AfterSelectProfile = function()
 		return IsNetConnected() and "ITG_StyleSelect" or "ScreenSelectPlayMode"
 	else
 		return "ITG_StyleSelect"
+	end
+end
+
+Branch.AfterEvaluation = function()
+	if GAMESTATE:IsCourseMode() then
+		return "ScreenProfileSave"
+	else
+		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
+		local stagesLeft = GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer()
+		local allFailed = STATSMAN:GetCurStageStats():AllFailed()
+		local song = GAMESTATE:GetCurrentSong()
+
+		if GAMESTATE:IsEventMode() or stagesLeft >= 1 then
+			return "ScreenProfileSave"
+		elseif song:IsLong() and maxStages <= 2 and stagesLeft < 1 and allFailed then
+			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
+		elseif song:IsMarathon() and maxStages <= 3 and stagesLeft < 1 and allFailed then
+			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
+		elseif maxStages >= 2 and stagesLeft < 1 and allFailed then
+			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
+		elseif allFailed then
+			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
+		else
+			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
+		end
+	end
+end
+
+-- Workout Mode Selection Choices
+function WorkoutSelector(OptionToSelect)
+	local function IndexToPounds(i)
+		return i*5
+	end
+	
+	local function WeightLbs()
+		local ret = { }
+		for i = 1,100 do ret[i] = IndexToPounds(i).." Lbs" end
+		return ret
+	end
+
+	local function IndexToCalories(i)
+		return i*10+20
+	end
+	
+	local function CaloriesList()
+		local ret = { }
+		for i = 1,98 do ret[i] = IndexToCalories(i).." cals" end
+		return ret
+	end
+
+	local function IndexToSeconds(i)
+		return i*60+4*60
+	end
+	
+	local function SecondsList()
+		local ret = { }
+		for i = 1,56 do ret[i] = (IndexToSeconds(i)/60).." mins" end
+		return ret
+	end
+
+	function GetPlayersWithGoalType( gt )
+		local t = { }
+		for pn = PLAYER_1,NUM_PLAYERS-1 do 
+			if GAMESTATE:IsHumanPlayer(pn) and WorkoutGetProfileGoalType(pn) == gt then 
+				t[pn] = pn 
+			end
+		end
+		return t
+	end
+
+	local Choices = {
+		["GoalType"] = {
+			Name="GoalType",
+			LayoutType = "ShowOneInRow",
+			SelectType = "SelectOne",
+			OneChoiceForAllPlayers = false,
+			ExportOnChange = true,
+			Choices = { THEME:GetString("OptionNames","None"), THEME:GetString("OptionNames","CalorieBurn"), THEME:GetString("OptionNames","PlayTime") },
+			Values = { "none","calories","time" },
+			NotifyOfSelection= function(self, pn, choice)
+				GAMESTATE:Env()["NewTimingMode"] = self.Values[choice]
+				MESSAGEMAN:Broadcast("GoalTypeChanged")
+			end,
+			LoadSelections = function(s, list, pn)
+				list[1] = true
+			end,
+			SaveSelections = function(s, list, pn)
+			end
+		},
+		----------------------------------------------------
+		["GoalAmount"] = {
+			Name="GoalCalories",
+			LayoutType = "ShowOneInRow",
+			SelectType = "SelectOne",
+			OneChoiceForAllPlayers = false,
+			ExportOnChange = true,
+			GoToFirstOnStart= true,
+			Choices = CaloriesList(),
+			ReloadRowMessages = { "GoalTypeChanged" },
+			LoadSelections = function(s, list, pn)
+				if GAMESTATE:Env()["NewTimingMode"] == "time" then
+					local val = PROFILEMAN:GetProfile(pn):GetGoalSeconds()
+					for i = 1,table.getn(s.Choices) do
+						if val == IndexToSeconds(i) then
+							list[i] = true
+							return
+						end
+					end
+					list[6] = true	-- 10 mins
+				end
+				if GAMESTATE:Env()["NewTimingMode"] == "calories" then
+					local val = PROFILEMAN:GetProfile(pn):GetGoalCalories()
+					for i = 1,table.getn(s.Choices) do
+						if val == IndexToCalories(i) then
+							list[i] = true
+							return
+						end
+					end
+					list[13] = true	-- 150 cals
+				end
+			end,
+			SaveSelections = function(s, list, pn)
+				local profile = PROFILEMAN:GetProfile(pn)
+				for i = 1,table.getn(s.Choices) do
+					if list[i] then
+						if GAMESTATE:Env()["NewTimingMode"] == "calories" then
+							PROFILEMAN:GetProfile(pn):SetGoalType(0):SetGoalCalories( IndexToCalories(i) )
+						end
+						if GAMESTATE:Env()["NewTimingMode"] == "time" then
+							PROFILEMAN:GetProfile(pn):SetGoalType(1):SetGoalSeconds( IndexToSeconds(i) )
+						end
+						return
+					end
+				end
+				GAMESTATE:Env()["WorkoutComplete"..pn] = false
+			end,
+			Reload = function(self)
+				-- Get the original values
+				local origVals = self.Choices
+				local Types = {
+					["calories"] = CaloriesList(),
+					["time"] = SecondsList(),
+					["none"] = SecondsList(),
+				}
+
+				self.Choices = Types[ GAMESTATE:Env()["NewTimingMode"] ]
+				self.Values = Types[ GAMESTATE:Env()["NewTimingMode"] ]
+				if GAMESTATE:Env()["NewTimingMode"] == "time" then self.Name = "GoalTime" end
+				if GAMESTATE:Env()["NewTimingMode"] == "calories" then self.Name = "GoalCalories" end
+				if #origVals ~= #self.Choices then
+					return "ReloadChanged_All"
+				end
+				return "ReloadChanged_None"
+			end,
+		},
+		----------------------------------------------------
+		["Weight"] = {
+			-- Name is used to retrieve the header and explanation text.
+			Name = "Weight",
+			LayoutType = "ShowOneInRow",
+			SelectType = "SelectOne",
+			OneChoiceForAllPlayers = false,
+			ExportOnChange = false,
+			Choices = WeightLbs(),
+			LoadSelections = function(self, list, pn)
+				local val = PROFILEMAN:GetProfile(pn):GetWeightPounds()
+				if val <= 0 then val = 100 end
+				for i = 1,table.getn(self.Choices) do
+					if val == IndexToPounds(i) then
+						list[i] = true
+						return
+					end
+				end
+				list[20] = true -- 100 lbs
+			end,
+			SaveSelections = function(self, list, pn)
+				for i = 1,table.getn(self.Choices) do
+					if list[i] then
+						PROFILEMAN:GetProfile(pn):SetWeightPounds( IndexToPounds(i) )
+						return
+					end
+				end
+			end,
+		},
+		----------------------------------------------------
+		["SimpleSteps"] = {
+			Name="SimpleSteps",
+			LayoutType = "ShowOneInRow",
+			SelectType = "SelectOne",
+			OneChoiceForAllPlayers = false,
+			ExportOnChange = true,
+			Choices = { "no", "yes" },
+			Values = { false, true },
+			LoadSelections = function(s, list, pn)
+				list[1] = true
+			end,
+			SaveSelections = function(s, list, pn)
+				for i, choice in ipairs(s.Choices) do
+					if list[2] == true then
+						GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):Little(true)
+					end
+				end
+			end
+		},
+		----------------------------------------------------
+		["SelectType"] = {
+			Name="SelectType",
+			LayoutType = "ShowAllInRow",
+			SelectType = "SelectOne",
+			OneChoiceForAllPlayers = true,
+			ExportOnChange = true,
+			Choices = { THEME:GetString("OptionNames","Songs"), THEME:GetString("OptionNames","Courses"), THEME:GetString("OptionNames","RandomEndless") },
+			Values = { 1, 2, 3 },
+			LoadSelections = function(s, list, pn)
+				list[1] = true
+			end,
+			SaveSelections = function(s, list, pn)
+				local chnew = {
+					"playmode,regular",
+					"playmode,nonstop",
+					"playmode,endless;difficulty,easy"
+				}
+				for i, choice in ipairs(s.Choices) do
+					if list[i] then
+						GAMESTATE:ApplyGameCommand( chnew[i] )
+					end
+				end
+			end
+		},
+	}
+
+	if Choices[OptionToSelect] then
+		local t = Choices[OptionToSelect]
+		setmetatable(t,t)
+		return t
 	end
 end

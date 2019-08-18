@@ -1,5 +1,14 @@
 local t = Def.ActorFrame{};
+local StageNum = 1
+local CurrentScreen = ""
 for player in ivalues(PlayerNumber) do
+	t[#t+1] = Def.Actor{
+		OnCommand=function()
+			if SCREENMAN:GetTopScreen() then
+				CurrentScreen = SCREENMAN:GetTopScreen():GetName()
+			end
+		end;
+	}
 	t[#t+1] = Def.BitmapText{
 		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() == "PlayMode_Rave";
 		Font="Common Normal";
@@ -17,11 +26,12 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.BitmapText{
-		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave";
+		Condition=GAMESTATE:IsPlayerEnabled(player) and (GAMESTATE:GetPlayMode() ~= "PlayMode_Rave" and GAMESTATE:GetPlayMode() ~= "PlayMode_Oni") and not GAMESTATE:Env()["WorkoutMode"];
 		Font="_futurist metalic";
 		Text=" 0.00%";
 		OnCommand=function(self)
 			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_TOP+56 )
+			:visible( CurrentScreen ~= "ScreenGameplaySyncMachine" )
 			:diffuse( player == PLAYER_1 and color("#FBBE03") or color("#56FF48") ):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
 			if ThemePrefs.Get("CompareScores") and GAMESTATE:GetNumPlayersEnabled() == 2 then
@@ -45,8 +55,109 @@ for player in ivalues(PlayerNumber) do
 		end;
 	};
 
+	t[#t+1] = Def.BitmapText{
+		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() == "PlayMode_Oni";
+		Font="Common Normal";
+		OnCommand=function(self)
+			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-100 or SCREEN_CENTER_X+100, SCREEN_TOP+54 )
+			:diffusealpha(0)
+		end;
+		JudgmentMessageCommand=function(self,params)
+			local rewards = {
+				["W1"] = "+0.2",
+				["W3"] = "-0.5",
+				["W4"] = "-1.0",
+				["W5"] = "-2.0",
+				["Miss"] = "-4.0",
+			}
+			if params.Player == player and params.Notes then
+				local score = ToEnumShortString(params.TapNoteScore)
+				self:settext( rewards[score] and rewards[score].."s" or "" )
+				:finishtweening():shadowlength(2):diffusealpha(1):zoom(0.9):linear(0.2):zoom(0.8):sleep(0.2):diffusealpha(0)
+			end
+		end;
+	};
+
+	-- Workout mode calories indicator
+	t[#t+1] = Def.BitmapText{
+		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:Env()["WorkoutMode"];
+		Font="_futurist metalic";
+		OnCommand=function(self)
+			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_TOP+56 )
+			:diffuse( player == PLAYER_1 and color("#FBBE03") or color("#56FF48") ):addy(-100):sleep(0.5)
+			:settextf( "%.2fc", STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetCaloriesBurned() )
+			:decelerate(0.8):addy(100)
+		end;
+		StepMessageCommand=function(self) self:queuecommand("UpdateScore") end;
+		UpdateScoreCommand=function(self)
+			local stats = {
+				STATSMAN:GetAccumPlayedStageStats(player),
+				STATSMAN:GetCurStageStats(player)
+			}
+			local Sum = stats[1]:GetPlayerStageStats(player):GetCaloriesBurned() + stats[2]:GetPlayerStageStats(player):GetCaloriesBurned()
+
+			self:settextf( "%.2fc", Sum )
+		end;
+		OffCommand=function(self)
+			self:sleep(1):accelerate(0.8):addy(-100)
+		end;
+	};
+
+	t[#t+1] = Def.ActorFrame{
+		Condition=GAMESTATE:Env()["WorkoutMode"] and GAMESTATE:IsPlayerEnabled(player),
+		OnCommand=function(s)
+			s:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_BOTTOM-48 )
+			:addy(100):sleep(0.5):decelerate(0.8):addy(-100)
+		end;
+		Def.BitmapText{
+			Font="_futurist metalic",
+			OnCommand=function(s)
+				s:diffuse( player == PLAYER_1 and color("#FBBE03") or color("#56FF48") ):queuecommand("UpdateTime")
+			end;
+			UpdateTimeCommand=function(s)
+				local stats = {
+					STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player),
+					STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player)
+				}
+				local time = stats[1]:GetAliveSeconds() + stats[2]:GetAliveSeconds()
+				s:settext( SecondsToMMSSMsMs(time) ):sleep(1/60):queuecommand("UpdateTime")
+			end;
+		};
+
+		Def.BitmapText{
+			Font="Common Normal",
+			Text=THEME:GetString("ScreenGameplayWorkout","Goal Complete!"),
+			OnCommand=function(s)
+				s:diffuseshift():zoom(0.6):y(-30):visible(false)
+				:queuecommand("CheckGoal")
+			end;
+			CheckGoalCommand=function(s)
+				local stats = {
+					STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player),
+					STATSMAN:GetCurStageStats(player):GetPlayerStageStats(player)
+				}
+				local GoalType = PROFILEMAN:GetProfile(player):GetGoalType()
+				if GoalType == 1 then
+					local time = stats[1]:GetAliveSeconds() + stats[2]:GetAliveSeconds()
+					if (time >= PROFILEMAN:GetProfile(player):GetGoalSeconds()) then
+						GAMESTATE:Env()["WorkoutComplete"..player] = true
+					end
+				end
+				if GoalType == 0 then
+					local cal = stats[1]:GetCaloriesBurned() + stats[2]:GetCaloriesBurned()
+					if (cal >= PROFILEMAN:GetProfile(player):GetGoalCalories()) then
+						GAMESTATE:Env()["WorkoutComplete"..player] = true
+					end
+				end
+
+				s:visible( GAMESTATE:Env()["WorkoutComplete"..player] == true and true or false )
+				s:sleep(1/20):queuecommand("CheckGoal")
+			end;
+		};
+	}
+
 	t[#t+1] = LoadActor( "Lifebar", player )..{
-		Condition=GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar"),
+		Condition=(GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar")) and not GAMESTATE:Env()["WorkoutMode"],
 		OnCommand=function(self)
 			local tsns = ToEnumShortString(player)
 			self:xy( THEME:GetMetric("ScreenGameplay","Life"..tsns.."X") , THEME:GetMetric("ScreenGameplay","Life"..tsns.."Y") )
@@ -176,10 +287,11 @@ t[#t+1] = Def.ActorFrame{
 		self:playcommand("Update")
 	end;
 	UpdateCommand=function(self)
-	if not GAMESTATE:IsCourseMode() then
+	if not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() then
 		self:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
-	else
-		self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." - "..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
+	-- The only elseif of the entire theme.
+	elseif GAMESTATE:GetCurrentCourse() then
+		self:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." ".. (GAMESTATE:GetPlayMode() == "PlayMode_Endless" and "- "..StageNum.." " or "") .."- "..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	end
 	self:maxwidth(SCREEN_WIDTH+20)
 	end,
@@ -220,9 +332,13 @@ t[#t+1] = Def.ActorFrame{
 };
 
 if GAMESTATE:IsCourseMode() then
-	local StageNum = 1
 	t[#t+1] = Def.ActorFrame{
-			OnCommand=function(self) self:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40) end;
+			OnCommand=function(self)
+				self:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40)
+				if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then
+					self:sleep(0.2):linear(0.4):diffusealpha(0)
+				end
+			end;
 			OffCommand=function(self) self:accelerate(0.8):addy(150) end;
 			BeforeLoadingNextCourseSongMessageCommand=function(self)
 				self:finishtweening():linear(0.3):Center():zoom(1):sleep(0.5):zoom(0.25):y(SCREEN_BOTTOM-40)
@@ -232,10 +348,12 @@ if GAMESTATE:IsCourseMode() then
 			OnCommand=function(self) self:animate(0) end;
 			BeforeLoadingNextCourseSongMessageCommand=function(self)
 				StageNum = StageNum + 1
-				self:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum) )
+				if GAMESTATE:GetPlayMode() ~= "PlayMode_Endless" then
+					self:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum) )
+				end
 			end,
 			},
-		};
+	};
 end
 
 return t;

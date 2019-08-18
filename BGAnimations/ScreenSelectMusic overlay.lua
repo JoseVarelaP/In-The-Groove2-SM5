@@ -7,6 +7,14 @@ t[#t+1] = Def.ActorFrame{
 		Texture=THEME:GetPathG("ScreenSelectMusic wheel","mask"),
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X-385):y(SCREEN_CENTER_Y-10):zoom(1.1):zoomy(1.2):zwrite(true):z(1):blend("BlendMode_NoEffect")
+			for player in ivalues(PlayerNumber) do
+				if GAMESTATE:Env()["WorkoutMode"] then
+					if GAMESTATE:IsPlayerEnabled(player) then
+						-- FailSetting
+						GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):FailSetting(3)
+					end
+				end
+			end
 		end;
 	},
 
@@ -60,6 +68,9 @@ t[#t+1] = Def.ActorFrame{
 		local s = THEME:GetString("ScreenSelectMusic","HelpTextNormal") .. "::" ..
 			THEME:GetString("ScreenSelectMusic","DifficultyChangingAvailableHelpTextAppend") .. "::" ..
 			THEME:GetString("ScreenSelectMusic","SelectButtonAvailableHelpTextAppend")
+		if GAMESTATE:Env()["WorkoutMode"] then
+			s = s .. "::"..THEME:GetString("ScreenSelectMusic","WorkoutHelpTextAppend")
+		end
 		self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 		self:SetTipsColonSeparated(s);
 	end;

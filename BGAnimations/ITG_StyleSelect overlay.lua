@@ -1,3 +1,39 @@
+local function Unlock(name)
+	local codenumber = tonumber(string.sub(name, 6))
+	local Series = string.sub(name, 0,-3)
+	local codes = {
+		["ITG1_"] = {
+			"Disconnected -Hyper-", -- Left,Right,Up,Down,Left,Left,Right,Right
+			"Disconnected -Mobius-", -- Left,Down,Right,Down,Up,Right,Down,Left
+			"Infection", -- Up,Down,Up,Down,Up,Down,Right,Right,Up
+			"Xuxa", -- Right,Up,Down,Down,Right,Down,Up,Left,Down
+			"Tell", -- Down,Left,Up,Up,Right,Right,Down,Left,Down
+			"Bubble Dancer", -- Right,Left,Left,Right,Up,Down,Down,Left,Left
+			"Don't Promise Me ~Happiness~", -- Up,Right,Up,Left,Down,Left,Right,Left,Right
+			"Anubis", -- Left,Down,Up,Left,Down,Down,Right,Right,Up
+			"DJ Party", -- Left,Right,Right,Left,Up,Down,Right,Left,Down
+			"Pandemonium", -- Left,Up,Left,Down,Up,Down,Right,Down,Left
+		},
+		["ITG2_"] = {
+			"Disconnected Disco", -- Up,Down,Down,Up,Left,Left,Down,Right,Down,Up,Right
+			"VerTex^2", -- Left,Down,Right,Right,Right,Down,Left,Up,Up,Down,Right
+			"Wanna Do", -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
+			"Know Your Enemy", -- Right,Left,Down,Down,Down,Up,Left,Down,Left,Left,Right
+			"Hardcore Symphony", -- Down,Up,Up,Left,Down,Right,Down,Right,Right,Down,Up
+		}
+    }
+    local unlockid = Series == "ITG1_" and codenumber or codenumber+10
+    if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
+        if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
+	        SOUND:DimMusic( 0.2, 3 )
+            SOUND:PlayOnce( THEME:GetPathS("Unlocked",codes[Series][codenumber]) )
+            UNLOCKMAN:UnlockEntryIndex( unlockid-1 )
+            GAMESTATE:SetPreferredSong( SONGMAN:FindSong( codes[Series][codenumber] ) )
+            MESSAGEMAN:Broadcast("UnlockMade",{ Name=codes[Series][codenumber] })
+        end
+    end
+end
+
 -- Begin by the actorframe
 local t = Def.ActorFrame{};
 local MenuIndex = 1;
@@ -15,6 +51,13 @@ local function CheckValueOffsets()
     print( "CheckValueOffsets ".. MenuIndex )
     if MenuIndex > #PadChoices  then MenuIndex = 1 end
     if MenuIndex < 1            then MenuIndex = #PadChoices end
+    if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+        if MenuIndex == 2 or MenuIndex == 3 then
+            if GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin() then
+                MenuIndex = 1
+            end
+        end
+    end
     SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
     MESSAGEMAN:Broadcast("MenuUpAllVal")
     return
@@ -33,17 +76,27 @@ local BTInput = {
         CheckValueOffsets()
     end,
     ["Start"] = function(event)
+        if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+            if MenuIndex == 2 or MenuIndex == 3 then
+                if GAMESTATE:GetNumPlayersEnabled() == 1 then
+                    GAMESTATE:InsertCoin(-1)
+                end
+            end
+        end
         if MenuIndex == 2 then
             GAMESTATE:JoinPlayer(PLAYER_1)
             GAMESTATE:JoinPlayer(PLAYER_2)
         end
         SCREENMAN:PlayStartSound()
+        if not GAMESTATE:Env()["WorkoutMode"] then
+            SOUND:DimMusic(0,3)
+        end
         GAMESTATE:SetCurrentStyle( modes[MenuIndex] )
-        SCREENMAN:GetTopScreen():SetNextScreenName( SelectMusicOrCourse() ):StartTransitioningScreen("SM_GoToNextScreen")
+        SCREENMAN:GetTopScreen():SetNextScreenName( GAMESTATE:Env()["WorkoutMode"] and "ScreenWorkoutMenu" or SelectMusicOrCourse() ):StartTransitioningScreen("SM_GoToNextScreen")
     end,
     ["Back"] = function(event)
         SCREENMAN:PlayCancelSound()
-        SCREENMAN:GetTopScreen():SetPrevScreenName("SM_TitleMenu"):Cancel()
+        SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.TitleMenu()):Cancel()
     end,
 };
 
@@ -99,13 +152,19 @@ t[#t+1] = Def.Quad{
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
     end;
+    OffCommand=function(self)
+        self:sleep(1.5):linear(0.3):diffusealpha(0)
+    end;
+    CodeMessageCommand=function(s,param)
+        Unlock( param.Name )
+    end;
 };
 
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:x(SCREEN_CENTER_X+80):y(SCREEN_CENTER_Y+60):zoom(1.3):fov(45)
     end;    
-        LoadActor("ScreenSelectStyle underlay/char")..{
+        LoadActor( THEME:GetPathG("","chars/Style") )..{
             OnCommand=function(self)
                 self:z(-100):zbuffer(true):glow(1,1,1,0):diffusealpha(0):linear(0.3):glow(1,1,1,1):sleep(0.001):diffusealpha(1):linear(0.3):glow(1,1,1,0)
             end;
@@ -114,6 +173,8 @@ t[#t+1] = Def.ActorFrame{
             end;
         },
 };
+
+t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore");
 
 t[#t+1] = Def.ActorScroller{
 	NumItemsToDraw=3;
@@ -155,11 +216,12 @@ t[#t+1] = Def.ActorFrame{
         Font="_eurostile normal",
         OnCommand=function(self)
             self:zoomtowidth(300):halign(0):zoom(0.8):x(-160):shadowlength(3)
-            :skewx(-0.21)
+            :skewx(-0.21):wrapwidthpixels(400)
         end;
         MenuUpAllValMessageCommand=function(self)
+            local translated = {"1Player","2Player","Double"}
             self:finishtweening():cropright(1)
-            :settext( THEME:GetString("ScreenSelectStyle2","Explanation"..modes[MenuIndex] ) )
+            :settext( THEME:GetString("ScreenSelectStyle2","Explanation"..translated[MenuIndex] ) )
             :linear(0.5):cropright(0)
         end;
     }
@@ -185,6 +247,26 @@ t[#t+1] = Def.ActorFrame{
     end;
     },
 
+};
+
+t[#t+1] = Def.HelpDisplay {
+    File="_eurostile normal",
+    OnCommand=function(self)
+        self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
+    end;
+    InitCommand=function(self)
+        self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+        self:SetTipsColonSeparated( THEME:GetString("ScreenSelectStyle2","HelpText") );
+    end;
+    OffCommand=function(self)
+        self:linear(0.5):zoomy(0)
+    end;
+    UnlockMadeMessageCommand=function(s,param)
+        s:SetTipsColonSeparated( "Unlocked ".. param.Name ):sleep(5):queuecommand("ResetText")
+    end;
+    ResetTextCommand=function(self)
+        self:SetTipsColonSeparated( THEME:GetString("ScreenSelectStyle2","HelpText") );
+    end;
 };
 
 return t;

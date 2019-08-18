@@ -172,7 +172,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.HelpDisplay {
 		File="_eurostile normal",
 		OnCommand=function(self)
-			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink()
+			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
 			:zoomy(0):sleep(2.5):linear(0.5):zoomy(0.7)
 		end;
 		InitCommand=function(self)

@@ -12,8 +12,10 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
-		OffCommand=function(self)
-			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
+		CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+		OffCommand=function(s) s:playcommand("TweenOff") end;
+		TweenOffCommand=function(self)
+			self:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
 		end;
 		},
 
@@ -21,8 +23,10 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 		end;
-		OffCommand=function(self)
-			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
+		CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+		OffCommand=function(s) s:playcommand("TweenOff") end;
+		TweenOffCommand=function(self)
+			self:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
 		end;
 		},
 
@@ -32,7 +36,9 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:player(PLAYER_1):x(SCREEN_CENTER_X+(372-320)):y(81):addx(SCREEN_WIDTH*3/4):sleep(0.1):decelerate(0.3):addx(-SCREEN_WIDTH*3/4)
 		end;
-		OffCommand=function(self)
+		CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+		OffCommand=function(s) s:playcommand("TweenOff") end;
+		TweenOffCommand=function(self)
 			self:accelerate(0.3):addx(SCREEN_WIDTH)
 		end;
 	},
@@ -41,7 +47,9 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:player(PLAYER_2):x(SCREEN_CENTER_X+(540-320)):y(81):addx(SCREEN_WIDTH*3/4):sleep(0.2):decelerate(0.3):addx(-SCREEN_WIDTH*3/4)
 		end;
-		OffCommand=function(self)
+		CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+		OffCommand=function(s) s:playcommand("TweenOff") end;
+		TweenOffCommand=function(self)
 			self:accelerate(0.3):addx(SCREEN_WIDTH)
 		end;
 	},
@@ -56,10 +64,17 @@ return Def.ActorFrame{
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 			self:SetTipsColonSeparated(s);
 		end;
-		OffCommand=function(self)
-			self:linear(0.5):zoomy(0)
+		CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+		OffCommand=function(s) s:playcommand("TweenOff") end;
+		TweenOffCommand=function(self) self:linear(0.5):zoomy(0) end;
+	},
+
+	LoadActor("_menu out")..{
+		OnCommand=function(s)
+			s:Center():diffusealpha(0)
 		end;
-		},
+		CancelMessageCommand=function(s) s:sleep(0.3):linear(0.3):diffusealpha(1) end;
+	}
 
 
 }

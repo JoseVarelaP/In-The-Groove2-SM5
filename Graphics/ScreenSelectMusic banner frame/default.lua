@@ -92,7 +92,7 @@ return Def.ActorFrame{
 				self:diffusealpha(1):diffuseshift():effectcolor1(1,0.3,0.3,1):effectcolor2(0.7,0.1,0.1,1)
 			end;
 			OnCommand=function(self)
-				self:shadowlength(2):zoom(1):zoomx(1.3):x(-200):horizalign(left):y(45):effectclock("bgm"):diffuseshift():effectcolor1(1,1,1,1):effectcolor2(0.7,0.7,0.7,1):playcommand("Hide")
+				self:shadowlength(2):zoom(1):zoomx(1.22):x(-200):horizalign(left):y(45):effectclock("bgm"):diffuseshift():effectoffset(0.2):effectcolor1(1,1,1,1):effectcolor2(0.7,0.7,0.7,1):playcommand("Hide")
 			end;
 			CurrentSongChangedMessageCommand=function(self)
 			self:queuecommand("Hide")
@@ -110,16 +110,14 @@ return Def.ActorFrame{
 			OnCommand=function(self)
 				self:shadowlength(1):zoom(0.5):zoomx(0.55):x(-180):horizalign(left):y(45):playcommand("Hide")
 			end;
-			HideCommand=function(self)
-				self:diffusealpha(0)
-			end;
-			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGLong") ); end,
-			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","OITGMarathon") ); end,
-			CurrentSongChangedMessageCommand=function(self)
-			self:queuecommand("Hide")
+			HideCommand=function(s) s:diffusealpha(0) end;
+			ShowLongCommand=function(s) s:diffusealpha(1):settext( THEME:GetString("Balloons","OITGLong") ) end,
+			ShowMarathonCommand=function(s) s:diffusealpha(1):settext( THEME:GetString("Balloons","OITGMarathon") ) end,
+			CurrentSongChangedMessageCommand=function(s)
+			s:queuecommand("Hide")
 			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("ShowLong") end
-				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("ShowMarathon") end
+				if GAMESTATE:GetCurrentSong():IsLong() then s:queuecommand("ShowLong") end
+				if GAMESTATE:GetCurrentSong():IsMarathon() then s:queuecommand("ShowMarathon") end
 			end
 			end,
 			},

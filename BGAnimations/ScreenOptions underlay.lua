@@ -11,6 +11,9 @@ return Def.ActorFrame{
 	OffCommand=function(self)
 		self:accelerate(0.3):addx(SCREEN_WIDTH)
 	end;
+	CancelMessageCommand=function(self)
+		self:accelerate(0.3):addx(SCREEN_WIDTH)
+	end;
 	},
 
 	LoadActor("ScreenOptions overlay/ScreenOptions frame")..{
@@ -21,6 +24,9 @@ return Def.ActorFrame{
 		self:x(-SCREEN_WIDTH):decelerate(0.3):x(SCREEN_CENTER_X)
 	end;
 	OffCommand=function(self)
+		self:accelerate(0.3):addx(SCREEN_WIDTH)
+	end;
+	CancelMessageCommand=function(self)
 		self:accelerate(0.3):addx(SCREEN_WIDTH)
 	end;
 	},

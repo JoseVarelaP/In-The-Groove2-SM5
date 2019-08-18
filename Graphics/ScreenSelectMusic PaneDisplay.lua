@@ -41,7 +41,7 @@ local function PercentScore(pn,scoremethod)
 		StepsOrTrail = GAMESTATE:GetCurrentSteps(pn);
 	end;
 	local profile, scorelist;
-	local text,Rname = "","Best";
+	local text,Rname = "",THEME:GetString("PaneDisplay","Best");
 	if SongOrCourse and StepsOrTrail then
 		-- args profile
 		profile = PROFILEMAN:IsPersistentProfile(pn) and PROFILEMAN:GetProfile(pn) or PROFILEMAN:GetMachineProfile();
@@ -98,10 +98,14 @@ if GAMESTATE:IsPlayerEnabled(args) then
 						,-24+14*(vind-1)):halign(0)
 				end;
 				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
-					if GAMESTATE:GetCurrentSteps(args) and val[1] and type(val[1]) == "function" then s:settext( val[1]() ) end
+					if GAMESTATE:GetCurrentSteps(args) then
+						if val[1] and type(val[1]) == "function" then s:settext( val[1]() ) else s:settext(THEME:GetString("PaneDisplay",val[1])) end
+					end
 				end;
 				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
-					if GAMESTATE:GetCurrentTrail(args) and val[1] and type(val[1]) == "function" then s:settext( val[1]() ) end
+					if GAMESTATE:GetCurrentTrail(args) then
+						if val[1] and type(val[1]) == "function" then s:settext( val[1]() ) else s:settext(THEME:GetString("PaneDisplay",val[1])) end
+					end
 				end;
 			};
 			t[#t+1] = Def.BitmapText{
