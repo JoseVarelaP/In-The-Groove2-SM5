@@ -137,7 +137,7 @@ t[#t+1] = Def.ActorFrame{
 		end
 	},
 
-	Def.BitmapText{ Font="_eurostile blue glow", Text="Disqualified from ranking",
+	Def.BitmapText{ Font="_eurostile blue glow", Text=THEME:GetString("ScreenEvaluation","Disqualified"),
 	Condition=GetPSStageStats(player):IsDisqualified();
 	OnCommand=function(self)
 		self:xy(45,-65):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
@@ -155,12 +155,12 @@ local JudgmentInfo = {
 	RadarVal = { "Jumps", "Holds", "Mines", "Hands", "Rolls" },
 };
 
-for index, ValTC in ipairs(JudgmentInfo.Names) do
+for index, ValTC in ipairs(JudgmentInfo.Types) do
 	t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self) self:xy(-128,31-18) end;
-		Def.BitmapText{ Font="_eurostile normal", Text=ValTC,
+		Def.BitmapText{ Font="_eurostile normal", Text=THEME:GetString("TapNoteScore",ValTC),
 		OnCommand=function(self)
-			self:y(16*index):zoom(0.5):horizalign(left):shadowlength(0)
+			self:y(16*index):zoom(0.5):horizalign(left):shadowlength(0):maxwidth(130)
 		end;
 		};
 	};
@@ -212,7 +212,7 @@ for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 		end;
 		};
 
-		Def.BitmapText{ Font="Common Normal", Text=RCType,
+		Def.BitmapText{ Font="Common Normal", Text=THEME:GetString("RadarCategory",RCType),
 		OnCommand=function(self)
 			self:xy( -125, 16*index -1 ):zoom(0.5):halign(0)
 		end;

@@ -10,10 +10,10 @@ t[#t+1] = Def.Model{
 };
 
 t[#t+1] = Def.BitmapText{
-    Text="Full Great Combo";
+    Text=THEME:GetString("PerDifficultyAward","FullComboW3"),
     File="_eurostile normal";
     OnCommand=function(self)
-    	self:horizalign(right):zoom(0.5):y(12):x(135):shadowlength(2)
+    	self:horizalign(right):zoom(0.5):y(12):x(135):shadowlength(2):maxwidth(300)
     end;
 };
 

@@ -1,6 +1,11 @@
-local t = Def.ActorFrame{}
-
-t[#t+1] = LoadActor("title")..{ OnCommand=function(self) self:zbuffer(true) end };
+local t = Def.ActorFrame{
+	ModeNotChosenMessageCommand=function(self)
+		self:linear(0.5):zoom(0):sleep(5)
+	end;
+	ModeoniChosenMessageCommand=function(self)
+		self:linear(0.4):zoom(1.01):addy(-30):sleep(1):linear(0.4):zoom(0):sleep(3)
+	end;
+}
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(self) self:xy(-200,30) end;
@@ -25,7 +30,9 @@ t[#t+1] = Def.ActorFrame{
 			self:zbuffer(true):horizalign(right):vertalign(bottom):xy(36,36)
 		end;
 	}
-}
+};
+
+t[#t+1] = LoadActor("title")..{ OnCommand=function(self) self:z(120):zbuffer(true) end };
 
 return t;
 

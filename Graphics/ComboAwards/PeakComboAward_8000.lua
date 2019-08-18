@@ -11,7 +11,7 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 		Font="_eurostile normal",
-		Text="8000 Peak Combo",
+		Text=THEME:GetString("PeakComboAward","Peak8000Combo"),
 		OnCommand=function(self)
 			self:horizalign(left):zoom(0.5):y(12):x(-135):shadowlength(2)
 		end;

@@ -15,4 +15,49 @@ return Def.ActorFrame{
 		end;
 	};
 
+	Def.ActorFrame{
+		OnCommand=function(s)
+			s:xy(SCREEN_CENTER_X+140,SCREEN_CENTER_Y):addx(SCREEN_WIDTH):decelerate(0.3):addx(-SCREEN_WIDTH)
+		end;
+		CancelMessageCommand=function(s)
+			s:accelerate(0.3):addx(SCREEN_WIDTH)
+		end;
+
+		LoadActor( THEME:GetPathB("","_frame 3x3"), {File="info", Width=190, Height=70}),
+		Def.BitmapText{ Font="Common Normal";
+			OnCommand=function(self) self:y(-50):zoom(0.7) end;
+			ProfileSelectedMessageCommand=function(s,p)
+				s:settext("")
+				if p.Name then s:settext(p.Name) end
+			end
+		};
+
+		Def.BitmapText{
+			Font="Common Normal";
+			OnCommand=function(self) self:y(50):zoom(0.4) end;
+			ProfileSelectedMessageCommand=function(s,p)
+				s:settext("")
+				local Profiles = PROFILEMAN:GetNumLocalProfiles()
+				local Sent = p.Name
+				for i=1,Profiles do
+					local current = PROFILEMAN:GetLocalProfileFromIndex(i-1)
+					-- SCREENMAN:SystemMessage( "total: "..Profiles.. " now:".. tostring(current) .. " Sent: "..Sent)
+					if current then
+						if Sent == current:GetDisplayName() then
+							local Complete = ""
+							local Items = {
+								{ {"ScreenOptionsManageProfiles","Total Songs Played"}, current:GetNumTotalSongsPlayed() },
+								{ {"ScreenEvaluation","Calories Burned"}, current:GetTotalCaloriesBurned() },
+							}
+							for v in ivalues(Items) do
+								Complete = Complete .. string.format( "%i "..THEME:GetString(v[1][1],v[1][2]), v[2] ) .. "\n"
+							end
+							s:settext(Complete)
+						end
+					end
+				end
+			end
+		};
+	}
+
 }

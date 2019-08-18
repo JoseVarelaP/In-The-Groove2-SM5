@@ -17,6 +17,9 @@ return Def.ActorFrame{
 		OffCommand=function(self)
 			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
 		end;
+		CancelMessageCommand=function(self)
+			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
+		end;
 		},
 
 	},

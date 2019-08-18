@@ -15,8 +15,15 @@ t[#t+1] = Def.ActorFrame{
 			for player in ivalues(PlayerNumber) do
 				if GAMESTATE:IsPlayerEnabled(player) then 
 					local steps = GAMESTATE:GetCurrentSteps(player)
-					local StepCharter = steps and ( steps:GetAuthorCredit() and steps:GetAuthorCredit() or steps:GetDescription() ) or ""
-					StepCharters = StepCharters .. "\n"..  DifficultyName("Steps", player) .. " " .. THEME:GetString("EditMenuRow","Steps") .. ": ".. StepCharter
+					local StepCharter = steps and ( steps:GetAuthorCredit() and steps:GetAuthorCredit() or steps:GetDescription() ) or ""							
+					-- Show each difficulty's stepcharter. If it exists anyway.
+					if StepCharter ~= "" then
+						StepCharters = StepCharters .. "\n"..  DifficultyName("Steps", player) .. " " .. THEME:GetString("EditMenuRow","Steps") .. ": ".. StepCharter
+						-- Both difficulties are the same? Filter them to only show one.
+						if GAMESTATE:GetCurrentSteps(0) == GAMESTATE:GetCurrentSteps(1) then
+							StepCharters = "\n"..  DifficultyName("Steps", player) .. " " .. THEME:GetString("EditMenuRow","Steps") .. ": ".. StepCharter
+						end
+					end
 				end
 			end
 		end

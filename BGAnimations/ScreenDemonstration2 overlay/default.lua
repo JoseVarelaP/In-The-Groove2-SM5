@@ -7,9 +7,9 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="Color Arrows\nscroll from\nlow to high.",
+	Text=THEME:GetString("ScreenDemonstration2","Intro1"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(5):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(5):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
@@ -21,9 +21,9 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="Step when a\nColor Arrow\noverlaps the\nTarget Arrows\nat the top.",
+	Text=THEME:GetString("ScreenDemonstration2","Intro2"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(11):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(11):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
@@ -35,9 +35,9 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="The\nTraffic Light\nhelps you\nunderstand\nthe timing.",
+	Text=THEME:GetString("ScreenDemonstration2","Intro3"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(17):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(17):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
@@ -49,23 +49,23 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="The direction\nof the arrow\nsays which\nPanel\nto step on.",
+	Text=THEME:GetString("ScreenDemonstration2","Intro4"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(23):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(23):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="For arrows\nfacing Left,\nstep on the\nLeft Panel.\n\n\n\n",
+	Text=THEME:GetString("ScreenDemonstration2","Intro5"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(29):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y-70):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(29):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
 	LoadActor("arrow")..{
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4-60):y(SCREEN_CENTER_Y+80):rotationz(0):glowblink():effectperiod(0.5):diffusealpha(0):sleep(30):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
+		self:x(SCREEN_CENTER_X+WideScale(80,100)):y(SCREEN_CENTER_Y+80):rotationz(0):glowblink():effectperiod(0.5):diffusealpha(0):sleep(30):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
 	end;
 	},
 
@@ -88,15 +88,15 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 	Font="_tutorial",
-	Text="For arrows\nfacing Up,\nstep on the\nUp Panel.\n\n\n\n",
+	Text=THEME:GetString("ScreenDemonstration2","Intro6"),
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(35):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
+		self:wrapwidthpixels(350):x(SCREEN_CENTER_X+SCREEN_WIDTH/4+10):y(SCREEN_CENTER_Y-70):addx(SCREEN_WIDTH/2):zoom(0.8):sleep(35):decelerate(0.5):addx(-SCREEN_WIDTH/2):sleep(5):linear(0.3):diffusealpha(0)
 	end;
 	},
 
 	LoadActor("arrow")..{
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X+SCREEN_WIDTH/4-60):y(SCREEN_CENTER_Y+80):rotationz(90):glowblink():effectperiod(0.5):diffusealpha(0):sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
+		self:x(SCREEN_CENTER_X+WideScale(80,100)):y(SCREEN_CENTER_Y+80):rotationz(90):glowblink():effectperiod(0.5):diffusealpha(0):sleep(36):linear(0.3):diffusealpha(1):sleep(4):linear(0.3):diffusealpha(0)
 	end;
 	},
 

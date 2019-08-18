@@ -66,6 +66,12 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+	UseUnlockColor = 
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)
