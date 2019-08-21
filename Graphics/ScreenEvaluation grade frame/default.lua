@@ -257,16 +257,11 @@ t[#t+1] = Def.ActorFrame{
 local WorkoutData = {
 	Strings = { "Calories Burned", "Total Cals Burned", "Total Play Time", "Fitness Goal" },
 	Conditions = { nil, nil, nil, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 },
-	DataLabel = { 
-		"cals",
-		"cals",
-		"mins",
+	DataLabel = {  "cals", "cals", "mins",
 	function()
 		if PROFILEMAN:GetProfile(player) then
 			local goals = { "cals", "mins", "cals" }
-			for i,v in ipairs(goals) do
-				if PROFILEMAN:GetProfile(player):GetGoalType() == i-1 then return v end
-			end
+			for i,v in ipairs(goals) do if PROFILEMAN:GetProfile(player):GetGoalType() == i-1 then return v end end
 		end
 	end },
 	DataStructure = {
@@ -275,13 +270,10 @@ local WorkoutData = {
 		(STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()/60),
 		function()
 			if PROFILEMAN:GetProfile(player) then
-				local goals = {
-					PROFILEMAN:GetProfile(player):GetGoalCalories(),
-					(PROFILEMAN:GetProfile(player):GetGoalSeconds()/60),
-					0,
-				}
+				local prof = PROFILEMAN:GetProfile(player)
+				local goals = { prof:GetGoalCalories(), (prof:GetGoalSeconds()/60), 0 }
 				for i,v in ipairs(goals) do
-					if PROFILEMAN:GetProfile(player):GetGoalType() == i-1 then return goals[i] end
+					if prof:GetGoalType() == i-1 then return goals[i] end
 				end
 			end
 		end,
@@ -289,19 +281,12 @@ local WorkoutData = {
 	CompletePercentage = function()
 		if PROFILEMAN:GetProfile(player) and PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 then
 			local goals = {
-				{
-					PROFILEMAN:GetProfile(player):GetGoalCalories(),
-					STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetCaloriesBurned()
-				},
-				{
-					PROFILEMAN:GetProfile(player):GetGoalSeconds(),
-					STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()
-				},
+				{ PROFILEMAN:GetProfile(player):GetGoalCalories(),STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetCaloriesBurned()},
+				{ PROFILEMAN:GetProfile(player):GetGoalSeconds(),STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetAliveSeconds()},
 			}
 			for i,v in ipairs(goals) do
 				if PROFILEMAN:GetProfile(player):GetGoalType() == i-1 then
-					local result = v[2]/v[1]
-					return string.format( "%.2f", result*100 )
+					return string.format( "%.2f", (v[2]/v[1])*100 )
 				end
 			end
 		end
@@ -311,36 +296,30 @@ local WorkoutData = {
 
 local WorkoutActors = Def.ActorFrame{}
 for i,v in ipairs(WorkoutData.Strings) do
-	local yspacing = PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i)
-	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
-		Font="Common Normal",
+	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
 		Text=THEME:GetString("ScreenEvaluation",v),
-		OnCommand=function(s) s:xy( -130, yspacing ):zoom(0.5):halign(0):maxwidth(300) end;
+		OnCommand=function(s) s:xy( -130, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(0):maxwidth(300) end;
 	}
 end
 for i,v in ipairs(WorkoutData.DataLabel) do
-	local final = type(v) == "function" and v() or v
-	local yspacing = PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i)
 	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
-		Font="Common Normal", Text=THEME:GetString("ScreenEvaluation",final), OnCommand=function(s) s:xy( 96, yspacing ):zoom(0.5):halign(0) end;
+		Font="Common Normal", Text=THEME:GetString("ScreenEvaluation",type(v) == "function" and v() or v),
+		OnCommand=function(s) s:xy( 96, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(0) end;
 	}
 end
 for i,v in ipairs(WorkoutData.DataStructure) do
-	local yspacing = PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i)
-	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
-		Font="Common Normal",
+	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
 		Text=string.format( "%.2f", type(v) == "function" and v() or v),
 		OnCommand=function(s)
-			s:xy( 90, yspacing ):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
+			s:xy( 90, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
 		end;
 	}
 end
 
-WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
-	Font="Common Normal",
+WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 	Condition=WorkoutData.Conditions[4],
 	Text=string.format( THEME:GetString("ScreenEvaluation","Percent Complete"), WorkoutData.CompletePercentage() ),
 	OnCommand=function(s)
@@ -348,22 +327,15 @@ WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
 	end;
 };
 
-WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
-	Font="Common Normal",
+WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 	Text=GAMESTATE:Env()["WorkoutComplete"..player] and WorkoutData.Conditions[4] and THEME:GetString("ScreenEvaluation","Goal Complete!") or THEME:GetString("ScreenEvaluation","Keep Going!"),
 	OnCommand=function(s)
 		s:xy( -130, 16*7-2 ):zoom(0.6):halign(0):maxwidth(210)
-		if PROFILEMAN:GetProfile(player):GetGoalType() == 2 then
-			s:x( 0 ):halign(0.5)
-		end
-		if GAMESTATE:Env()["WorkoutComplete"..player] then
-			s:diffuseshift()
-		end
+		if PROFILEMAN:GetProfile(player):GetGoalType() == 2 then s:x( 0 ):halign(0.5) end
+		if GAMESTATE:Env()["WorkoutComplete"..player] then s:diffuseshift() end
 	end;
 };
 
-if GAMESTATE:Env()["WorkoutMode"] then
-	t[#t+1] = WorkoutActors
-end
+if GAMESTATE:Env()["WorkoutMode"] then t[#t+1] = WorkoutActors end
 
 return t;

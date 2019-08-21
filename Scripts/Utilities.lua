@@ -16,6 +16,15 @@ function MenuTimerSet(self)
 	:addx(200):decelerate(0.3):addx(-200)
 end
 
+function TimerWarning(s)
+	local childzooms = {1,0.7}
+	for i,v in ipairs(childzooms) do
+		s:GetParent():GetChild("Text"..i)
+		:stoptweening():zoom( v+0.4 ):linear(0.2):zoom( v ):diffuseblink():effectperiod(0.1666):effectcolor1(1,0,0,1):effectcolor2(1,1,1,1)
+	end
+	return s
+end;
+
 function SetFrameDifficulty( pn, ResultsScreen )
 	local data = {
 		difficulties = {"Beginner","Easy","Medium","Hard","Challenge","Edit"},
@@ -535,12 +544,22 @@ function WorkoutSelector(OptionToSelect)
 			Choices = { THEME:GetString("OptionNames","No"), THEME:GetString("OptionNames","Yes") },
 			Values = { false, true },
 			LoadSelections = function(s, list, pn)
+				if GAMESTATE:IsPlayerEnabled(pn) then
+					if GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):Little() then
+						list[2] = true
+						return
+					end
+				end
 				list[1] = true
+				return
 			end,
 			SaveSelections = function(s, list, pn)
+				local playeroption = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 				for i, choice in ipairs(s.Choices) do
 					if list[2] == true then
-						GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):Little(true)
+						playeroption:Little(true)
+					else
+						playeroption:Little(false)
 					end
 				end
 			end

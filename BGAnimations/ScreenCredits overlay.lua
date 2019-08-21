@@ -12,7 +12,7 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 		self:visible(false):sleep(110):queuecommand("NextScreen")
 		end,
-		NextScreenCommand=function() SCREENMAN:SetNewScreen("ScreenTitleMenu") end;
+		NextScreenCommand=function() SCREENMAN:StartTransitioningScreen("SM_GoToNextScreen") end;
 		},
 
 	Def.ActorScroller {
