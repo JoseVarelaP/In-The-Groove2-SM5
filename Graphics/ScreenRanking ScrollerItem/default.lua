@@ -1,21 +1,18 @@
 local t = Def.ActorFrame{
-	InitCommand=function(s) s:ztest(true) end;
-	LoadActor("ScreenRanking song frame");
+	InitCommand=function(s) s:MaskDest() end;
+	Def.Sprite{ Texture="ScreenRanking song frame" };
 
-	Def.Banner{
-		InitCommand=cmd(x,-276;halign,0;scaletoclipped,128,40;diffusealpha,0.5;fadeleft,0.25;faderight,0.25);
-		SetCommand=function(self, params)
-			if params.Song then
-				self:LoadFromSong( params.Song );
-			end
-		end;
-	};
-	LoadFont("_v 26px bold diffuse")..{
+	LoadFont("_eurostile normal")..{
 		--maxwidth,264
-		InitCommand=cmd(x,-292;halign,0;zoom,0.6;shadowlength,1;wrapwidthpixels,264;maxheight,58);
+		InitCommand=function(s)
+			s:x(-292):halign(0):zoom(0.8):shadowlength(1):wrapwidthpixels(224):maxheight(48):maxwidth(210)
+		end;
 		SetCommand=function(self, params)
 			if params.Song then
 				self:settext( params.Song:GetDisplayFullTitle() );
+			end
+			if params.Course then
+				self:settext( params.Course:GetDisplayFullTitle() );
 			end
 		end;
 	};
@@ -26,14 +23,12 @@ local Scores = Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren(); end;
 };
 
-for i=1,4 do
-	Scores[#Scores+1] = LoadFont("_v 26px bold black")..{
-		Name="Name"..i;
-		InitCommand=cmd(x,scale(i,1,4,-48,240);y,-8;zoom,0.625);
+for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
+	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Name"..i; Text="Name"..i;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-330,240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
-	Scores[#Scores+1] = LoadFont("_futurist numbers metallic")..{
-		Name="Score"..i;
-		InitCommand=cmd(x,scale(i,1,4,-48,240);y,12;zoom,0.5);
+	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Score"..i; Text="Score"..i;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-330,240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
 end
 

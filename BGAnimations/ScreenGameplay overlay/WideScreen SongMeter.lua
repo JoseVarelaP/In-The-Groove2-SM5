@@ -1,8 +1,6 @@
 local t = Def.ActorFrame{
-	OnCommand=function(s) s:xy(SCREEN_CENTER_X,SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn") end;
-	OffCommand=function(s) s:sleep(1):queuecommand("TweenOff") end;
-	TweenOnCommand=function(s) s:decelerate(0.8):addy(100) end;
-	TweenOffCommand=function(s) s:accelerate(0.8):addy(-100) end;
+	OnCommand=function(s) s:xy(SCREEN_CENTER_X,SCREEN_TOP+24):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
+	OffCommand=function(s) s:sleep(1):accelerate(0.8):addy(-100) end;
 }
 
 t[#t+1] = Def.SongMeterDisplay{
@@ -13,12 +11,6 @@ t[#t+1] = Def.SongMeterDisplay{
         };
     };
 
-    -- History Time
-    
-    -- I've made this trickery with the original meter frame texture back in 2016, when I was messing around with
-    -- ITGPC and suddenly got the realization of how could I make the meter frame stretch to fit, without distoring it.
-    -- I kept the code I did for this, and now it is used for Widescreen SM setups.
-    																						-- Jose_Varela
 local meterbar = { {0.5,0,SCREEN_WIDTH/11.5},{0,0.5,SCREEN_WIDTH/-11.5},{0.326,0.326,0} }
 for v in ivalues(meterbar) do
 	t[#t+1] = Def.Sprite{ Texture="meter frame",

@@ -109,7 +109,6 @@ function NoteSkinList()
 		-- It's possible a user might want to hide stock notesksins
 		-- but only have stock noteskins.  If so, just return all noteskins.
 		if #all == 0 then all = NOTESKIN:GetNoteSkinNames() end
-		
 		return ThemePrefs.Get("HideStockNoteSkins") == "OnlyITG" and {"metal","cel","flat","vivid","robot"} or all
 	end
 	local t = {
@@ -151,21 +150,12 @@ end
 function GetPSStageStats( pn ) return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn) end
 
 function CalculatePercentage( pn )
-	local CalcPerNames = STATSMAN:GetCurStageStats()
-
     if GAMESTATE:IsPlayerEnabled(pn) then
         local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
-        local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
-
-        if ScoreToCalculate > 0 then
-            return FormatPercentScore( ScoreToCalculate )
-        else
-            return " 0.00%"
-        end
-        
-    else
-        return " "
-    end
+		local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
+		return ScoreToCalculate > 0 and FormatPercentScore( ScoreToCalculate ) or " 0.00%"
+	end
+	return " "
 end
 
 function CalPerNum(pn)

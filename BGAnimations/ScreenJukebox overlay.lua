@@ -8,10 +8,8 @@ t[#t+1] = Def.Sprite{
 };
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=function(s) s:xy( SCREEN_CENTER_X,SCREEN_TOP+24 ):addy(-100):sleep(0.5):queuecommand("TweenOn") end;
-	OffCommand=function(s) s:queuecommand("TweenOff") end;
-	TweenOnCommand=function(s) s:decelerate(0.8):addy(100) end;
-	TweenOffCommand=function(s) s:accelerate(0.8):addy(-100) end;
+	OnCommand=function(s) s:xy( SCREEN_CENTER_X,SCREEN_TOP+24 ):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
+	OffCommand=function(s) s:accelerate(0.8):addy(-100) end;
 
 	Def.SongMeterDisplay{
         InitCommand=function(s) s:SetStreamWidth(SCREEN_WIDTH/1.17) end;
@@ -50,15 +48,14 @@ for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.ActorFrame{
 		Condition=GAMESTATE:IsPlayerEnabled(player),
 		OnCommand=function(s) s:xy( player == PLAYER_1 and SCREEN_LEFT-50 or SCREEN_RIGHT+50,SCREEN_TOP+60):queuecommand("TweenOn") end;
-		OffCommand=function(s) s:queuecommand("TweenOff") end;
 		TweenOnCommand=function(s) s:sleep(0.5):decelerate(0.8):addx( player == PLAYER_1 and 250 or -250) end;
-		TweenOffCommand=function(s) s:accelerate(0.8):addx( player == PLAYER_1 and -250 or 250) end;
+		OffCommand=function(s) s:accelerate(0.8):addx( player == PLAYER_1 and -250 or 250) end;
 
 		Def.Sprite{
 			Texture=THEME:GetPathG('','_difficulty icons'),
 			OnCommand=function(s) s:animate(0):playcommand("Update") end;
 			["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s) s:playcommand("Update") end;
-			UpdateCommand=function(s,parent) s:setstate( SetFrameDifficulty(player) ) end,
+			UpdateCommand=function(s) s:setstate( SetFrameDifficulty(player) ) end,
 		},
 
 		Def.BitmapText{

@@ -1,49 +1,36 @@
 return Def.ActorFrame{
 
 	Def.ActorFrame{
-	OnCommand=function(self)
-		self:fov(58):x(-10):y(2):zoomy(0.985):rotationy(-20):addx(450):decelerate(0.75):addx(-450)
-	end;
+	OnCommand=function(s) s:fov(58):xy(-10,2):zoomy(0.985):rotationy(-20):addx(450):decelerate(0.75):addx(-450) end;
 	OffCommand=function(s) s:accelerate(0.75):addx( IsUsingWideScreen() and 500 or 450); end,
 	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:accelerate(0.75):addx( IsUsingWideScreen() and 500 or 450); end end,
 
   		Def.ActorFrame{
-		InitCommand=function(self)
-			self:x(40):y(-110)
-		end;
+		InitCommand=function(s) s:xy(40,-110) end;
 
-			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=function(self)
-					self:zoom(1.12):x(17):y(8):zwrite(true):z(1):blend("BlendMode_NoEffect")
+			Def.Sprite{ Texture="../ScreenSelectMusic banner mask",
+				InitCommand=function(s)
+					s:zoom(1.12):xy(17,8):zwrite(true):z(1):blend("BlendMode_NoEffect")
 				end;
 			};
-			LoadActor( "../ScreenSelectMusic banner mask" ) .. {
-				InitCommand=function(self)
-					self:zoom(1.12):zoomx(-1.12):x(187):y(8):zwrite(true):z(1):blend("BlendMode_NoEffect")
+			Def.Sprite{ Texture="../ScreenSelectMusic banner mask",
+				InitCommand=function(s)
+					s:zoom(1.12):zoomx(-1.12):x(187,7):zwrite(true):z(1):blend("BlendMode_NoEffect")
 				end;
 			};
 			Def.ActorProxy{
-				BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('Banner'); self:SetTarget(banner); end,
-				InitCommand=function(self)
+				BeginCommand=function(s) s:SetTarget( SCREENMAN:GetTopScreen():GetChild('Banner') ); end,
+				InitCommand=function(s)
 				if IsUsingWideScreen() then
-					self:x(61):y(-3):setsize(418,164):zoomx(2.2):zoomy(1.6)
+					s:x(61):y(-3):setsize(418,164):zoomx(2.2):zoomy(1.6)
 				else
-					self:x(10):y(-3):setsize(418,164):zoomx(1.8):zoomy(1.6)
+					s:x(10):y(-3):setsize(418,164):zoomx(1.8):zoomy(1.6)
 				end
 				end;
 			};
 
-			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{
-				OnCommand=function(self)
-					self:y(126):zoomx(1):zoomy(0.94)
-				end
-			},
-
-			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{
-				OnCommand=function(self)
-					self:y(126):zoomx(1):zoomy(0.94)
-				end
-			},
+			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{ OnCommand=function(s) s:y(126):zoomx(1):zoomy(0.94) end };
+			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{ OnCommand=function(s) s:y(126):zoomx(1):zoomy(0.94) end };
 
 		Def.ActorFrame{
 		Condition=ThemePrefs.Get("MarathonLabel")	== "ITG";
@@ -51,68 +38,55 @@ return Def.ActorFrame{
 			Def.BitmapText{
 			Text=THEME:GetString("Balloons","ITGLong"),
 			Font="_big blue glow",
-			OnCommand=function(self)
-				self:shadowlength(2):zoom(1):x(05):y(200):diffuseshift():playcommand("Hide")
-			end;
-			HideCommand=function(self)
-				self:diffusealpha(0)
-			end;
-			ShowLongCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGLong") ); end,
-			ShowMarathonCommand=function(self) self:diffusealpha(1):settext( THEME:GetString("Balloons","ITGMarathon") ); end,
-			CurrentSongChangedMessageCommand=function(self)
-			self:queuecommand("Hide")
-			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("ShowLong") end
-				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("ShowMara") end
+			OnCommand=function(s) s:shadowlength(2):zoom(1):x(5,200):diffuseshift():playcommand("Set") end;
+			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
+			SetCommand=function(s) s:diffusealpha(0)
+				if GAMESTATE:GetCurrentSong() then
+					local checks = {
+						{GAMESTATE:GetCurrentSong():IsLong(), THEME:GetString("Balloons","ITGLong") },
+						{GAMESTATE:GetCurrentSong():IsMarathon(), THEME:GetString("Balloons","ITGMarathon") }
+					}
+					for v in ivalues(checks) do if v[1] then s:diffusealpha(1):settext(v[2]) end end
+				end
 			end
-			end,
-			},
-
-		},
+			};
+		};
 
 
 		Def.ActorFrame{
 		Condition=ThemePrefs.Get("MarathonLabel")	== "OITG";
 			-- Long/Marathon labels - OITG style
-
-			LoadActor( "OITG Balloon" )..{
-			HideCommand=function(self)
-				self:diffusealpha(0)
-			end;
-			LongCommand=function(self)
-				self:diffusealpha(1):diffuseshift():effectcolor1(0.8,0.8,0.8,1):effectcolor2(0.5,0.5,0.5,1)
-			end;
-			MaraCommand=function(self)
-				self:diffusealpha(1):diffuseshift():effectcolor1(1,0.3,0.3,1):effectcolor2(0.7,0.1,0.1,1)
-			end;
-			OnCommand=function(self)
-				self:shadowlength(2):zoom(1):zoomx(1.22):x(-200):horizalign(left):y(45):effectclock("bgm"):diffuseshift():effectoffset(0.2):effectcolor1(1,1,1,1):effectcolor2(0.7,0.7,0.7,1):playcommand("Hide")
-			end;
-			CurrentSongChangedMessageCommand=function(self)
-			self:queuecommand("Hide")
-			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then self:queuecommand("Long") end
-				if GAMESTATE:GetCurrentSong():IsMarathon() then self:queuecommand("Mara") end
-			end
-			end,
-
+			Def.Sprite{ Texture="OITG Balloon",
+				OnCommand=function(s) s:shadowlength(2):zoom(1):zoomx(1.22):xy(-200,45):halign(0):effectclock("bgm")
+					:diffuseshift():effectoffset(0.2):playcommand("Set") end;
+				CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
+				SetCommand=function(s) s:diffusealpha(0)
+				if GAMESTATE:GetCurrentSong() then
+					local colors = {
+						{ GAMESTATE:GetCurrentSong():IsLong(), color("0.8,0.8,0.8,1"), color("0.5,0.5,0.5,1") },
+						{ GAMESTATE:GetCurrentSong():IsMarathon(), color("1,0.3,0.3,1"), color("0.7,0.1,0.1,1") },
+					}
+					for v in ivalues(colors) do
+						if v[1] then s:diffusealpha(1):effectcolor1(v[2]):effectcolor2(v[3]) end
+					end
+				end
+				end,
 			},
 
 			Def.BitmapText{
-			Text=THEME:GetString("Balloons","OITGLong"),
 			Font="_eurostile normal",
-			OnCommand=function(self)
-				self:shadowlength(1):zoom(0.5):zoomx(0.55):x(-180):horizalign(left):y(45):playcommand("Hide")
+			OnCommand=function(s)
+				s:shadowlength(1):zoom(0.5):zoomx(0.55):xy(-180,45):halign(0):playcommand("Set")
 			end;
-			HideCommand=function(s) s:diffusealpha(0) end;
-			ShowLongCommand=function(s) s:diffusealpha(1):settext( THEME:GetString("Balloons","OITGLong") ) end,
-			ShowMarathonCommand=function(s) s:diffusealpha(1):settext( THEME:GetString("Balloons","OITGMarathon") ) end,
-			CurrentSongChangedMessageCommand=function(s)
-			s:queuecommand("Hide")
-			if GAMESTATE:GetCurrentSong() then
-				if GAMESTATE:GetCurrentSong():IsLong() then s:queuecommand("ShowLong") end
-				if GAMESTATE:GetCurrentSong():IsMarathon() then s:queuecommand("ShowMarathon") end
-			end
+			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
+			SetCommand=function(s) s:diffusealpha(0)
+				if GAMESTATE:GetCurrentSong() then
+					local ti = {
+						{ GAMESTATE:GetCurrentSong():IsLong(), THEME:GetString("Balloons","OITGLong") },
+						{ GAMESTATE:GetCurrentSong():IsMarathon(), THEME:GetString("Balloons","OITGMarathon") },
+					}
+					for v in ivalues(ti) do if v[1] then s:diffusealpha(1):settext(v[2]) end end
+				end
 			end,
 			},
 
@@ -130,28 +104,14 @@ return Def.ActorFrame{
 
 		};
 
-		LoadActor("right frame edge")..{
-		OnCommand=function(self)
-			self:x(-200):horizalign(left):zoomx(1)
-		end;
-		},
-
-		LoadActor("right frame middle")..{
-		OnCommand=function(self)
-			self:x(-200+158):horizalign(left):zoomx(40)
-		end;
-		},
-
-		LoadActor("right frame right")..{
-		OnCommand=function(self)
-			self:x(200+78):horizalign(left)
-		end;
-		},
+		Def.Sprite{ Texture="right frame edge", OnCommand=function(s) s:x(-200):halign(0):zoomx(1) end };
+		Def.Sprite{ Texture="right frame middle", OnCommand=function(s) s:x(-200+158):halign(0):zoomx(40) end };
+		Def.Sprite{ Texture="right frame right", OnCommand=function(s) s:x(200+78):halign(0) end };
 	},
 
 	Def.ActorFrame{
-	OnCommand=function(self)
-		self:y(1):addx(500):decelerate(0.75):addx(-500)
+	OnCommand=function(s)
+		s:y(1):addx(500):decelerate(0.75):addx(-500)
 	end;
 	-- FIVE FIVE FIVE GUYS
 	OffCommand=function(s) s:accelerate(0.75):addx( IsUsingWideScreen() and 555 or 450); end,
@@ -160,34 +120,25 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text=string.upper(THEME:GetString("BannerFrame","Artist"));
 		Font="_eurostile normal",
-		OnCommand=function(self)
-			self:horizalign(left):shadowlength(2):zoom(0.5):x(-165):y(-38):diffusealpha(0.5)
+		OnCommand=function(s)
+			s:halign(0):shadowlength(2):zoom(0.5):xy(-165,-38):diffusealpha(0.5)
 		end;
 		},
 
 		Def.BitmapText{
-		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=function(self)
-			self:horizalign(left):shadowlength(2):zoom(0.6):x(-165):y(-22):diffusealpha(1)
+		OnCommand=function(s)
+			s:halign(0):shadowlength(2):zoom(0.6):xy(-165,-22):diffusealpha(1)
 		end;
-		CurrentSongChangedMessageCommand=function(self)
-		self:settext("")
-		if GAMESTATE:GetCurrentSong() then
-			self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )			
-		end
+		CurrentSongChangedMessageCommand=function(s)
+			s:settext( GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetDisplayArtist() or "" )
 		end,
 		},
 
 		Def.HelpDisplay {
 			File="_eurostile normal",
-			OnCommand=function(self)
-				self:horizalign(left):shadowlength(2):zoom(0.6):x(-165):y(-22):diffusealpha(1)
-				self:SetSecsBetweenSwitches(1.5)
-			end;
-			OffCommand=function(self)
-				self:linear(0.5):zoomy(0)
-			end;
+			OnCommand=function(s) s:halign(0):shadowlength(2):zoom(0.6):xy(-165,-22):diffusealpha(1):SetSecsBetweenSwitches(1.5) end;
+			OffCommand=function(s) s:linear(0.5):zoomy(0) end;
 			CurrentCourseChangedMessageCommand=function(s)
 				if GAMESTATE:GetCurrentCourse() then
 					local Artists = GAMESTATE:GetCurrentCourse():GetCourseEntries()
@@ -208,34 +159,30 @@ return Def.ActorFrame{
 		Def.BitmapText{
 		Text="BPM",
 		Font="_eurostile normal",
-		OnCommand=function(self)
-			self:shadowlength(2):zoom(0.5):x(55):y(-32):diffusealpha(0.5)
+		OnCommand=function(s)
+			s:shadowlength(2):zoom(0.5):xy(55,-32):diffusealpha(0.5)
 		end;
 		},
 
 		Def.BitmapText{
-		Text="This will change",
 		Font="_eurostile normal",
-		OnCommand=function(self)
-			self:horizalign(left):shadowlength(2):zoom(0.6):x(40):y(-18):diffusealpha(1)
+		OnCommand=function(s)
+			s:halign(0):shadowlength(2):zoom(0.6):xy(40,-18)
 		end;
-		CurrentSongChangedMessageCommand=function(self)
+		CurrentSongChangedMessageCommand=function(s)
 			local song = GAMESTATE:GetCurrentSong()
-			local val
+			local val = ""
 			if song then
 				local bpms = song:GetDisplayBpms()
-
 				if bpms[1] == bpms[2] then
 					val = string.format("%i",bpms[1])
 				else
 					val = string.format("%i-%i",bpms[1],bpms[2])
 				end
-			else
-				val = " "
 			end
-			self:settext(val)
+			s:settext(val)
 		end;
-		CurrentCourseChangedMessageCommand=function(self)
+		CurrentCourseChangedMessageCommand=function(s)
 			local course = GAMESTATE:GetCurrentCourse()
 			local val = {0,0}
 			if course then
@@ -253,51 +200,41 @@ return Def.ActorFrame{
 				else
 					val = string.format("%i-%i",val[1],val[2])
 				end
-				self:settext(val == "0" and "???" or val)
+				s:settext(val == "0" and "???" or val)
 			end
 		end;
 		},
 
 		-- need to figure out how to get pop
 		Def.BitmapText{ Text="POP", Font="_eurostile normal",
-		OnCommand=function(s)
-			s:shadowlength(2):zoom(0.5):xy(150,-30):diffusealpha(0.5)
-		end;
+		OnCommand=function(s) s:shadowlength(2):zoom(0.5):xy(150,-30):diffusealpha(0.5) end;
 		},
 
 		-- Ordinal Number conversion based on einpoklum's c++ implementation.
 		-- https://stackoverflow.com/a/40350026
-		Def.BitmapText{ Text="POP", Font="_eurostile normal",
-		OnCommand=function(s)
-			s:shadowlength(2):zoom(0.6):xy(138,-16):diffusealpha(1):halign(0)
-		end;
-		CurrentSongChangedMessageCommand=function(self)
+		Def.BitmapText{ Font="_eurostile normal",
+		OnCommand=function(s) s:shadowlength(2):zoom(0.6):xy(138,-16):diffusealpha(1):halign(0) end;
+		CurrentSongChangedMessageCommand=function(s)
 			local sufixes = {"th","st","nd","rd"}
 			local song = GAMESTATE:GetCurrentSong()
-			local val
+			local val = ""
 			if song then
 				local ord = SONGMAN:GetSongRank(song) % 100
 				if (ord / 10 == 1) then ord = 0 end
 				ord = ord % 10
 				if (ord > 3) then ord = 0 end
 				val = SONGMAN:GetSongRank(song) .. THEME:GetString("OrdinalNumbers",sufixes[ord+1])
-			else
-				val = " "
 			end
-			self:settext(val)
+			s:settext(val)
 		end;
 		},
 
 	},
-	LoadActor( "../ScreenSelectMusic wheel mask" ) .. {
-				InitCommand=function(self)
-					self:x(-420):y(1):zwrite(true):z(1):blend("BlendMode_NoEffect")
-				end;
-			},
-	LoadActor("left frame")..{
-	OnCommand=function(self)
-		self:x(-380):y(1):addx(-150):decelerate(0.5):addx(150)
-	end;
+	Def.Sprite{ Texture="../ScreenSelectMusic wheel mask",
+		InitCommand=function(s) s:xy(-420,1):zwrite(true):z(1):blend("BlendMode_NoEffect") end;
+	},
+	Def.Sprite{ Texture="left frame",
+	OnCommand=function(s) s:xy(-380,1):addx(-150):decelerate(0.5):addx(150) end;
 	OffCommand=function(s) s:sleep(0.2):accelerate(0.6):addx( IsUsingWideScreen() and -225 or -150) end,
 	CancelMessageCommand=function(s) if GAMESTATE:Env()["WorkoutMode"] then s:sleep(0.2):accelerate(0.6):addx( IsUsingWideScreen() and -225 or -150) end end,
 	},
