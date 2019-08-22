@@ -135,8 +135,12 @@ if GAMESTATE:IsPlayerEnabled(args) then
 				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
 					if GAMESTATE:GetCurrentTrail(args) and val[2] then
 						s:settext( val[2]() )
-						if type(val[2]()) == "number" and val[2]() > 500 then
-							s:diffuse(Color.Red)
+						if val[3] then
+							for aqs,v in ipairs( ObtainData[ind][vind][3] ) do
+								if val[2]() ~= "???" and val[2]() > v then
+									s:diffuse( levelcolors[aqs] )
+								end
+							end
 						end
 					end
 				end;

@@ -92,7 +92,7 @@ for player in ivalues(PlayerNumber) do
 end
 
 -- Additional scripts
-t[#t+1] = LoadActor("danger p1");
+t[#t+1] = LoadActor("dangeractor");
 t[#t+1] = LoadActor("dead");
 
 return t;
