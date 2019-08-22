@@ -53,12 +53,13 @@ end
 
 local t = Def.ActorFrame{};
 
+local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
 t[#t+1] = Def.ActorFrame{
 	Def.Sprite{ Texture=GAMESTATE:Env()["WorkoutMode"] and "workout frame" or "base frame" },
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:xy(-95*side(player),-149)
+		self:xy( (DoublesIsOn and -170 or -95)*side(player), DoublesIsOn and -190 or -149)
 	end;
 		Def.Sprite{
 			Texture=THEME:GetPathG('','_difficulty icons'),

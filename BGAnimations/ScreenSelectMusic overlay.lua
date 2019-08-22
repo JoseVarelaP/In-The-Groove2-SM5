@@ -191,7 +191,7 @@ for player in ivalues(PlayerNumber) do
 	t[#t+1] = LoadActor( THEME:GetPathG('ScreenSelectMusic','PaneDisplay'), player )..{
 		Condition=GAMESTATE:IsHumanPlayer(player);
 		OnCommand=function(self)
-			self:x(player == PLAYER_1 and SCREEN_CENTER_X-155 or SCREEN_CENTER_X+155)
+			self:x( GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides" and SCREEN_CENTER_X or (player == PLAYER_1 and SCREEN_CENTER_X-155 or SCREEN_CENTER_X+155) )
 			:y(SCREEN_BOTTOM-95):zoomy(0):sleep(0.5):linear(0.3):zoomy(1)
 		end;
 		OffCommand=function(self) self:linear(0.3):zoomy(0) end;

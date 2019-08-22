@@ -59,20 +59,21 @@ local function pnum(pn)
 end
 
 -- Grade and Frame Info
+local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.ActorFrame{
 	Condition=GAMESTATE:IsPlayerEnabled(player);
 		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
 		InitCommand=function(self)
-		self:xy(SCREEN_CENTER_X+(-145*side(player)),SCREEN_CENTER_Y+54)
+		self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y+54)
 		end,
 		OnCommand=function(self)
-			self:addx( (-SCREEN_WIDTH/2)*side(player) )
+			self:addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
 			:sleep(3):decelerate(0.3)
-			:addx( (SCREEN_WIDTH/2)*side(player) )
+			:addx( (DoublesIsOn and SCREEN_WIDTH/1.2 or SCREEN_WIDTH/2)*side(player) )
 		end;
 		OffCommand=function(self)
-			self:accelerate(0.3):addx( (-SCREEN_WIDTH/2)*side(player) )
+			self:accelerate(0.3):addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
 		end;
 		};
 	};
@@ -80,13 +81,13 @@ for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.ActorFrame{
 		Condition=GAMESTATE:IsPlayerEnabled(player);
 		BeginCommand=function(self)
-			self:xy(SCREEN_CENTER_X+(-145*side(player)),SCREEN_CENTER_Y-60)
+			self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
 			:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
 			:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
-			self:xy(SCREEN_CENTER_X+Gradeside(player),SCREEN_CENTER_Y-38);
+			self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player)) ,SCREEN_CENTER_Y-38);
 		end;
 		OffCommand=function(self)
-			self:accelerate(0.3):addx(-SCREEN_WIDTH/2*side(player))
+			self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))
 		end;
 			LoadActor( THEME:GetPathG("", "_grade models/"..PlayerTier[player]..".lua" ) );
 		};
