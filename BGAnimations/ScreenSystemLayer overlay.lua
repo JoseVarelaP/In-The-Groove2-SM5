@@ -53,29 +53,27 @@ t[#t+1] = Def.ActorFrame {
 };
 
 -- MemoryCard management
+local cardpos = {
+	["PlayerNumber_P1"] = {WideScale(18,24),SCREEN_BOTTOM-14},
+	["PlayerNumber_P2"] = {SCREEN_RIGHT-WideScale(18,24),SCREEN_BOTTOM-14},
+}
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.Sprite{
 		Texture=THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
-		InitCommand=function(s)
-			s:xy( THEME:GetMetric("ScreenWithMenuElements","MemoryCardDisplay"..ToEnumShortString(player).."X" ),
-			THEME:GetMetric("ScreenWithMenuElements","MemoryCardDisplay"..ToEnumShortString(player).."Y" )-2 )
-			:visible(false)
-		end;
+		InitCommand=function(s) s:xy( cardpos[player][1] ,cardpos[player][2]-2 ):visible(true) end;
 		SYSTEMUpdateTextMessageCommand=function(self)
 			-- Based on what the player contains, update the sprite accordingly.
-			if GAMESTATE:IsPlayerEnabled(player) then
-				local status = {
-					["ready"] = THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
-					["checking"] = THEME:GetPathG("MemoryCardDisplay checking", ToEnumShortString(player) ),
-					["late"] = THEME:GetPathG("MemoryCardDisplay late", ToEnumShortString(player) ),
-					["error"] = THEME:GetPathG("MemoryCardDisplay error", ToEnumShortString(player) ),
-					["removed"] = THEME:GetPathG("MemoryCardDisplay removed", ToEnumShortString(player) ),
-				}
-				if MEMCARDMAN:GetCardState(player) ~= "none" then
-					self:visible(true):Load( status[ ToEnumShortString(MEMCARDMAN:GetCardState(player)) ] )
-				else
-					self:visible(false)
-				end
+			local status = {
+				["ready"] = THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
+				["checking"] = THEME:GetPathG("MemoryCardDisplay checking", ToEnumShortString(player) ),
+				["late"] = THEME:GetPathG("MemoryCardDisplay late", ToEnumShortString(player) ),
+				["error"] = THEME:GetPathG("MemoryCardDisplay error", ToEnumShortString(player) ),
+				["removed"] = THEME:GetPathG("MemoryCardDisplay removed", ToEnumShortString(player) ),
+			}
+			if MEMCARDMAN:GetCardState(player) ~= "none" then
+				self:visible(true):Load( status[ ToEnumShortString(MEMCARDMAN:GetCardState(player)) ] )
+			else
+				self:visible(false)
 			end
 		end;
 	};
