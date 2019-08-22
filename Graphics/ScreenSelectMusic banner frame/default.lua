@@ -218,7 +218,7 @@ return Def.ActorFrame{
 			local sufixes = {"th","st","nd","rd"}
 			local song = GAMESTATE:GetCurrentSong()
 			local val = ""
-			if song then
+			if song and SONGMAN:GetSongRank(song) then
 				local ord = SONGMAN:GetSongRank(song) % 100
 				if (ord / 10 == 1) then ord = 0 end
 				ord = ord % 10
