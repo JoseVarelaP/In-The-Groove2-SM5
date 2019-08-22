@@ -195,7 +195,8 @@ for player in ivalues(PlayerNumber) do
 				Def.Sprite{
 					Texture=THEME:GetPathG('','_difficulty icons');
 					OnCommand=function(s)
-						s:pause():playcommand("Update");
+						s:pause():playcommand("Update")
+						:zoomx( player == PLAYER_1 and 1 or -1 )
 					end;
 					-- Update Difficulty frame when update begins.
 					["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s) s:playcommand("Update"); end;
@@ -205,7 +206,7 @@ for player in ivalues(PlayerNumber) do
 				Def.BitmapText{
 				Font="Common Normal",
 				OnCommand=function(s)
-					s:zoom(0.5):xy(-36,0):horizalign(left):playcommand("Update")
+					s:zoom(0.5):xy( player == PLAYER_1 and -36 or 36,0):horizalign( player == PLAYER_1 and left or right):playcommand("Update")
 				end;
 				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s)
 					s:playcommand("Update")
@@ -222,7 +223,7 @@ for player in ivalues(PlayerNumber) do
 				Def.BitmapText{
 				Font="Common Normal",
 				OnCommand=function(s)
-					s:zoom(0.5):xy(35,0):horizalign(right):playcommand("Update")
+					s:zoom(0.5):xy(player == PLAYER_1 and 35 or -35,0):horizalign(player == PLAYER_1 and right or left):playcommand("Update")
 				end;
 				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s)
 					s:playcommand("Update")

@@ -25,17 +25,17 @@ local Scores = Def.ActorFrame{
 
 for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Name"..i; Text="Name"..i;
-		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-330,240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-230,240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Score"..i; Text="Score"..i;
-		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-330,240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-230,240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
 end
 
 Scores.SetCommand=function(self,param)
 	local profile = PROFILEMAN:GetMachineProfile();
 	for name, child in pairs(c) do child:visible(false); end
-	local sel = param.Song
+	local sel = param.Song and param.Song or param.Course
 	if not sel then return end
 
 	for i, item in pairs(param.Entries) do

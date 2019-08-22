@@ -66,23 +66,25 @@ local t = Def.ActorFrame{
 	LoadActor( THEME:GetPathG('PaneDisplay','Frame') ),
 }
 
+local levelcolors = { color("#FFFFFF"), color("#00FF00"), color("#FFDD23"), color("#DB6073") }
+
 if GAMESTATE:IsPlayerEnabled(args) then
 	local StepsOrCourse = function() return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(args) or GAMESTATE:GetCurrentSteps(args) end
 	local ObtainData = {
 		--LEFT SIDE
 		{
-			{"Steps", function() return StepsOrCourse() and RadarValue(args, 5) or 0 end },
-			{"Holds", function() return StepsOrCourse() and RadarValue(args, 8) or 0 end },
+			{"Steps", function() return StepsOrCourse() and RadarValue(args, 5) or 0 end, {1,200,350,550} },
+			{"Holds", function() return StepsOrCourse() and RadarValue(args, 8) or 0 end, {1,15,30,50} },
 			{function() return PercentScore(args)[2] end, function() return PercentScore(args)[1] end },
 			{"Card", function() return PercentScore(args)[1] end },
 			xpos = {-125,-25},
 		},
 		--RIGHT SIDE
 		{
-			{"Jumps", function() return StepsOrCourse() and RadarValue(args, 7) or 0 end },
+			{"Jumps", function() return StepsOrCourse() and RadarValue(args, 7) or 0 end, {1,25,50,100} },
 			{"Mines", function() return StepsOrCourse() and RadarValue(args, 9) or 0 end },
-			{"Hands", function() return StepsOrCourse() and RadarValue(args, 10) or 0 end },
-			{"Rolls", function() return StepsOrCourse() and RadarValue(args, 11) or 0 end },
+			{"Hands", function() return StepsOrCourse() and RadarValue(args, 10) or 0 end, {1,10,35,75} },
+			{"Rolls", function() return StepsOrCourse() and RadarValue(args, 11) or 0 end, {1,10,35,75} },
 			xpos = {-15,70},
 		},
 		DiffPlacement = args == PLAYER_1 and 102 or -102
@@ -116,11 +118,27 @@ if GAMESTATE:IsPlayerEnabled(args) then
 						ObtainData[ind].xpos[2] + (args == PLAYER_2 and 55 or 0)
 						,-24+14*(vind-1)):halign(1)
 				end;
+				CurrentSongChangedMessageCommand=function(s) s:diffuse(Color.White):settext("") end;
 				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
-					if GAMESTATE:GetCurrentSteps(args) and val[2] then s:settext( val[2]() ) end
+					s:diffuse(Color.White)
+					if GAMESTATE:GetCurrentSteps(args) and val[2] then
+						s:settext( val[2]() )
+						if val[3] then
+							for aqs,v in ipairs( ObtainData[ind][vind][3] ) do
+								if val[2]() > v then
+									s:diffuse( levelcolors[aqs] )
+								end
+							end
+						end
+					end
 				end;
 				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
-					if GAMESTATE:GetCurrentTrail(args) and val[2] then s:settext( val[2]() ) end
+					if GAMESTATE:GetCurrentTrail(args) and val[2] then
+						s:settext( val[2]() )
+						if type(val[2]()) == "number" and val[2]() > 500 then
+							s:diffuse(Color.Red)
+						end
+					end
 				end;
 			};
 		end
@@ -128,6 +146,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 	t[#t+1] = Def.BitmapText{
 		Font="_futurist normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
+		CurrentSongChangedMessageCommand=function(s) s:settext("") end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
 				if GAMESTATE:GetCurrentSteps(args) then
@@ -146,6 +165,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 	t[#t+1] = Def.BitmapText{
 		Font="_eurostile normal",
 		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+38):maxwidth(90):zoom(0.6) end;
+		CurrentSongChangedMessageCommand=function(s) s:settext("") end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
 				if GAMESTATE:GetCurrentSteps(args) then
