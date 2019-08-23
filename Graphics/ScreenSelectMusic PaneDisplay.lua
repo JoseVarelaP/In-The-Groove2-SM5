@@ -40,18 +40,19 @@ local function PercentScore(pn,scoremethod)
 		SongOrCourse = GAMESTATE:GetCurrentSong();
 		StepsOrTrail = GAMESTATE:GetCurrentSteps(pn);
 	end;
-	local profile, scorelist;
+	local profile, scorelist, profilechoose;
 	local text,Rname = "",THEME:GetString("PaneDisplay","Best");
 	if SongOrCourse and StepsOrTrail then
 		-- args profile
-		profile = PROFILEMAN:IsPersistentProfile(pn) and PROFILEMAN:GetProfile(pn) or PROFILEMAN:GetMachineProfile();
-		scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail);
+		profile = {PROFILEMAN:IsPersistentProfile(pn) and PROFILEMAN:GetProfile(pn),PROFILEMAN:GetMachineProfile()};
+		profilechoose = scoremethod and profile[1] or profile[2]
+		scorelist = profilechoose:GetHighScoreList(SongOrCourse,StepsOrTrail);
 		assert(scorelist)
 		local scores = scorelist:GetHighScores();
 		local topscore = scores[1];
 		if topscore then
 			text = string.format("%.2f%%", topscore:GetPercentDP()*100.0);
-			Rname = topscore:GetName()
+			Rname = topscore:GetName() ~= "" and topscore:GetName() or THEME:GetString("PaneDisplay","Best")
 			text = text == "100.00%" and "100%" or text -- 100% hack
 		else
 			text = string.format("%.2f%%", 0);
@@ -76,7 +77,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 			{"Steps", function() return StepsOrCourse() and RadarValue(args, 5) or 0 end, {1,200,350,550} },
 			{"Holds", function() return StepsOrCourse() and RadarValue(args, 8) or 0 end, {1,15,30,50} },
 			{function() return PercentScore(args)[2] end, function() return PercentScore(args)[1] end },
-			{"Card", function() return PercentScore(args)[1] end },
+			{"Card", function() return PercentScore(args,true)[1] end },
 			xpos = {-125,-25},
 		},
 		--RIGHT SIDE
@@ -128,6 +129,13 @@ if GAMESTATE:IsPlayerEnabled(args) then
 								if val[2]() > v then
 									s:diffuse( levelcolors[aqs] )
 								end
+							end
+						end
+
+						if val[1] == "Card" then
+							s:diffuse(Color.White):stopeffect()
+							if (PercentScore(args,true)[1] == PercentScore(args)[1] and PercentScore(args,true)[1] ~= "0.00%") then
+								s:diffuseshift():effectcolor1( color("0,1,1,1") )
 							end
 						end
 					end

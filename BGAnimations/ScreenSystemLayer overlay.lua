@@ -62,22 +62,22 @@ for player in ivalues(PlayerNumber) do
 		Texture=THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
 		InitCommand=function(s) s:xy( cardpos[player][1] ,cardpos[player][2]-2 ):visible(true) end;
 		SYSTEMUpdateTextMessageCommand=function(self)
+			self:visible(false)
 			-- Based on what the player contains, update the sprite accordingly.
-			local status = {
-				["ready"] = THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
-				["checking"] = THEME:GetPathG("MemoryCardDisplay checking", ToEnumShortString(player) ),
-				["late"] = THEME:GetPathG("MemoryCardDisplay late", ToEnumShortString(player) ),
-				["error"] = THEME:GetPathG("MemoryCardDisplay error", ToEnumShortString(player) ),
-				["removed"] = THEME:GetPathG("MemoryCardDisplay removed", ToEnumShortString(player) ),
-			}
-			if MEMCARDMAN:GetCardState(player) ~= "none" then
-				self:visible(true):Load( status[ ToEnumShortString(MEMCARDMAN:GetCardState(player)) ] )
-			else
-				self:visible(false)
-			end
+				local status = {
+					["ready"] = THEME:GetPathG("MemoryCardDisplay ready", ToEnumShortString(player) ),
+					["checking"] = THEME:GetPathG("MemoryCardDisplay checking", ToEnumShortString(player) ),
+					["late"] = THEME:GetPathG("MemoryCardDisplay late", ToEnumShortString(player) ),
+					["error"] = THEME:GetPathG("MemoryCardDisplay error", ToEnumShortString(player) ),
+					["removed"] = THEME:GetPathG("MemoryCardDisplay removed", ToEnumShortString(player) ),
+				}
+				if ToEnumShortString(MEMCARDMAN:GetCardState(player)) ~= "none" then
+					self:visible(true):Load( status[ ToEnumShortString(MEMCARDMAN:GetCardState(player)) ] )
+				end
 		end;
 	};
 end
+
 	-- Text
 t[#t+1] = Def.ActorFrame {
 	Def.Quad {

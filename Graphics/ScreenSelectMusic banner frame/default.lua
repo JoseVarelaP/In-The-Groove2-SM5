@@ -33,12 +33,12 @@ return Def.ActorFrame{
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{ OnCommand=function(s) s:y(126):zoomx(1):zoomy(0.94) end };
 
 		Def.ActorFrame{
-		Condition=ThemePrefs.Get("MarathonLabel")	== "ITG";
+		Condition=ThemePrefs.Get("MarathonLabel") == "ITG";
 			-- Long/Marathon labels - ITG style
 			Def.BitmapText{
 			Text=THEME:GetString("Balloons","ITGLong"),
 			Font="_big blue glow",
-			OnCommand=function(s) s:shadowlength(2):zoom(1):x(5,200):diffuseshift():playcommand("Set") end;
+			OnCommand=function(s) s:shadowlength(2):zoom(1):xy(5,200):diffuseshift():playcommand("Set") end;
 			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
 			SetCommand=function(s) s:diffusealpha(0)
 				if GAMESTATE:GetCurrentSong() then
@@ -54,7 +54,7 @@ return Def.ActorFrame{
 
 
 		Def.ActorFrame{
-		Condition=ThemePrefs.Get("MarathonLabel")	== "OITG";
+		Condition=ThemePrefs.Get("MarathonLabel") == "OITG";
 			-- Long/Marathon labels - OITG style
 			Def.Sprite{ Texture="OITG Balloon",
 				OnCommand=function(s) s:shadowlength(2):zoom(1):zoomx(1.22):xy(-200,45):halign(0):effectclock("bgm")
