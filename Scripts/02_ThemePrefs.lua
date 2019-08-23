@@ -72,6 +72,12 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+	UseComboZoom = 
+	{
+		Default = true,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

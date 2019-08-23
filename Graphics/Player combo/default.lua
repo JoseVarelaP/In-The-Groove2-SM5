@@ -1,7 +1,11 @@
 local c;
 local player = Var "Player";
 local ShowComboAt = THEME:GetMetric("Combo", "ShowComboAt");
-local Pulse = THEME:GetMetric("Combo", "PulseCommand");
+local Pulse = function(self)
+	local combo=self:GetZoom()
+	local newZoom=scale(combo,0,500,0.9,1.4)
+	self:zoom(1.2*newZoom):linear(0.05):zoom(newZoom)
+end
 local PulseLabel = THEME:GetMetric("Combo", "PulseLabelCommand");
 
 local FullComboGreats = THEME:GetMetric("Combo", "FullComboGreatsCommand");
@@ -81,6 +85,12 @@ local t = Def.ActorFrame {
 		OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		BeginCommand=function(self)
 			self:y(5)
+		end;
+		ComboCommand=function(s)
+			if s:GetText() and s:GetText() ~= "" then
+				local zoomed = ThemePrefs.Get("UseComboZoom") and (scale( s:GetText() ,0,500,0.9,1.4) > 1.4 and 1.4 or scale( s:GetText() ,0,500,0.9,1.4)) or 1
+				s:finishtweening():zoom(1.2*zoomed):linear(0.05):zoom(zoomed)
+			end
 		end;
 	};
 	LoadActor("label") .. {
@@ -165,7 +175,7 @@ local t = Def.ActorFrame {
 		c.Number:finishtweening();
 		c.Label:finishtweening();
 		-- Pulse
-		Pulse( c.Number, param );
+		Pulse( c.Number );
 		PulseLabel( c.Label, param );
 		PulseLabel( c.Misses, param );
 		-- Milestone Logic
