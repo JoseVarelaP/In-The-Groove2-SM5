@@ -3,6 +3,7 @@ return Def.ActorFrame{
 		Texture="978_JumpBack.mpg",
 		OnCommand=function(self)
 			self:rate(2):diffusealpha(0.7):stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+			PROFILEMAN:GetMachineProfile():SetLastUsedHighScoreName(""):SetDisplayName("")
 		end;
 	},
 

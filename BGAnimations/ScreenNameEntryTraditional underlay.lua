@@ -69,6 +69,9 @@ t[#t+1] = Def.Sprite{
 		s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-138)
 		:addy(-200):decelerate(0.5):addy(200)
 	end;
+	OffCommand=function(self)
+		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
+	end;
 };
 
 local function side(pn)
@@ -102,6 +105,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			s:addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH )
 			:decelerate(0.5):addx( pn == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH )
 		end;
+		OffCommand=function(s) s:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end;
 	}
 
 	t[#t+1] = LoadActor( THEME:GetPathG("ScreenNameEntryTraditional","Wheel"),pn)..{
@@ -116,6 +120,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			s:addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH )
 			:decelerate(0.5):addx( pn == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH )
 		end;
+		OffCommand=function(s) s:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end;
 	};
 
 	t[#t+1] = LoadFont("ScreenNameEntryTraditional entry")..{
@@ -130,7 +135,8 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if param.PlayerNumber == pn then
 				self:settext(param.Text)
 			end
-		end
+		end;
+		OffCommand=function(s) s:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end;
 	};
 
 	t[#t+1] = Def.ActorFrame{
@@ -142,6 +148,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			s:addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH )
 			:decelerate(0.5):addx( pn == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH )
 		end;
+		OffCommand=function(s) s:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end;
 		Def.Sprite{
 			Texture=THEME:GetPathG("NameEntry","Items/BGA score frame"),
 		};
@@ -150,10 +157,14 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			Font="_futurist metal",
 			OnCommand=function(s)
 				s:diffuse(PlayerColor(pn))
-				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				if STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
+					s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				end
 			end;
 			ChangeDisplayedFeatMessageCommand=function(s,param)
-				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				if STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
+					s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				end
 			end;
 		}
 	};
@@ -165,6 +176,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			SCREEN_CENTER_Y-160
 			)
 	end;
+	OffCommand=function(s) s:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end;
 	ChangeDisplayedFeatMessageCommand=function(s)
 		s:stoptweening():linear(0.2):diffusealpha(0.4):linear(0.2):diffusealpha(1)
 	end;
@@ -229,16 +241,16 @@ t[#t+1] = Def.ActorFrame{
 
 };
 
+t[#t+1] = Def.Quad{
+	OnCommand=function(s)
+		s:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse(color("0,0,0,0"))
+	end;
+	OffCommand=function(s)
+		s:linear(0.5):diffuse(Color.Black)
+	end;
+}
+
 if IsAnyPlayerUsingMemoryCard() then
-	t[#t+1] = Def.Quad{
-		Texture="_red streak",
-		OnCommand=function(s)
-			s:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse(color("0,0,0,0"))
-		end;
-		OffCommand=function(s)
-			s:linear(0.5):diffuse(Color.Black)
-		end;
-	}
 	t[#t+1] = Def.Sprite{
 		Texture="_red streak",
 		OnCommand=function(s)

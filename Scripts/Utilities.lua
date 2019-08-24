@@ -177,6 +177,7 @@ Branch.AfterProfileLoad = function()
 end
 
 Branch.GameOverOrContinue = function()
+	if GAMESTATE:Env()["ForceGoodEnding"] == "1" or tonumber( string.sub(ToEnumShortString(STATSMAN:GetBestFinalGrade() ), 5) ) <= 4 then return "ScreenEndingGood" end
 	return "ScreenEnding"
 end
 
