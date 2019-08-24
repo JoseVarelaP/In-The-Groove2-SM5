@@ -38,10 +38,13 @@ t[#t+1] = Def.ActorFrame{
 
 local meterbar = { {0.5,0,SCREEN_WIDTH/5},{0,0.5,SCREEN_WIDTH/-5},{0.1,0.1,0} }
 for v in ivalues(meterbar) do
-	t[#t+1] = Def.Sprite{
-		Texture="meter frame",
-		OnCommand=function(s) s:zoomtowidth(SCREEN_WIDTH/2):cropright(v[2]):cropleft(v[1]):x(v[3]) end
-	}
+	t[#t+1] = Def.ActorFrame{
+		OnCommand=function(s) s:xy( SCREEN_CENTER_X,SCREEN_TOP+24 ):addy(-100):sleep(0.5):decelerate(0.8):addy(100) end;
+		OffCommand=function(s) s:accelerate(0.8):addy(-100) end;
+		Def.Sprite{
+		Texture="ScreenGameplay Overlay/meter frame",
+		OnCommand=function(s) s:zoomtowidth(SCREEN_WIDTH/2):cropright(v[2]):cropleft(v[1]):x(v[3]) end }
+	};
 end
 
 for player in ivalues(PlayerNumber) do

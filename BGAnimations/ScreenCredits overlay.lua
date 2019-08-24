@@ -1,7 +1,8 @@
 return Def.ActorFrame{
-	LoadActor("_scrolling ITG credits")..{
+	LoadActor("_scrolling ITG credits",false)..{
 	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH):sleep(42):accelerate(0.3):addx(SCREEN_WIDTH)
+		self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH):sleep( ThemePrefs.Get("ShowThemeCredits") and 42 or 35 )
+		:accelerate(0.3):addx(SCREEN_WIDTH)
 	end;
 	OffCommand=function(self)
 		self:stoptweening():accelerate(0.3):addx(SCREEN_WIDTH)
@@ -12,7 +13,7 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 		self:visible(false):sleep(110):queuecommand("NextScreen")
 		end,
-		NextScreenCommand=function() SCREENMAN:StartTransitioningScreen("SM_GoToNextScreen") end;
+		NextScreenCommand=function() SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen") end;
 		},
 
 	Def.ActorScroller {
@@ -20,7 +21,7 @@ return Def.ActorFrame{
 	NumItemsToDraw = 8,
 	TransformFunction = function( self, offset, itemIndex, numItems) self:x(SCREEN_LEFT+50) self:y(offset*168) end,
 	InitCommand=function(self)
-		self:hibernate(37)
+		self:hibernate( ThemePrefs.Get("ShowThemeCredits") and 37 or 31)
 	end;
 	OnCommand=function(self)
 		self:scrollwithpadding(6,9)

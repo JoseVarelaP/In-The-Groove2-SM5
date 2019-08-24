@@ -25,10 +25,10 @@ local Scores = Def.ActorFrame{
 
 for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Name"..i; Text="Name"..i;
-		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-230,240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-WideScale(230,330),240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Score"..i; Text="Score"..i;
-		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-230,240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
+		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-WideScale(230,330),240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};
 end
 

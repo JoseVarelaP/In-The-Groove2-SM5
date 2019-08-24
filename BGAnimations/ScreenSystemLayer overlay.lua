@@ -54,8 +54,8 @@ t[#t+1] = Def.ActorFrame {
 
 -- MemoryCard management
 local cardpos = {
-	["PlayerNumber_P1"] = {WideScale(18,24),SCREEN_BOTTOM-14},
-	["PlayerNumber_P2"] = {SCREEN_RIGHT-WideScale(18,24),SCREEN_BOTTOM-14},
+	["PlayerNumber_P1"] = {WideScale(18,18),SCREEN_BOTTOM-14},
+	["PlayerNumber_P2"] = {SCREEN_RIGHT-WideScale(18,18),SCREEN_BOTTOM-14},
 }
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = Def.Sprite{

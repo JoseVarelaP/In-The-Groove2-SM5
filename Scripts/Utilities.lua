@@ -176,6 +176,10 @@ Branch.AfterProfileLoad = function()
 	end
 end
 
+Branch.GameOverOrContinue = function()
+	return "ScreenEnding"
+end
+
 Branch.TitleMenu = function()
 	if GAMESTATE:GetCoinMode() == "CoinMode_Home" then
 		if GAMESTATE:Env()["WorkoutMode"] then

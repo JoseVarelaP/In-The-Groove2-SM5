@@ -1,8 +1,6 @@
-local ITGCredits_Table = {
-	-- 0 is nothing.
-	-- 1 is Header.
-	-- 2 is Subheader.
-	-- 3 is Normal text.
+local stopatframe=...
+
+local ITGThemeCredits = {
 	{0},
 	{0},
 	{0},
@@ -30,6 +28,13 @@ local ITGCredits_Table = {
 	{2,"SPECIAL THANKS"},
 	{3,"UKSRT Discord"},
 	{0},
+}
+
+local ITGCredits_Table = {
+	-- 0 is nothing.
+	-- 1 is Header.
+	-- 2 is Subheader.
+	-- 3 is Normal text.
 	{0},
 	{0},
 	{0},
@@ -140,6 +145,8 @@ local ITGCredits_Table = {
 	{0},
 	{0},
 	{1,"IN THANKS AND MEMORY OF"},
+	-- If you don't know:
+	-- Steve Blattspieler worked on Andamiro USA, but past away due to lung cancer during the development of ITG2.
 	{3,"Steve Blattspieler"},
 	{0},
 	{0},
@@ -150,10 +157,22 @@ local af = Def.ActorScroller {
 	NumItemsToDraw = 21,
 	TransformFunction = function( self, offset, itemIndex, numItems) self:y(offset*24) end,
 	OnCommand=function(self)
-		self:scrollwithpadding(6,9)
+		self:scrollwithpadding(6,stopatframe and -2 or 921)
 	end;
 };
 
+if ThemePrefs.Get("ShowThemeCredits") then
+	for i=1,table.getn(ITGThemeCredits) do
+		af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGThemeCredits[i][2] or "", Font="_eurostile outline",
+		InitCommand=function(s)
+		s:zoom(0.7):ztest(1)
+			if ITGThemeCredits[i][1] == 1 then s:diffuse( color("#D57676") ) end
+			if ITGThemeCredits[i][1] == 2 then s:diffuse( color("#76B1D5") ):zoom(0.6) end
+		end
+		},
+	}
+	end
+end
 for i=1,table.getn(ITGCredits_Table) do
 	af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile outline",
 	InitCommand=function(s)

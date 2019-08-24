@@ -1,3 +1,4 @@
+local stopatframe=...
 return Def.ActorFrame{
 	Def.ActorFrame{
 	OnCommand=function(self)
@@ -16,6 +17,6 @@ return Def.ActorFrame{
 				self:y(223):zwrite(1):blend("BlendMode_NoEffect"):zoomto(340,66)
 			end
 		},
-		LoadActor( THEME:GetPathB("","_ITG credits text") ),
+		LoadActor( THEME:GetPathB("","_ITG credits text"), stopatframe ),
 	},
 }

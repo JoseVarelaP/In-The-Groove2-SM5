@@ -83,9 +83,4 @@ return Def.ActorFrame{
 	end
 	}
 
-}										
--- 	<Layer
--- 		Class="Quad"
--- 		OnCommand="stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffuse,#FFFFFF;diffusealpha,0;sleep,0.1;accelerate,0.5;diffusealpha,1;sleep,0.2;decelerate,0.5;diffusealpha,0"
--- 	/>
--- </children></ActorFrame>
+}

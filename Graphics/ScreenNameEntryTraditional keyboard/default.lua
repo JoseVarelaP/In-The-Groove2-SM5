@@ -1,5 +1,5 @@
 local Player = ...
-if not Player then error("[ScreenNameEntryTraditional Keyboard] what, you WANT me to randomly assign a player for the keyboard? too bad. I don't feel like dealing with the humorless people who will submit bug reports about it.") end
+assert(Player)
 
 -- CreateScrollerItem(char,altName)
 -- Creates a scroller item for the Keyboard.
@@ -110,6 +110,12 @@ local t = Def.ActorFrame{
 			end
 		end
 	end,
+
+	LoadActor("name frame")..{
+		OnCommand=function(s)
+			s:y( -18 )
+		end;
+	};
 
 	-- scroller
 	Def.ActorScroller{

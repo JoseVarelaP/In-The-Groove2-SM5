@@ -53,11 +53,12 @@ local function CheckValueOffsets()
     if MenuIndex < 1            then MenuIndex = #PadChoices end
     if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
         if MenuIndex == 2 or MenuIndex == 3 then
-            if GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin() then
+            if GAMESTATE:GetNumPlayersEnabled() < 2 and (GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin()) then
                 MenuIndex = 1
             end
         end
     end
+    SCREENMAN:SystemMessage( GAMESTATE:GetCoinsNeededToJoin() )
     SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
     MESSAGEMAN:Broadcast("MenuUpAllVal")
     return
@@ -76,23 +77,31 @@ local BTInput = {
         CheckValueOffsets()
     end,
     ["Start"] = function(event)
-        if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
-            if MenuIndex == 2 or MenuIndex == 3 then
-                if GAMESTATE:GetNumPlayersEnabled() == 1 then
-                    GAMESTATE:InsertCoin(-1)
+        if GAMESTATE:IsSideJoined(event) then
+            if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+                if MenuIndex == 2 or MenuIndex == 3 then
+                    if GAMESTATE:GetNumPlayersEnabled() == 1 then
+                        GAMESTATE:InsertCoin( -GAMESTATE:GetCoinsNeededToJoin() )
+                    end
                 end
             end
+            if MenuIndex == 2 then
+                GAMESTATE:JoinPlayer(PLAYER_1)
+                GAMESTATE:JoinPlayer(PLAYER_2)
+            end
+            SCREENMAN:PlayStartSound()
+            if not GAMESTATE:Env()["WorkoutMode"] then
+                SOUND:DimMusic(0,3)
+            end
+            GAMESTATE:SetCurrentStyle( modes[MenuIndex] )
+            SCREENMAN:GetTopScreen():SetNextScreenName( GAMESTATE:Env()["WorkoutMode"] and "ScreenWorkoutMenu" or SelectMusicOrCourse() ):StartTransitioningScreen("SM_GoToNextScreen")
+        else
+            if GAMESTATE:GetCoins() >= 1 then
+                GAMESTATE:JoinPlayer(event)
+                SCREENMAN:PlayStartSound()
+                GAMESTATE:InsertCoin(-1)
+            end
         end
-        if MenuIndex == 2 then
-            GAMESTATE:JoinPlayer(PLAYER_1)
-            GAMESTATE:JoinPlayer(PLAYER_2)
-        end
-        SCREENMAN:PlayStartSound()
-        if not GAMESTATE:Env()["WorkoutMode"] then
-            SOUND:DimMusic(0,3)
-        end
-        GAMESTATE:SetCurrentStyle( modes[MenuIndex] )
-        SCREENMAN:GetTopScreen():SetNextScreenName( GAMESTATE:Env()["WorkoutMode"] and "ScreenWorkoutMenu" or SelectMusicOrCourse() ):StartTransitioningScreen("SM_GoToNextScreen")
     end,
     ["Back"] = function(event)
         SCREENMAN:PlayCancelSound()
