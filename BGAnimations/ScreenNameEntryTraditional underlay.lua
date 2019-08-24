@@ -150,10 +150,10 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			Font="_futurist metal",
 			OnCommand=function(s)
 				s:diffuse(PlayerColor(pn))
-				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 			end;
 			ChangeDisplayedFeatMessageCommand=function(s,param)
-				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				s:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 			end;
 		}
 	};

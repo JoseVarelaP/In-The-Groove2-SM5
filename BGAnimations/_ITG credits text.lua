@@ -9,7 +9,7 @@ local ITGThemeCredits = {
 	{1,"STEPMANIA 5 CONVERSION"},
 	{0},
 	{0},
-	{2,"PROGRAMMING"},
+	{2,THEME:GetString("Credits","Programming")},
 	{3,"Jose_Varela"},
 	{0},
 	{2,"ADDITIONAL HELP"},
@@ -25,7 +25,7 @@ local ITGThemeCredits = {
 	{3,"Melody"},
 	{3,"MadkaT"},
 	{0},
-	{2,"SPECIAL THANKS"},
+	{2,THEME:GetString("Credits","SpecialThanks")},
 	{3,"UKSRT Discord"},
 	{0},
 }
@@ -146,7 +146,7 @@ local ITGCredits_Table = {
 	{0},
 	{1,"IN THANKS AND MEMORY OF"},
 	-- If you don't know:
-	-- Steve Blattspieler worked on Andamiro USA, but past away due to lung cancer during the development of ITG2.
+	-- Steve Blattspieler worked on Andamiro USA, but past away due to lung cancer during the development of ITG2.	
 	{3,"Steve Blattspieler"},
 	{0},
 	{0},
