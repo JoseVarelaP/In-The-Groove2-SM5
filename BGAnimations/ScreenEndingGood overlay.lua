@@ -47,7 +47,7 @@ for player in ivalues(PlayerNumber) do
 		};
 
 		Def.Sprite{
-			-- Condition=MEMCARDMAN:GetCardState(player) == "MemoryCardState_ready",
+			Condition=MEMCARDMAN:GetCardState(player) == "MemoryCardState_ready",
 			Texture=THEME:GetPathG("ScreenEnding","Items/remove card "..ToEnumShortString(player)),
 			OnCommand=function(s)
 				s:zoom(0.7):y(20):glowshift()

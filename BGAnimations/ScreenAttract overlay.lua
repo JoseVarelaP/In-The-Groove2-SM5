@@ -40,7 +40,7 @@ return Def.ActorFrame{
 		self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-56):shadowlength(2):zoom(0.8):diffuse(0.7,0.7,0.7,1):diffusebottomedge(color("#DFB629D0")):playcommand("Refresh")
 	end;
 		RefreshCommand=function(self)
-			if GAMESTATE:IsEventMode() and GAMESTATE:GetCoinMode()~='CoinMode_Home' then self:settext('EVENT MODE') return end
+			if GAMESTATE:IsEventMode() and GAMESTATE:GetCoinMode() ~= 'CoinMode_Home' then self:settext('EVENT MODE') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Free' then self:settext('FREE PLAY') return end
 			if GAMESTATE:GetCoinMode()=='CoinMode_Home' then self:visible(false) end
 
