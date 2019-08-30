@@ -11,7 +11,7 @@ end
 function DifficultyColor( dc )
 	if dc == "Difficulty_Beginner"	then return color("#D05CF6") end
 	if dc == "Difficulty_Easy"		then return color("#09FF10") end
-	if dc == "Difficulty_Medium"		then return color("#F3F312") end
+	if dc == "Difficulty_Medium"	then return color("#F3F312") end
 	if dc == "Difficulty_Hard"		then return color("#EA3548") end
 	if dc == "Difficulty_Challenge"	then return color("#16AFF3") end
 	if dc == "Difficulty_Edit"		then return color("#F7F7F7") end

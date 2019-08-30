@@ -1,0 +1,19 @@
+<ActorFrame InitCommand="draworder,-2"> <children>
+	<!-- #37a JUMP DEMO -->
+
+	<ActorFrame 
+		OnCommand="y,SCREEN_CENTER_Y-126"
+	> <children>
+		<Actor
+			File="jumpleft"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+			OnCommand="x,157;diffusealpha,0;linear,0.4;diffusealpha,1;sleep,4;linear,0.5;diffusealpha,0"
+		/>
+
+		<Actor
+			File="jumpright"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+			OnCommand="x,477;diffusealpha,0;linear,0.4;diffusealpha,1;sleep,4;linear,0.5;diffusealpha,0"
+		/>
+	</children> </ActorFrame>
+</children> </ActorFrame>

@@ -27,7 +27,7 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.BitmapText{
-		Condition=GAMESTATE:IsPlayerEnabled(player) and (GAMESTATE:GetPlayMode() ~= "PlayMode_Rave" and GAMESTATE:GetPlayMode() ~= "PlayMode_Oni") and not GAMESTATE:Env()["WorkoutMode"];
+		Condition=GAMESTATE:IsPlayerEnabled(player) and (GAMESTATE:GetPlayMode() ~= "PlayMode_Rave" and GAMESTATE:GetPlayMode() ~= "PlayMode_Oni") and not GAMESTATE:Env()["WorkoutMode"] and not GAMESTATE:Env()["Training"];
 		Font="_futurist metalic";
 		Text=" 0.00%";
 		OnCommand=function(s)
@@ -172,17 +172,16 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.ActorFrame{
-		OnCommand=function(s)
-			s:sleep(0.5):queuecommand("TweenOn")
-		end;
-		OffCommand=function(s)
-			s:sleep(1):queuecommand("TweenOff")
-		end;
+		OnCommand=function(s) s:sleep(0.5):queuecommand("TweenOn") end;
+		OffCommand=function(s) s:sleep(1):queuecommand("TweenOff") end;
+		ShowGameplayFrameMessageCommand=function(s) s:queuecommand("TweenOn") end;
+		HideGameplayFrameMessageCommand=function(s) s:queuecommand("TweenOff") end;
 
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(player);
 			OnCommand=function(s)
-				s:xy( player == PLAYER_1 and SCREEN_LEFT+66 or SCREEN_RIGHT-66,SCREEN_TOP+25)
+				local margin = ThemePrefs.Get("ITG1") and WideScale(66,108) or 66
+				s:xy( player == PLAYER_1 and SCREEN_LEFT+margin or SCREEN_RIGHT-margin,SCREEN_TOP+25)
 				:addx( player == PLAYER_1 and  -250 or 250 );
 			end;
 			TweenOnCommand=function(s)
@@ -193,7 +192,7 @@ for player in ivalues(PlayerNumber) do
 			end;
 	
 				Def.Sprite{
-					Texture=THEME:GetPathG('','_difficulty icons');
+					Texture=ThemePrefs.Get("ITG1") and THEME:GetPathG('_gameplay mirrored difficulty','frame') or THEME:GetPathG('_difficulty','icons');
 					OnCommand=function(s)
 						s:pause():playcommand("Update")
 						:zoomx( player == PLAYER_1 and 1 or -1 )
@@ -215,7 +214,7 @@ for player in ivalues(PlayerNumber) do
 						if GAMESTATE:GetCurrentSteps(player) then
 							local steps = GAMESTATE:GetCurrentSteps(player):GetDifficulty();
 							s:settext( DifficultyName("Steps", player) ):maxwidth(100)
-							:diffuse( ContrastingDifficultyColor( steps ) )
+							:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
 						end
 					end,
 				},
@@ -232,7 +231,7 @@ for player in ivalues(PlayerNumber) do
 					if GAMESTATE:GetCurrentSteps(player) then
 						local steps = GAMESTATE:GetCurrentSteps(player)
 						s:settext( steps:GetMeter() )
-						s:diffuse( ContrastingDifficultyColor( steps:GetDifficulty() ) )
+						s:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps:GetDifficulty() ) )
 					end
 					end,
 				},
@@ -241,8 +240,6 @@ for player in ivalues(PlayerNumber) do
 	};
 end
 
-t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen(); };
-
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s)
 		s:xy(SCREEN_CENTER_X,SCREEN_TOP+24):addy(-100):sleep(0.5):queuecommand("TweenOn")
@@ -250,6 +247,8 @@ t[#t+1] = Def.ActorFrame{
 	OffCommand=function(s)
 		s:sleep(1):queuecommand("TweenOff")
 	end;
+	ShowGameplayFrameMessageCommand=function(s) s:queuecommand("TweenOn") end;
+	HideGameplayFrameMessageCommand=function(s) s:queuecommand("TweenOff") end;
 	TweenOnCommand=function(s)
 		s:decelerate(0.8):addy(100)
 	end;
@@ -258,12 +257,11 @@ t[#t+1] = Def.ActorFrame{
 	end;
 
 		Def.SongMeterDisplay{
-		Condition=not IsUsingWideScreen();
         InitCommand=function(s)
-        	s:SetStreamWidth(390)
+        	s:SetStreamWidth( WideScale( ThemePrefs.Get("ITG1") and 418 or 390, 418+128) )
         end;
         
-        Stream=Def.Sprite{ Texture="meter stream",
+        Stream=Def.Sprite{ Texture=ThemePrefs.Get("ITG1") and "_meter stream" or "meter stream",
         	InitCommand=function(s) s:diffusealpha(1) end
         },
         Tip=Def.Sprite{ Texture="tip",
@@ -271,7 +269,8 @@ t[#t+1] = Def.ActorFrame{
         },
     };
 
-    Def.Sprite{ Texture="meter frame", Condition=not IsUsingWideScreen(); },
+	Def.Sprite{ Texture="meter frame", Condition=not IsUsingWideScreen() and not ThemePrefs.Get("ITG1"); },
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"progress",WideScale( 374, 374+128 )} )..{ Condition=ThemePrefs.Get("ITG1"); };
 	
 	Def.BitmapText{
 	Font="_eurostile normal",
@@ -292,6 +291,8 @@ t[#t+1] = Def.ActorFrame{
 	end,
 	},
 };
+
+t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen() and not ThemePrefs.Get("ITG1"); };
 
 -- Draw on top of the rest
 	

@@ -54,20 +54,33 @@ end
 local t = Def.ActorFrame{};
 
 local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
+local pathtogo = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
 t[#t+1] = Def.ActorFrame{
-	Def.Sprite{ Texture=GAMESTATE:Env()["WorkoutMode"] and "workout frame" or "base frame" },
+	Def.Sprite{ Texture=GAMESTATE:Env()["WorkoutMode"] and pathtogo.."workout frame" or pathtogo.."base frame" }..{
+		OnCommand=function(s)
+			s:y(itgstylemargin*1.8)
+		end;
+	};
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:xy( (DoublesIsOn and -170 or -95)*side(player), DoublesIsOn and -190 or -149)
+		self:xy( ((DoublesIsOn and -170 or -95)+(itgstylemargin*-1)*3)*side(player), (DoublesIsOn and -190 or -149)+itgstylemargin*6 )
 	end;
 		Def.Sprite{
-			Texture=THEME:GetPathG('','_difficulty icons'),
+			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end;
 			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player,true) ) end,
 		},
+
+		LoadActor( THEME:GetPathG("_name","frame"), player )..{
+			Condition=ThemePrefs.Get("ITG1"),
+			OnCommand=function(self)
+				self:xy(0,30)
+			end;
+		};
 
 		Def.BitmapText{
 			Font="Common Normal",
@@ -82,7 +95,8 @@ t[#t+1] = Def.ActorFrame{
 						else
 							self:settext( DifficultyName("Steps", player) )
 						end
-					self:diffuse( ContrastingDifficultyColor( steps ) )
+					self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
+					:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
 				end,
 			},
 
@@ -93,14 +107,15 @@ t[#t+1] = Def.ActorFrame{
 			end;
 			UpdateCommand=function(self)
 					self:settext( TrailOrSteps(player):GetMeter() )
-					self:diffuse( ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
+					self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
+					:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
 				end,
 			},
 	};
 
 		Def.GraphDisplay{
 			InitCommand=function(self)
-				self:y(-36)
+				self:y(-36+(itgstylemargin*1.15))
 			end,
 			BeginCommand=function(self)
 				self:Load("GraphDisplayP"..pnum(player))
@@ -112,7 +127,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.ComboGraph{
 			InitCommand=function(self)
-				self:y(-7)
+				self:y(-7+(itgstylemargin*1.15))
 			end,
 			BeginCommand=function(self)
 				self:Load("ComboGraphP"..pnum(player))
@@ -127,21 +142,21 @@ t[#t+1] = Def.ActorFrame{
 	
 	Def.BitmapText{
 		 Font="_futurist metalic", Text=CalculatePercentage(player), OnCommand=function(self)
-			self:horizalign(right):xy(115,-82):diffuse(PlayerColor(player))
+			self:horizalign(right):xy(115,-82+(itgstylemargin*2.7)):diffuse(PlayerColor(player))
 		end
 	},
 
 	
 	Def.BitmapText{
 		 Font="_eurostile normal", Text=optionslist, OnCommand=function(self)
-			self:xy(45,-112):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
+			self:xy(45,-112+(itgstylemargin*2.7)):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
 		end
 	},
 
-	Def.BitmapText{ Font="_eurostile blue glow", Text=THEME:GetString("ScreenEvaluation","Disqualified"),
+	Def.BitmapText{ Font=_eurostileColorPick(), Text=THEME:GetString("ScreenEvaluation","Disqualified"),
 	Condition=GetPSStageStats(player):IsDisqualified();
 	OnCommand=function(self)
-		self:xy(45,-65):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
+		self:xy(45,-65+(itgstylemargin*2.5)):zoom(0.5):shadowlength(2):wrapwidthpixels(400)
 	end,
 	},
 
@@ -159,7 +174,7 @@ local JudgmentInfo = {
 for index, ValTC in ipairs(JudgmentInfo.Types) do
 	t[#t+1] = Def.ActorFrame{
 		Condition=not GAMESTATE:Env()["WorkoutMode"],
-		OnCommand=function(self) self:xy(-128,31-18) end;
+		OnCommand=function(self) self:xy(-128,31-18+itgstylemargin) end;
 		Def.BitmapText{ Font="_eurostile normal", Text=THEME:GetString("TapNoteScore",ValTC),
 		OnCommand=function(self)
 			self:y(16*index):zoom(0.5):horizalign(left):shadowlength(0):maxwidth(130)
@@ -176,7 +191,7 @@ local PColor = {
 for index, ScWin in ipairs(JudgmentInfo.Types) do
 	t[#t+1] = Def.ActorFrame{
 		Condition=not GAMESTATE:Env()["WorkoutMode"],
-		OnCommand=function(self) self:xy(-18,31-16) end;
+		OnCommand=function(self) self:xy(-18,31-16+itgstylemargin) end;
 		Def.BitmapText{ Font="ScreenEvaluation judge",
 		OnCommand=function(self)
 			self:y(16*index):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
@@ -196,7 +211,7 @@ for index, RCType in ipairs(JudgmentInfo.RadarVal) do
 
 	t[#t+1] = Def.ActorFrame{
 		Condition=not GAMESTATE:Env()["WorkoutMode"],
-		OnCommand=function(self) self:xy(128,31-16) end;
+		OnCommand=function(self) self:xy(128,31-16+itgstylemargin) end;
 
 		Def.BitmapText{ Font="ScreenEvaluation judge",
 		OnCommand=function(self)
@@ -236,13 +251,13 @@ t[#t+1] = Def.ActorFrame{
 	Condition=not GAMESTATE:Env()["WorkoutMode"],
 	Def.BitmapText{ Font="Common Normal", Text="Max Combo",
 	OnCommand=function(self)
-		self:xy( 3, 16*7-2 ):zoom(0.5):halign(0):maxwidth(140)
+		self:xy( 3, 16*7-2+itgstylemargin ):zoom(0.5):halign(0):maxwidth(140)
 	end;
 	};
 
 	Def.BitmapText{ Font="ScreenEvaluation judge";
 	OnCommand=function(self)
-		self:xy( 128, 16*7-1 ):zoom(0.5):halign(1)
+		self:xy( 128, 16*7-1+itgstylemargin ):zoom(0.5):halign(1)
 		local combo = GetPSStageStats(player):MaxCombo()
 		self:settext( ("%05.0f"):format( combo ) )
 

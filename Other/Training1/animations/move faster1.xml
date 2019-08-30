@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<!-- #6: GO! 1 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="You can move faster::by NOT returning to the::center after each step"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;queuemessage,ShowFloor;sleep,1;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

@@ -1,0 +1,18 @@
+<ActorFrame> <children>
+	<!-- #31: MOVE FASTER 2 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Instead, when you step,::shift all of your weight::to the stepping foot"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;queuemessage,HideFloor;sleep,1;linear,0.3;diffusealpha,1;sleep,6;linear,0.3;diffusealpha,0"
+
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Then you can pick up::your other foot and::take the next step"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+150;diffusealpha,0;sleep,3;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

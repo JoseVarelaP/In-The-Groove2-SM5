@@ -6,9 +6,9 @@ return Def.ActorFrame{
 		end;
 
 		Def.BitmapText{
-		Font="_eurostile blue glow",
+		Font=_eurostileColorPick(),
 		Text=string.upper(Screen.String("HeaderText")),
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
@@ -34,6 +34,8 @@ return Def.ActorFrame{
 		end;
 		OffCommand=function(self)
 			self:linear(0.5):zoomy(0)
+			SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+			or THEME:GetPathS("_ITGCommon","start") )
 		end;
 		CancelMessageCommand=function(self)
 			self:linear(0.5):zoomy(0)

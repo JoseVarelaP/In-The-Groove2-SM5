@@ -1,0 +1,6 @@
+<!-- #5c HIGHLIGHT PANELS 1st DEMO -->
+
+<Actor
+	Type="Quad"
+	OnCommand="diffusealpha,0;queuemessage,HighlightRight;sleep,1.6;queuemessage,UnhighlightRight;sleep,.1"
+/>

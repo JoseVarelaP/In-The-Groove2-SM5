@@ -8,7 +8,7 @@ return Def.ActorFrame{
 		end;
 
 		Def.BitmapText{
-		Font="_eurostile blue glow",
+		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenOptionsManageProfiles","HeaderText")),
 		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) end,
 		OnCommand=function(self)

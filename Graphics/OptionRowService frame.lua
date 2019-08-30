@@ -1,3 +1,4 @@
+local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
 local itemcount = 0
 local t = Def.ActorFrame{
     BeginCommand=function(s)
@@ -25,8 +26,8 @@ t[#t+1] = Def.BitmapText{
     GainFocusMessageCommand=function(s)
         GAMESTATE:Env()["CurrentServiceItem"] = tonumber(s:GetText())
     end;
-}
-t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"small 2red",320});
+};
+t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320});
 t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"small green",312})..{
     GainFocusMessageCommand=function(self) self:visible(true) end;
     LoseFocusMessageCommand=function(self) self:visible(false) end;
@@ -44,5 +45,5 @@ t[#t+1] = Def.BitmapText{
     end;
     GainFocusMessageCommand=function(s) s:diffuse( color("1,1,1,1") ) end;
     LoseFocusMessageCommand=function(s) s:diffuse( color("0.5,0.5,0.5,1") ) end;
-}
+};
 return t;

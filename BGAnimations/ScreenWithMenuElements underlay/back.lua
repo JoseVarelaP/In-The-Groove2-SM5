@@ -4,6 +4,7 @@ return Def.ActorFrame{
 	end;
 	Def.Sprite{
 		Texture="streak",
+		Condition=not ThemePrefs.Get("ITG1"),
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X):zoomtowidth(SCREEN_WIDTH):cropleft(-0.2):cropright(-0.2)
 		end;
@@ -17,6 +18,7 @@ return Def.ActorFrame{
 
 	Def.Sprite{
 		Texture="flare",
+		Condition=not ThemePrefs.Get("ITG1"),
 		InitCommand=function(self)
 			self:x(SCREEN_LEFT-128)
 		end;

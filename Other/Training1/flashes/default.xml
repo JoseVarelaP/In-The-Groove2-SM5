@@ -1,0 +1,76 @@
+<ActorFrame> <children>
+	<!-- #8: FLASHES -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="For every step, a comment::shows your timing accuracy."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,.5;queuemessage,HideFloor;sleep,.5;linear,0.3;diffusealpha,1;sleep,7;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="judge line"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+30;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,7;linear,0.3;diffusealpha,0"
+	/>
+
+	<!--  flash decent  -->
+	<ActorFrame
+		OnCommand="y,SCREEN_CENTER_Y-126"
+	> <children>
+		<Actor
+			File="decent flash"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+			OnCommand="x,259;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+		/>
+
+		<Actor
+			File="decent flash"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+			OnCommand="x,574;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+		/>
+
+		<Actor
+			File="excellent flash"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+			OnCommand="x,259;diffusealpha,0;sleep,4;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+		/>
+
+		<Actor
+			File="excellent flash"
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+			OnCommand="x,574;diffusealpha,0;sleep,4;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+		/>
+	</children> </ActorFrame>
+
+	<Actor
+		File="decent judge"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+		OnCommand="x,SCREEN_CENTER_X-160;y,SCREEN_CENTER_Y-75;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+	/>
+	<Actor
+		File="decent judge"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+		OnCommand="x,SCREEN_CENTER_X+160;y,SCREEN_CENTER_Y-75;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+	/>
+
+	<!--  flash excellent  -->
+	<Actor
+		File="excellent judge"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+		OnCommand="x,SCREEN_CENTER_X-160;y,SCREEN_CENTER_Y-75;diffusealpha,0;sleep,4;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+	/>
+
+	<Actor
+		File="excellent judge"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+		OnCommand="x,SCREEN_CENTER_X+160;y,SCREEN_CENTER_Y-75;diffusealpha,0;sleep,4;linear,0.1;diffusealpha,1;sleep,0.7;linear,0.1;diffusealpha,0"
+	/>
+
+	<!--  finish  -->
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Step hard enough to register::each step, but don't stomp!"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+100;diffusealpha,0;sleep,5.5;linear,0.3;diffusealpha,1;sleep,2.5;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

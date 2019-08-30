@@ -1,0 +1,11 @@
+<ActorFrame> <children>
+	<!-- #37: JUMPS 2 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="When you see two::steps on the same line,::jump up and land with::one foot on each panel"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>
+

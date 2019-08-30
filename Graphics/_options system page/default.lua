@@ -1,5 +1,6 @@
+local frame = ThemePrefs.Get("ITG1") and "_options" or "options"
 return Def.ActorFrame{
-	LoadActor("options page")..{
+	LoadActor(frame.. " page")..{
 	OnCommand=function(self)
 		self:addy(-1)
 	end;

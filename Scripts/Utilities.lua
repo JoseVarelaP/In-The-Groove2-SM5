@@ -278,6 +278,10 @@ function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 	end
 end;
 
+function _eurostileColorPick()
+	return ThemePrefs.Get("ITG1") and "_eurostile blue glow" or "_eurostile red glow"
+end
+
 function WorkoutSelector(OptionToSelect)
 	local function IndexToPounds(i)
 		return i*5

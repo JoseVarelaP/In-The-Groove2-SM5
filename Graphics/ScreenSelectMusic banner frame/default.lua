@@ -1,3 +1,4 @@
+local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
 return Def.ActorFrame{
 
 	Def.ActorFrame{
@@ -104,9 +105,9 @@ return Def.ActorFrame{
 
 		};
 
-		Def.Sprite{ Texture="right frame edge", OnCommand=function(s) s:x(-200):halign(0):zoomx(1) end };
-		Def.Sprite{ Texture="right frame middle", OnCommand=function(s) s:x(-200+158):halign(0):zoomx(40) end };
-		Def.Sprite{ Texture="right frame right", OnCommand=function(s) s:x(200+78):halign(0) end };
+		Def.Sprite{ Texture=style.."right frame edge", OnCommand=function(s) s:x(-200):halign(0):zoomx(1) end };
+		Def.Sprite{ Texture=style.."right frame middle", OnCommand=function(s) s:x(-200+158):halign(0):zoomx(40) end };
+		Def.Sprite{ Texture=style.."right frame right", OnCommand=function(s) s:x(200+78):halign(0) end };
 	},
 
 	Def.ActorFrame{

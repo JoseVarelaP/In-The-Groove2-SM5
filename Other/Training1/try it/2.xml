@@ -1,0 +1,9 @@
+<ActorFrame> <children>
+	<!-- #9: TRY IT 2: LEFT/RIGHT ALTERNATE -->
+	<Actor
+		Type="BitmapText"
+		Font="_tutorial"
+		Text="Now try alternating with::the &up; and &down; arrows"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,1;queuemessage,ShowFloor;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

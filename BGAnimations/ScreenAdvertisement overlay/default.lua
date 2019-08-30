@@ -10,7 +10,7 @@ t[#t+1] = Def.ActorFrame{
 	end; };
 
 	Def.ActorFrame{
-		InitCommand=function(s) s:xy(160,-52) end;
+		InitCommand=function(s) s:xy(WideScale(90,160),-52) end;
 
 		Def.ActorFrame{
 			InitCommand=function(s) s:xy(60,-2):zoom(0.8):addx(600):sleep(0.5):decelerate(0.5):addx(-600) end;
@@ -20,7 +20,7 @@ t[#t+1] = Def.ActorFrame{
 			Def.Sprite{ Texture="trademark", OnCommand=function(s) s:xy(176,-24):diffuse(Color.Black) end; };
 			Def.BitmapText{ Font="_eurostile normal", Text="for PlayStation® 2", OnCommand=function(s) s:halign(1):xy(170,110):shadowlength(2):zoom(1.4) end; };
 			Def.BitmapText{ Font="_eurostile normal", Text="In Stores Now", OnCommand=function(s) s:halign(1):xy(170,150):shadowlength(2):zoom(1.4) end; };
-			Def.BitmapText{ Font="_big blue glow", Text="www.inthegroove.com", OnCommand=function(s) s:xy(-48,200):shadowlength(2) end; };
+			Def.BitmapText{ Font="_big red glow", Text="www.inthegroove.com", OnCommand=function(s) s:xy(-48,200):shadowlength(2) end; };
 		}
 	};
 };

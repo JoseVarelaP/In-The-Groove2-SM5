@@ -1,0 +1,17 @@
+<ActorFrame> <children>
+	<!-- #11: METERS INTRO -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="That's basically::how it works."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;queuemessage,HideFloor;sleep,1;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Now I'll introduce some::meters that help you play."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+130;diffusealpha,0;sleep,3;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

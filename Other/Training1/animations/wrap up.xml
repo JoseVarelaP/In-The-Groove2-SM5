@@ -1,0 +1,23 @@
+<ActorFrame> <children>
+	<!-- #26: WRAP UP -->
+	<Actor
+		File="../blockers/full black"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;linear,0.3;diffusealpha,1;sleep,10"
+	/>
+	<!-- END BLOCKERS -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="All right, you've::got the basics!"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-82;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Now it's time::to move on to::Dance mode..."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+76;diffusealpha,0;sleep,3;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

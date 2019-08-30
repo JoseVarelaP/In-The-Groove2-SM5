@@ -8,9 +8,9 @@ return Def.ActorFrame{
 		end;
 
 		Def.BitmapText{
-		Font="_eurostile blue glow",
+		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenTestInput","HeaderText")),
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;

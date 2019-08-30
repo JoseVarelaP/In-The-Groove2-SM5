@@ -1,0 +1,29 @@
+<ActorFrame>
+<children>
+
+	<!-- #17: SONGBAR -->
+	<Layer
+		Type="Quad"
+		Command="diffusealpha,0;sleep,1;queuemessage,ShowGameplayTopFrame;sleep,6;queuemessage,HideGameplayTopFrame"
+	/>
+
+	<Layer
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="The bar at the top is::the progress meter"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,6;linear,0.3;diffusealpha,0"
+	/>
+
+	<Layer
+		File="up pointer"
+		Command="x,SCREEN_CENTER_X;y,58;diffusealpha,0;sleep,2;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0"
+	/>
+	<Layer
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="It shows how far along::in the song you are"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+142;diffusealpha,0;sleep,4;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children>
+</ActorFrame>
+ 

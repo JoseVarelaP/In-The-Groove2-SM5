@@ -1,0 +1,31 @@
+<ActorFrame> <children>
+	<!-- #27: PICK SONGS -->
+
+	<Actor
+		File="../blockers/full black"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,7"
+	/>
+
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Pick songs with 1::purple bar until you're::ready for more challenge"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-70;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,6;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="difficulties"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+120;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="down pointer"
+		OnCommand="x,SCREEN_CENTER_X+7;y,SCREEN_CENTER_Y+62;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0"
+	/>
+
+	<Actor
+		File="right pointer"
+		OnCommand="x,SCREEN_CENTER_X-144;y,SCREEN_CENTER_Y+92;diffusealpha,0;sleep,3;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,0.5;linear,0.1;diffusealpha,0"
+	/>
+</children> </ActorFrame>

@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<!-- #33: TRY IT 3b : LEFT RIGHT ALT -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_tutorial"
+		Text="Start with one foot on the::&up; panel and the other::on the &right; panel"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

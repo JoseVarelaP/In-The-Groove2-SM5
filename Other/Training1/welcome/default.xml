@@ -1,0 +1,37 @@
+<ActorFrame>
+<children>
+	<!-- #1: WELCOME -->
+
+	<Actor
+		Type="Quad"
+		OnCommand="diffusealpha,0;queuecommand,HideSongBar"
+		HideSongBarCommand="queuemessage,HideGameplayTopFrame;queuemessage,HideFloor"
+	/>
+
+	<Actor
+		File="../blockers/full black"
+		OnCommand="x,320;y,240;sleep,10.5;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="@THEME:GetPath(EC_GRAPHICS,'','_tutorial welcome')"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-112;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,6;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="^_^"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,4;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="I'll show you what::you need to get started!"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+120;diffusealpha,0;sleep,6;linear,0.3;diffusealpha,1;sleep,2;linear,0.3;diffusealpha,0"
+
+	/>
+</children>
+</ActorFrame>
+

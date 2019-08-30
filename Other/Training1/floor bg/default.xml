@@ -1,0 +1,197 @@
+<ActorFrame InitCommand="z,-1" >
+<children>
+	<!-- FLOOR BG MASTER -->
+
+	<Actor Type="ActorFrame"
+		OnCommand="y,SCREEN_CENTER_Y+136;sleep,450"
+	> <children>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+			File="floor left"
+			OnCommand="x,SCREEN_CENTER_X-112"
+
+			HideFloorMessageCommand="linear,0.3;diffusealpha,0"
+			ShowFloorMessageCommand="linear,0.3;diffusealpha,1"
+		/>
+
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+			File="floor right"
+			OnCommand="x,SCREEN_CENTER_X+112"
+
+			HideFloorMessageCommand="linear,0.3;diffusealpha,0"
+			ShowFloorMessageCommand="linear,0.3;diffusealpha,1"
+		/>
+
+		<Layer
+			Condition="not GAMESTATE:IsHumanPlayer(PLAYER_1)"
+			File="floor left"
+			OnCommand="x,SCREEN_CENTER_X-112;diffusecolor,#505050"
+
+			HideFloorMessageCommand="linear,0.3;diffusealpha,0"
+			ShowFloorMessageCommand="linear,0.3;diffusealpha,1"
+		/>
+
+		<Layer
+			Condition="not GAMESTATE:IsHumanPlayer(PLAYER_2)"
+			File="floor right"
+			OnCommand="x,SCREEN_CENTER_X+112;diffusecolor,#505050"
+
+			HideFloorMessageCommand="linear,0.3;diffusealpha,0"
+			ShowFloorMessageCommand="linear,0.3;diffusealpha,1"
+		/>
+	</children>
+	</Actor>
+
+	<Actor Type="ActorFrame"
+		OnCommand="x,0;y,0"> <children>
+
+		<Actor Type="ActorFrame"
+			OnCommand="sleep,36;queuecommand,DarkenLeft;queuecommand,DarkenUp;queuecommand,DarkenDown;
+			sleep,25;queuecommand,UndarkenLeft;queuecommand,UndarkenUp;queuecommand,UndarkenDown;
+			sleep,7.5;queuecommand,DarkenLeft;queuecommand,DarkenRight;
+			sleep,20;queuecommand,UndarkenLeft;queuecommand,UndarkenRight;
+			sleep,62.5;queuecommand,DarkenDown;queuecommand,DarkenLeft;
+			sleep,22;queuecommand,UndarkenDown;queuecommand,UndarkenLeft;
+			sleep,11;queuecommand,DarkenUp;queuecommand,DarkenDown;
+			sleep,8.5;queuecommand,UndarkenUp;queuecommand,UndarkenDown;
+			sleep,1;queuecommand,DarkenLeft;queuecommand,DarkenRight;
+			sleep,7.5;queuecommand,UndarkenLeft;queuecommand,UndarkenRight;
+			"
+		>
+			<children>
+				<Actor
+					File="../floorpanels/left up dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-85;y,SCREEN_CENTER_Y+105;diffuse,#000000;diffusealpha,0"
+					DarkenUpCommand="linear,0.3;diffusealpha,1"
+					UndarkenUpCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right up dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+85;y,SCREEN_CENTER_Y+105;diffuse,#000000;diffusealpha,0"
+					DarkenUpCommand="linear,0.3;diffusealpha,1"
+					UndarkenUpCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left left dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+128;diffuse,#000000;diffusealpha,0"
+					DarkenLeftCommand="linear,0.3;diffusealpha,1"
+					UndarkenLeftCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right left dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+35;y,SCREEN_CENTER_Y+128;diffuse,#000000;diffusealpha,0"
+					DarkenLeftCommand="linear,0.3;diffusealpha,1"
+					UndarkenLeftCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left down dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-99;y,SCREEN_CENTER_Y+154;diffuse,#000000;diffusealpha,0"
+					DarkenDownCommand="linear,0.3;diffusealpha,1"
+					UndarkenDownCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right down dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+99;y,SCREEN_CENTER_Y+154;diffuse,#000000;diffusealpha,0"
+					DarkenDownCommand="linear,0.3;diffusealpha,1"
+					UndarkenDownCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left right dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-34;y,SCREEN_CENTER_Y+128;diffuse,#000000;diffusealpha,0"
+					DarkenRightCommand="linear,0.3;diffusealpha,1"
+					UndarkenRightCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right right dark"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+150;y,SCREEN_CENTER_Y+128;diffuse,#000000;diffusealpha,0"
+					DarkenRightCommand="linear,0.3;diffusealpha,1"
+					UndarkenRightCommand="linear,0.3;diffusealpha,0"
+				/>
+
+				<!-- Highlights: -->
+				<Actor
+					File="../floorpanels/left up hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-85;y,SCREEN_CENTER_Y+105;diffusealpha,0"
+					HighlightUpMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightUpMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right up hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+85;y,SCREEN_CENTER_Y+105;diffusealpha,0"
+					HighlightUpMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightUpMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left left hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+128;diffusealpha,0"
+					HighlightLeftMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightLeftMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right left hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+35;y,SCREEN_CENTER_Y+128;diffusealpha,0"
+					HighlightLeftMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightLeftMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left down hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-99;y,SCREEN_CENTER_Y+154;diffusealpha,0"
+					HighlightDownMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightDownMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right down hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+99;y,SCREEN_CENTER_Y+154;diffusealpha,0"
+					HighlightDownMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightDownMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/left right hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+					OnCommand="x,SCREEN_CENTER_X-34;y,SCREEN_CENTER_Y+128;diffusealpha,0"
+					HighlightRightMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightRightMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+				<Actor
+					File="../floorpanels/right right hilight"
+					Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+					OnCommand="x,SCREEN_CENTER_X+150;y,SCREEN_CENTER_Y+128;diffusealpha,0"
+					HighlightRightMessageCommand="linear,0.1;diffusealpha,1"
+					UnhighlightRightMessageCommand="linear,0.1;diffusealpha,0"
+				/>
+
+			</children>
+		</Actor>
+	</children> </Actor>
+</children>
+</ActorFrame>
+

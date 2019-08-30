@@ -33,7 +33,8 @@ local BTInput = {
         CheckValueOffsets()
     end,
     ["Start"] = function(event)
-        SCREENMAN:PlayStartSound()
+        SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+		or THEME:GetPathS("_ITGCommon","start") )
         local mode = modes[MenuIndex] == "dance" and "regular" or modes[MenuIndex]
         GAMESTATE:ApplyGameCommand("playmode,".. mode)
         SCREENMAN:GetTopScreen():SetNextScreenName( "ITG_StyleSelect" ):StartTransitioningScreen("SM_GoToNextScreen")
@@ -173,9 +174,9 @@ t[#t+1] = Def.ActorFrame{
     end;
 
     Def.BitmapText{
-    Font="_eurostile blue glow",
+    Font=_eurostileColorPick(),
     Text="SELECT A STYLE",
-    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
     OnCommand=function(self)
         self:zoomx(0):zoomy(6):bounceend(.3):zoom(1)
     end;

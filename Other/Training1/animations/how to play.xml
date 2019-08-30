@@ -1,0 +1,62 @@
+<ActorFrame
+	InitCommand="z,-1"
+>
+	<children>
+		<Actor
+			File="../blockers/target overlay"
+			OnCommand="sleep,6;queuecommand,ShowTargets"
+		/>
+
+		<!-- END BLOCKERS -->
+
+		<!-- 0 to 5 seconds -->
+
+		<Actor Type="ActorFrame"> <children>
+			<BitmapText
+				Text="You play this game by::stepping on the colored::panels on the stage::in time with the music"
+				Font="_big blue glow"
+				OnCommand="ShadowLength,4;x,309;y,173;diffusealpha,0;sleep,1;queuemessage,ShowFloor;linear,0.3;diffusealpha,1;sleep,4;queuemessage,HideFloor;linear,0.3;diffusealpha,0"
+			/>
+		</children> </Actor>
+
+		<!-- 5 to 12 seonds -->
+
+		<Actor Type="ActorFrame"
+			OnCommand="hibernate,8"> <children>
+			<BitmapText
+				Text="These are the targets.::Each one corresponds::to a colored panel."
+				Font="_big blue glow"
+				OnCommand="ShadowLength,4;x,320;y,241;diffusealpha,0;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+			/>
+
+			<Sprite
+				File="how to play left pointer"
+				Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+				OnCommand="x,49;y,51;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,.2;linear,0.3;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,1;linear,0.3;diffusealpha,0"
+			/>
+
+			<Sprite
+				File="how to play right pointer"
+				Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+				OnCommand="x,592;y,51;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,.2;linear,0.3;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,1;linear,0.3;diffusealpha,0"
+			/>
+		</children> </Actor>
+
+		<!-- 13 to 19 seconds -->
+		<Actor Type="ActorFrame"
+			OnCommand="hibernate,13"> <children>
+			<BitmapText
+				Text="Targets stay in::the same place::during the game."
+				Font="_big blue glow"
+				OnCommand="ShadowLength,4;x,323;y,220;diffusealpha,0;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+			/>
+			<BitmapText
+				Text="They act like a marker::so you know when to step."
+				Font="_big blue glow"
+				OnCommand="ShadowLength,4;x,323;y,360;diffusealpha,0;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+			/>
+		</children> </Actor>
+	</children>
+</ActorFrame>
+
+

@@ -35,9 +35,9 @@ t[#t+1] = Def.ActorFrame{
 		end;
 
 		Def.BitmapText{
-		Font="_eurostile blue glow",
+		Font=_eurostileColorPick(),
 		Text=GAMESTATE:IsCourseMode() and THEME:GetString("ScreenSelectMusicCourse","HeaderText") or Screen.String("HeaderText"),
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
@@ -47,13 +47,21 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.Sprite{
 		Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()),
-		Condition=not GAMESTATE:IsCourseMode(),
+		Condition=not GAMESTATE:IsCourseMode() and not ThemePrefs.Get("ITG1"),
 		OnCommand=function(self)
 			self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 		end;
 		OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
 		CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end end;
 		},
+
+		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1") )..{
+			Condition=not GAMESTATE:IsCourseMode() and ThemePrefs.Get("ITG1"),
+			OnCommand=function(self)
+				self:xy(SCREEN_RIGHT-140,0):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
+			end;
+			OffCommand=function(self) self:accelerate(.5):addx(SCREEN_WIDTH) end;
+		};
 
 	},
 
@@ -164,11 +172,18 @@ t[#t+1] = Def.ActorFrame{
 			SelectMenuClosedMessageCommand=function(self)
 				self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5)
 			end;
+			ShowPressStartForOptionsCommand=function(self)
+				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+			end;
+			ShowEnteringOptionsCommand=function(self)
+				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+			end;
 		};
 
 	};
 
 	Def.Sprite{
+		Condition=not ThemePrefs.Get("ITG1"),
 		Texture=THEME:GetPathG("ScreenSelectMusic","Options Message"),
 		InitCommand=function(self)
 			self:Center():pause():diffusealpha(0)
@@ -178,6 +193,25 @@ t[#t+1] = Def.ActorFrame{
 		end;
 		ShowEnteringOptionsCommand=function(self)
 			self:stoptweening():setstate(1):sleep(0.6):linear(0.3):cropleft(1.3)
+		end;
+		HidePressStartForOptionsCommandCommand=function(self)
+			self:linear(0.3):cropleft(1.3)
+		end;
+	},
+
+	Def.BitmapText{
+		Condition=ThemePrefs.Get("ITG1"),
+		Font="_big blue glow",
+		Text=THEME:GetString("ScreenSelectMusic","OptionsMessage"),
+		InitCommand=function(self)
+			self:Center():pause():diffusealpha(0):zoom(0.9)
+		end;
+		ShowPressStartForOptionsCommand=function(self)
+			self:diffusealpha(1):zoomx(0.1):zoomy(3):bounceend(0.3):zoom(0.9):sleep(1.2):linear(0.3):cropleft(1.3)
+		end;
+		ShowEnteringOptionsCommand=function(self)
+			self:settext( THEME:GetString("ScreenSelectMusic","EnteringOptions") )
+			self:stoptweening():sleep(0.6):linear(0.3):cropleft(1.3)
 		end;
 		HidePressStartForOptionsCommandCommand=function(self)
 			self:linear(0.3):cropleft(1.3)

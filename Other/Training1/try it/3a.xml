@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<!-- #19: TRY IT 3a : LEFT RIGHT ALT -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_tutorial"
+		Text="Try it now, alternating with::the &up; and &right; arrows"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;queuemessage,ShowFloor;sleep,1;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

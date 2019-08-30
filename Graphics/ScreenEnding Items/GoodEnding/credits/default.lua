@@ -46,7 +46,7 @@ for i,v in ipairs(items) do
 
 		Def.BitmapText{
 			Text=v[2],
-			Font="_eurostile blue glow",
+			Font=_eurostileColorPick(),
 			OnCommand=function(s)
 				s:hibernate(1):halign(0):addx(-SCREEN_WIDTH-10):addy(130):decelerate(0.5):addx(SCREEN_WIDTH):linear(2)
 				:addx(-12):linear(0.5):addx(-8):diffusealpha(0)

@@ -40,6 +40,7 @@ for player in ivalues(PlayerNumber) do
 end
 
 local t = Def.ActorFrame{};
+local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
 
 local function side(pn)
 	local s = 1
@@ -48,8 +49,8 @@ local function side(pn)
 end
 
 local function Gradeside(pn)
-	local s = -230
-	if pn == PLAYER_2 then s = 56 end
+	local s = -230+(itgstylemargin*1.2)
+	if pn == PLAYER_2 then s = 56+(itgstylemargin*-1.3) end
 	return s
 end
 
@@ -65,7 +66,7 @@ for player in ivalues(PlayerNumber) do
 	Condition=GAMESTATE:IsPlayerEnabled(player);
 		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
 		InitCommand=function(self)
-		self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y+54)
+		self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+((-145+itgstylemargin*1.2)*side(player)) ),SCREEN_CENTER_Y+54)
 		end,
 		OnCommand=function(self)
 			self:addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
@@ -84,7 +85,7 @@ for player in ivalues(PlayerNumber) do
 			self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
 			:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
 			:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
-			self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player)) ,SCREEN_CENTER_Y-38);
+			self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player) ) ,SCREEN_CENTER_Y-38+(itgstylemargin*2));
 		end;
 		OffCommand=function(self)
 			self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))
@@ -98,21 +99,21 @@ t[#t+1] = Def.ActorFrame{
 	-- It is different from 3.95/OpenITG's filters, which differ a lot with the original positions.
 	-- IN ADDITION of the different x and y handling anyways.
 	-- 																			Jose_Varela
-
 	Def.ActorFrame{
 		OnCommand=function(self)
 			self:xy(SCREEN_LEFT+35,SCREEN_TOP+38)
 		end;
 
 		Def.BitmapText{
-		Font="_eurostile blue glow",
+		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenEvaluation","HeaderText")),
-			InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+			InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(0.3):zoom(1)
 			end;
 			OffCommand=function(self)
 				self:accelerate(0.2):zoomx(2):zoomy(0):diffusealpha(0)
+				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
 			end;
 		},
 
@@ -135,6 +136,7 @@ t[#t+1] = Def.ActorFrame{
 
 
 	LoadActor( THEME:GetPathG("Evaluation","banner frame mask") )..{
+	Condition=not ThemePrefs.Get("ITG1");
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 	OnCommand=function(self)
 		self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-125):zoom(1.02)
@@ -143,6 +145,18 @@ t[#t+1] = Def.ActorFrame{
 		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 	end;
 	},
+
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
+		Condition=ThemePrefs.Get("ITG1");
+		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
+		OnCommand=function(self)
+			-- self:zwrite(1):z(1):blend("BlendMode_NoEffect")
+			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
+		end;
+		OffCommand=function(self)
+			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
+		end;
+	};
 
 	Def.Banner{
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
@@ -153,14 +167,26 @@ t[#t+1] = Def.ActorFrame{
 	end
 	end,
 	OnCommand=function(self)
-		self:setsize(418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124)
+		self:setsize( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
 	end;
 	OffCommand=function(self)
 		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 	end;
 	},
 
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
+	Condition=ThemePrefs.Get("ITG1");
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
+	OnCommand=function(self)
+		self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
+	end;
+	OffCommand=function(self)
+		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
+	end;
+	};
+	
 	LoadActor( THEME:GetPathG("","ScreenEvaluation banner frame") )..{
+	Condition=not ThemePrefs.Get("ITG1");
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 	OnCommand=function(self)
 		self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124)

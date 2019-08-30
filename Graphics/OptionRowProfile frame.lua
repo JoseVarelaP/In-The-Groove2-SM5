@@ -1,5 +1,6 @@
+local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
 local t = Def.ActorFrame{}
-t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"small 2red",320});
+t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320});
 t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"small green",312})..{
     GainFocusMessageCommand=function(self) self:visible(true) end;
     LoseFocusMessageCommand=function(self) self:visible(false) end;

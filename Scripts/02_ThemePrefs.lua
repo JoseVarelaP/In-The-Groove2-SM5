@@ -84,6 +84,18 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+	Legacy = 
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
+	ITG1 = 
+	{
+		Default = false,
+		Choices = { "ITG1", "ITG2" },
+		Values = { true, false }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

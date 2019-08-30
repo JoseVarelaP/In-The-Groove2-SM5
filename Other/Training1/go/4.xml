@@ -1,0 +1,16 @@
+<ActorFrame> <children>
+	<!-- #6: GO! 4 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_tutorial"
+		Text="Try it now, with the::&left; and &right; arrows"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-33;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="go text"
+		Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+59;diffusealpha,0;sleep,3.5;linear,0.1;diffusealpha,1;sleep,.2;linear,0.3;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,1;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>
+

@@ -1,0 +1,15 @@
+<ActorFrame> <children>
+	<!-- #6: GO! 1 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Try 4 in a row"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-37;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="go text"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+34;diffusealpha,0;sleep,3.5;linear,0.1;diffusealpha,1;sleep,.2;linear,0.3;diffusealpha,0;linear,0.1;diffusealpha,1;sleep,1;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

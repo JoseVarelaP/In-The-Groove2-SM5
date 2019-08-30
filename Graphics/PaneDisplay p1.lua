@@ -68,9 +68,14 @@ local function PercentScore(pn,scoremethod)
 	return {text,Rname}
 end
 
-local t = Def.ActorFrame{
-	LoadActor( THEME:GetPathG('PaneDisplay','Frame') ),
-}
+
+local t = Def.ActorFrame{}
+
+if ThemePrefs.Get("ITG1") then
+	t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"footer",250});
+else
+	t[#t+1] = LoadActor( THEME:GetPathG('PaneDisplay','Frame') );
+end
 
 if GAMESTATE:IsPlayerEnabled(args) then
 	local StepsOrCourse = function() return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(args) or GAMESTATE:GetCurrentSteps(args) end

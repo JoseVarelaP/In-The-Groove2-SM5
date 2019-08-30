@@ -38,7 +38,7 @@ for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
 end
 
 t[#t+1] = Def.BitmapText{
-    Font="_eurostile blue glow",
+    Font=_eurostileColorPick(),
     OnCommand=function(s)
         s:xy( 40, 40 ):halign(0):zoom(0.8)
         local highScoresType = THEME:GetMetric(Var "LoadingScreen","HighScoresType")

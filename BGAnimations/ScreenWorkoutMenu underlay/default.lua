@@ -51,20 +51,3 @@ t[#t+1] = LoadActor("../_menu out")..{
 }
 
 return t;
---[[
-<ActorFrame><children>
-	<ActorFrame
-		OnCommand="addx,-SCREEN_WIDTH;decelerate,0.3;addx,SCREEN_WIDTH"
-		OffCommand="accelerate,0.3;addx,SCREEN_WIDTH"
-	><children>
-		<Layer
-			File="shared-frame"
-			OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+36"
-		/>
-		<Layer
-			File="explanation-frame"
-			OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+118"
-		/>
-	</children></ActorFrame>
-</children></ActorFrame>
-]]

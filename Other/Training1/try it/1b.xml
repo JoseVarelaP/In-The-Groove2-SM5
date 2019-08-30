@@ -1,0 +1,17 @@
+<ActorFrame> <children>
+	<!-- #5: TRY IT RIGHT 2 -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Move in time with the beat."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-52;diffusealpha,0;sleep,1.5;linear,0.3;diffusealpha,1;sleep,5;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="When the red arrow::overlaps, STEP!"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+30;diffusealpha,0;sleep,3;linear,0.3;diffusealpha,1;sleep,3.5;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

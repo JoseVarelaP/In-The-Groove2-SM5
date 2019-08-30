@@ -1,0 +1,21 @@
+<ActorFrame> <children>
+	<!-- #4: NOTES DEMO -->
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="When they overlap::with the targets, STEP!"
+		Command="x,331;y,338;diffusealpha,0;sleep,2;linear,0.3;diffusealpha,1;sleep,4;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="now"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+		Command="x,170;y,57;diffusealpha,0;sleep,4.5;linear,0.1;diffusealpha,1;sleep,1.5;linear,0.3;diffusealpha,0"
+	/>
+
+	<Actor
+		File="now"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+		Command="x,488;y,57;diffusealpha,0;sleep,4.5;linear,0.1;diffusealpha,1;sleep,1.5;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

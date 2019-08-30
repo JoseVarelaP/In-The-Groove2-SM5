@@ -89,7 +89,8 @@ local BTInput = {
                 GAMESTATE:JoinPlayer(PLAYER_1)
                 GAMESTATE:JoinPlayer(PLAYER_2)
             end
-            SCREENMAN:PlayStartSound()
+            SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+			or THEME:GetPathS("_ITGCommon","start") )
             if not GAMESTATE:Env()["WorkoutMode"] then
                 SOUND:DimMusic(0,3)
             end
@@ -98,7 +99,8 @@ local BTInput = {
         else
             if GAMESTATE:GetCoins() >= 1 then
                 GAMESTATE:JoinPlayer(event)
-                SCREENMAN:PlayStartSound()
+                SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+                or THEME:GetPathS("_ITGCommon","start") )
                 GAMESTATE:InsertCoin(-1)
             end
         end
@@ -245,9 +247,9 @@ t[#t+1] = Def.ActorFrame{
     end;
 
     Def.BitmapText{
-    Font="_eurostile blue glow",
+    Font=_eurostileColorPick(),
     Text="SELECT A STYLE",
-    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx(-0.16) end,
+    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
     OnCommand=function(self)
         self:zoomx(0):zoomy(6):bounceend(.3):zoom(1)
     end;

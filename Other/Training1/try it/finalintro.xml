@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<!-- #18: TRY IT FINAL INTRO -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="Now that you::know the basics,::how about some new::step patterns and tips!"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+66;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

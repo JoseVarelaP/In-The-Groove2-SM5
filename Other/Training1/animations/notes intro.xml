@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<!-- #3: NOTES INTRO -->
+
+	<Actor
+		Type="BitmapText"
+		Font="_big blue glow"
+		Text="The arrows that::travel toward the::target are Steps."
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+120;diffusealpha,0;sleep,1;linear,0.3;diffusealpha,1;sleep,3;linear,0.3;diffusealpha,0"
+	/>
+</children> </ActorFrame>

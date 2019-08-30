@@ -1,0 +1,10 @@
+<ActorFrame>
+	<children>
+		<Quad
+			OnCommand="zoomto,SCREEN_WIDTH,65;diffuse,#000000;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-125"
+			ShowTargetsCommand="linear,0.3;diffusealpha,0"
+			HideTargetsCommand="linear,0.3;diffusealpha,1"
+		/>
+	</children>
+</ActorFrame>
+

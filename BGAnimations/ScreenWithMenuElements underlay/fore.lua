@@ -4,6 +4,7 @@ return Def.ActorFrame{
 	end;
 	
 	Def.Sprite{
+	Condition=not ThemePrefs.Get("ITG1"),
 	Texture="streak",
 	InitCommand=function(self)
 		self:x(SCREEN_CENTER_X):zoomtowidth(SCREEN_WIDTH):cropleft(-0.2):cropright(-0.2)
@@ -16,8 +17,16 @@ return Def.ActorFrame{
 	end;
 	},
 
+	LoadActor( THEME:GetPathB("","_frame 3x1") , {"footer",WideScale(520,680)})..{
+		Condition=ThemePrefs.Get("ITG1"),
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X,0)
+		end;
+	},
+
 	Def.Sprite{
 	Texture="flare",
+	Condition=not ThemePrefs.Get("ITG1"),
 	InitCommand=function(self)
 		self:x(SCREEN_LEFT-128)
 	end;
