@@ -1,16 +1,19 @@
 -- Unlock Display
+local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
 local MenuIndex = 1;
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(s) s:xy(SCREEN_CENTER_X+150,SCREEN_CENTER_Y-40):addx(SCREEN_WIDTH):decelerate(0.5):addx(-SCREEN_WIDTH) end;
-    OffCommand=function(s) s:accelerate(0.5):addx(SCREEN_WIDTH) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):addx(SCREEN_WIDTH) end;
 
     Def.Banner{
         MenuUpAllValMessageCommand=function(s)
             if not UNLOCKMAN:GetUnlockEntry(MenuIndex-1):IsLocked() then
-                s:LoadFromSong( UNLOCKMAN:GetUnlockEntry(MenuIndex-1):GetSong() )
+                s:LoadBannerFromUnlockEntry( UNLOCKMAN:GetUnlockEntry(MenuIndex-1) )
                 :setsize(234,78)
             else
                 s:Load( THEME:GetPathG("ITG2 Common fallback","Banner") )
@@ -19,7 +22,7 @@ t[#t+1] = Def.ActorFrame{
         end;
     };
 
-    LoadActor("_frame 3x3", {"banner",200,32,1.67});
+    LoadActor("_frame 3x3", {"banner",200,32,1.36});
 }
 
 t[#t+1] = Def.ActorFrame{
@@ -27,7 +30,9 @@ t[#t+1] = Def.ActorFrame{
         s:xy(SCREEN_CENTER_X-130,SCREEN_CENTER_Y-40)
         :addx(-SCREEN_WIDTH):decelerate(0.5):addx(SCREEN_WIDTH)
     end;
-    OffCommand=function(s) s:accelerate(0.5):addx(-SCREEN_WIDTH) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH) end;
 
     LoadActor("_frame 3x3", {"info",240,60,1.67});
 
@@ -78,11 +83,13 @@ t[#t+1] = Def.ActorFrame{
         s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-140)
         :zoom(0):decelerate(0.5):zoom(1)
     end;
-    OffCommand=function(s) s:accelerate(0.5):zoom(0) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):zoom(0) end;
 
     LoadActor("_frame 3x1", {"answer",520});
     Def.BitmapText{
-        Font="_big blue glow",
+        Font=glowcolor,
         Text="#15",
         OnCommand=function(s)
             s:xy(-230,-2):zoom(1)
@@ -93,10 +100,10 @@ t[#t+1] = Def.ActorFrame{
     };
 
     Def.BitmapText{
-        Font="_big blue glow",
+        Font=glowcolor,
         Text="#15",
         OnCommand=function(s)
-            s:xy(40,-2):zoom(0.7)
+            s:xy(40,-2):zoom(0.7):maxwidth(600)
         end;
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
@@ -108,7 +115,12 @@ t[#t+1] = Def.ActorFrame{
     };
 }
 
-t[#t+1] = LoadActor("ScreenWithMenuElements underlay");
+t[#t+1] = LoadActor("ScreenWithMenuElements underlay")..{
+    OnCommand=function(self) self:diffusealpha(0):linear(.5):diffusealpha(1) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():linear(.5):diffusealpha(0) end;
+}
 
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
@@ -122,7 +134,9 @@ t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
     end;
-    OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
     };
 
 };
@@ -167,9 +181,15 @@ t[#t+1] = Def.ActorFrame{
         s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+110)
         :zoom(0):decelerate(0.5):zoom(1)
     end;
-    OffCommand=function(s) s:accelerate(0.5):zoom(0) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):zoom(0) end;
 
-    LoadActor("_frame 3x3", {"keyboard",460,60,1.80});
+    LoadActor("_frame 3x3", {"keyboard",460,60,1.80})..{
+        OnCommand=function(s)
+            s:diffuse( ThemePrefs.Get("ITG1") and color("#0099FF") or color("#EE3333"))
+        end;
+    };
     Def.ActorScroller{
         NumItemsToDraw=99;
         OnCommand=function(self)
@@ -208,12 +228,15 @@ t[#t+1] = Def.HelpDisplay {
     File="_eurostile normal",
     OnCommand=function(self)
         self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
+        :zoomy(0):linear(0.4):zoomy(0.7)
     end;
     InitCommand=function(self)
         self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
         self:SetTipsColonSeparated( THEME:GetString("ScreenUnlockBrowse","HelpText") );
     end;
-    OffCommand=function(self) self:linear(0.5):zoomy(0) end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():linear(0.5):zoomy(0) end;
 };
 
 -- Controller Logic
@@ -250,8 +273,7 @@ local BTInput = {
         SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenRecordsMenu" ):StartTransitioningScreen("SM_GoToNextScreen")
     end,
     ["Back"] = function(event)
-        SCREENMAN:PlayCancelSound()
-        SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.TitleMenu()):Cancel()
+        SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenRecordsMenu"):Cancel()
     end,
 };
 

@@ -1,5 +1,5 @@
 local ModeMenuAvailable = THEME:GetMetric("ScreenSelectMusic","ModeMenuAvailable")
-
+local itgstylemargin = ThemePrefs.Get("ITG1") and -1 or 0
 local t=Def.ActorFrame{}
 t[#t+1] = Def.ActorFrame{
 
@@ -69,7 +69,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.HelpDisplay {
 	File="_eurostile normal",
 	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.75):diffuseblink()
+		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203+itgstylemargin):zoom(0.75):diffuseblink()
 	end;
 	InitCommand=function(self)
 		local s = THEME:GetString("ScreenSelectMusic","HelpTextNormal") .. "::" ..
@@ -96,7 +96,7 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.ActorFrame{
 		OnCommand=function(self)
-			self:y( SCREEN_BOTTOM-17-18 )
+			self:y( SCREEN_BOTTOM-17-18+itgstylemargin )
 		end;
 		SelectMenuOpenedMessageCommand=function(self)
 			SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMusic select","down") )

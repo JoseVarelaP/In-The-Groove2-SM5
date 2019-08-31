@@ -11,7 +11,7 @@ local t = Def.ActorFrame{
     CancelMessageCommand=function(s) s:queuecommand("Off") end;
     OffCommand=function(s)
         itemcount = 0
-        s:queuecommand("TweenOff")
+        s:hurrytweening(0.2):queuecommand("TweenOff")
     end;
     TweenOffCommand=function(s)
         itemcount = itemcount + 1
