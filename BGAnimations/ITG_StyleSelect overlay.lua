@@ -162,6 +162,9 @@ local Controller = Def.ActorFrame{
 t[#t+1] = Def.Quad{
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
+        if GAMESTATE:Env()["WorkoutMode"] then
+            GAMESTATE:SetTemporaryEventMode(true)
+        end
     end;
     OffCommand=function(self)
         self:sleep(1.5):linear(0.3):diffusealpha(0)
