@@ -282,7 +282,8 @@ t[#t+1] = Def.HelpDisplay {
 
 t[#t+1] = LoadActor("_menu out")..{
     OnCommand=function(s)
-        s:Center():diffusealpha(0)
+        if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+        s:diffusealpha(0)
     end;
     OffCommand=function(s)
         if not GAMESTATE:Env()["WorkoutMode"] then
