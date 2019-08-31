@@ -1,2 +1,0 @@
-<Actor Type="Quad" OnCommand="queuemessage,HideJudgment" />
-

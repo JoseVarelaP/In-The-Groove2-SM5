@@ -1,5 +1,0 @@
-<!-- #9b HIGHLIGHT PANELS DURING PLAY -->
-<Actor
-	Type="Quad"
-	OnCommand="diffusealpha,0;queuemessage,HighlightRight;sleep,.2;queuemessage,UnhighlightRight;sleep,.1"
-/>
