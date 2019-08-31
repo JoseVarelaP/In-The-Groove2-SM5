@@ -23,7 +23,7 @@ return Def.ActorFrame{
 			s:accelerate(0.3):addx(SCREEN_WIDTH)
 		end;
 
-		LoadActor( THEME:GetPathB("","_frame 3x3"), {File="info", Width=190, Height=70}),
+		LoadActor( THEME:GetPathB("","_frame 3x3"), {"info",190,70}),
 		Def.BitmapText{ Font="Common Normal";
 			OnCommand=function(self) self:y(-50):zoom(0.7) end;
 			ProfileSelectedMessageCommand=function(s,p)
