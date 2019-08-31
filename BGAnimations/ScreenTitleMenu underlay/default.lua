@@ -33,7 +33,7 @@ return Def.ActorFrame{
 		Font="Common Normal",
 		OnCommand=function(s)
 			local unlocked = 0
-			for i=1,15 do
+			for i=1,UNLOCKMAN:GetNumUnlocks() do
 				local Code = UNLOCKMAN:GetUnlockEntry( i-1 )
 				if Code and not Code:IsLocked() then
 					unlocked = unlocked + 1
@@ -53,7 +53,7 @@ return Def.ActorFrame{
 		InitCommand=function(self)
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
 			self:SetTipsColonSeparated( THEME:GetString("ScreenTitleMenu","HelpText") );
-			for i=1,15 do
+			for i=1,UNLOCKMAN:GetNumUnlocks() do
 				if PREFSMAN:GetPreference("UseUnlockSystem") then
 					local Code = UNLOCKMAN:GetUnlockEntry( i-1 )
 					if Code and Code:IsLocked() then
