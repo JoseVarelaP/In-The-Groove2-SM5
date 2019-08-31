@@ -1,9 +1,10 @@
 local x = Def.ActorFrame{
-	LoadActor("_moveon")..{
-	OnCommand=function(self)
-		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y)
-	end;
-	};
+	LoadActor("_menu out")..{
+		OnCommand=function(s)
+			if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+			s:diffusealpha(0):linear(0.3):diffusealpha(1)
+		end;
+	}
 };
 
 x[#x+1] = Def.Actor {

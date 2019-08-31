@@ -119,6 +119,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.Sprite{
 		Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)),
+		Condition=not ThemePrefs.Get("ITG1"),
 		OnCommand=function(self)
 			if GAMESTATE:GetCurrentStage() == "Stage_Final" then
 				self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
@@ -129,6 +130,14 @@ t[#t+1] = Def.ActorFrame{
 			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
 		end;
 		},
+	
+		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1"), true )..{
+			Condition=ThemePrefs.Get("ITG1"),
+			OnCommand=function(self)
+				self:xy(SCREEN_RIGHT-140,0):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
+			end;
+			OffCommand=function(self) self:accelerate(.5):addx(SCREEN_WIDTH) end;
+		};
 
 	},
 

@@ -235,6 +235,16 @@ Branch.AfterSelectProfile = function()
 	end
 end
 
+function SelectMusicOrCourse()
+	if IsNetSMOnline() then
+		return "ScreenNetSelectMusic"
+	elseif GAMESTATE:IsCourseMode() then
+		return ThemePrefs.Get("ITG1") and "ScreenSelectCourseITG1" or "ScreenSelectCourse"
+	else
+		return ThemePrefs.Get("ITG1") and "ScreenSelectMusicITG1" or "ScreenSelectMusic"
+	end
+end
+
 Branch.AfterEvaluation = function()
 	if GAMESTATE:IsCourseMode() then
 		return "ScreenProfileSave"

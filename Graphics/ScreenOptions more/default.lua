@@ -1,3 +1,4 @@
+local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
 local ExitSelect = {false,false}
 local t = Def.ActorFrame{
 	BeginCommand=function(s)
@@ -9,7 +10,7 @@ local t = Def.ActorFrame{
 
 for player in ivalues(PlayerNumber) do
 	local pnumber = tonumber( string.len(ToEnumShortString(GAMESTATE:GetMasterPlayerNumber()), 1 ) )
-	t[#t+1] = LoadActor("triangle")..{
+	t[#t+1] = LoadActor( style.."triangle" )..{
 		OnCommand=function(s)
 			s:x( player == PLAYER_1 and -48 or 48):diffuseblink():effectcolor1(0.6,0.6,0.6,1):effectperiod(1):effectoffset(0.2):effectclock("bgm")
 		end;

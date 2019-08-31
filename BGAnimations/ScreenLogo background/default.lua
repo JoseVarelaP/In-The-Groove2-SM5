@@ -1,4 +1,7 @@
-return Def.ActorFrame{
+local t = Def.ActorFrame{}
+
+t[#t+1] = Def.ActorFrame{
+	Condition=not ThemePrefs.Get("ITG1"),
 	Def.Sprite{
 		Texture="978_JumpBack.mpg",
 		OnCommand=function(self)
@@ -85,3 +88,7 @@ return Def.ActorFrame{
 	}
 
 }
+
+t[#t+1] = LoadActor("ITG1")..{Condition=ThemePrefs.Get("ITG1")};
+
+return t;

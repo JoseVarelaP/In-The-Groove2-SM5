@@ -1,3 +1,4 @@
+local style = ThemePrefs.Get("ITG1") and "_flare" or "flare"
 return Def.ActorFrame{
 	LoadActor("../ScreenLogo background"),
 
@@ -14,18 +15,35 @@ return Def.ActorFrame{
 	},
 	
 	Def.Sprite{
-		Texture="flare",
+		Texture=style,
 		 OnCommand=function(self)
 			self:xy(SCREEN_LEFT-64,SCREEN_CENTER_Y-165):rotationz(0):linear(1):x(SCREEN_RIGHT+64):rotationz(360)
 		end
 	},
 	
 	Def.Sprite{
-		Texture="flare",
+		Texture=style,
 		 OnCommand=function(self)
 			self:xy(SCREEN_LEFT-64,SCREEN_CENTER_Y+165):rotationz(0):linear(1):x(SCREEN_RIGHT+64):rotationz(360)
 		end
 	},
+
+	Def.BitmapText{
+		Condition=PREFSMAN:GetPreference("UseUnlockSystem"),
+		Font="Common Normal",
+		OnCommand=function(s)
+			local unlocked = 0
+			for i=1,15 do
+				local Code = UNLOCKMAN:GetUnlockEntry( i-1 )
+				if Code and not Code:IsLocked() then
+					unlocked = unlocked + 1
+				end
+			end
+
+			s:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
+			:halign(1):xy(SCREEN_RIGHT-30,SCREEN_CENTER_Y+130):zoom(0.6):diffusealpha(0.5)
+		end;
+	};
 
 	Def.HelpDisplay {
 		File="_eurostile normal",

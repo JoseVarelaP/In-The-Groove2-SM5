@@ -31,7 +31,7 @@ t[#t+1] = Def.ActorFrame{
 				self:x(40):y(34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 			end;
 			OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
-			CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end end;
+			CancelMessageCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
 		},
 	
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1") )..{
@@ -39,7 +39,8 @@ t[#t+1] = Def.ActorFrame{
 			OnCommand=function(self)
 				self:xy(SCREEN_RIGHT-140,0):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
 			end;
-			OffCommand=function(self) self:accelerate(.3):addx(SCREEN_WIDTH) end;
+			OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+			CancelMessageCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
 		};
 
 	},
@@ -61,7 +62,8 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadActor("_menu out")..{
 		OnCommand=function(s)
-			s:Center():diffusealpha(0)
+			if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+			s:diffusealpha(0)
 		end;
 		CancelMessageCommand=function(s) s:sleep(0.3):linear(0.3):diffusealpha(1) end;
 	}

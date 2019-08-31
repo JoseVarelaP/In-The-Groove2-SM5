@@ -1,3 +1,4 @@
+local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
 return Def.ActorFrame{
 	LoadActor("../ScreenGameplay overlay/demonstration gradient")..{
 		OnCommand=function(self)
@@ -123,13 +124,13 @@ return Def.ActorFrame{
 	end;
 	},
 
-	LoadActor("instructions")..{
+	LoadActor( style.."instructions")..{
 	OnCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):cropright(1.3):linear(1):cropright(-0.3):sleep(2):decelerate(0.5):zoom(0.7):y(SCREEN_TOP+40)
 	end;
 	},
 
-	LoadActor("white instructions")..{
+	LoadActor( style.."white instructions")..{
 	OnCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):zoom(1.05):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):linear(1):cropleft(1):cropright(-0.3)
 	end;

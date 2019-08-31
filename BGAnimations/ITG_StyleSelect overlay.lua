@@ -185,7 +185,7 @@ t[#t+1] = Def.ActorFrame{
         },
 };
 
-t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore");
+--t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore");
 
 t[#t+1] = Def.ActorScroller{
 	NumItemsToDraw=3;

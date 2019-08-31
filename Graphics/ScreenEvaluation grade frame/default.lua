@@ -115,7 +115,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.GraphDisplay{
 			InitCommand=function(self)
-				self:y(-36+(itgstylemargin*1.15))
+				self:y(-36+(itgstylemargin*1.3))
 			end,
 			BeginCommand=function(self)
 				self:Load("GraphDisplayP"..pnum(player))
@@ -127,7 +127,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.ComboGraph{
 			InitCommand=function(self)
-				self:y(-7+(itgstylemargin*1.15))
+				self:y(-7+(itgstylemargin*1.3))
 			end,
 			BeginCommand=function(self)
 				self:Load("ComboGraphP"..pnum(player))
@@ -160,8 +160,8 @@ t[#t+1] = Def.ActorFrame{
 	end,
 	},
 
-	LoadActor( "../ComboAwards/"..ComboAward..".lua" ),
-	LoadActor( "../ComboAwards/"..DiffAward..".lua" ),
+	LoadActor( "../ComboAwards/"..ComboAward..".lua" )..{ OnCommand=function(s) s:y(itgstylemargin*1.2) end; };
+	LoadActor( "../ComboAwards/"..DiffAward..".lua" )..{ OnCommand=function(s) s:y(itgstylemargin*1.2) end; };
 };
 
 -- Info regarding all judgment data
@@ -315,14 +315,14 @@ for i,v in ipairs(WorkoutData.Strings) do
 	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
 		Text=THEME:GetString("ScreenEvaluation",v),
-		OnCommand=function(s) s:xy( -130, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(0):maxwidth(300) end;
+		OnCommand=function(s) s:xy( -130, (PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i))+itgstylemargin ):zoom(0.5):halign(0):maxwidth(300) end;
 	}
 end
 for i,v in ipairs(WorkoutData.DataLabel) do
 	WorkoutActors[#WorkoutActors+1] = Def.BitmapText{
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
 		Font="Common Normal", Text=THEME:GetString("ScreenEvaluation",type(v) == "function" and v() or v),
-		OnCommand=function(s) s:xy( 96, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(0) end;
+		OnCommand=function(s) s:xy( 96, (PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i))+itgstylemargin ):zoom(0.5):halign(0) end;
 	}
 end
 for i,v in ipairs(WorkoutData.DataStructure) do
@@ -330,7 +330,7 @@ for i,v in ipairs(WorkoutData.DataStructure) do
 		Condition=WorkoutData.Conditions[i] and WorkoutData.Conditions[i],
 		Text=string.format( "%.2f", type(v) == "function" and v() or v),
 		OnCommand=function(s)
-			s:xy( 90, PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i) ):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
+			s:xy( 90, (PROFILEMAN:GetProfile(player):GetGoalType() ~= 2 and 16+(16*i) or 16+(20*i))+itgstylemargin ):zoom(0.5):halign(1):diffuse( PlayerColor(player) )
 		end;
 	}
 end
@@ -339,14 +339,14 @@ WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 	Condition=WorkoutData.Conditions[4],
 	Text=string.format( THEME:GetString("ScreenEvaluation","Percent Complete"), WorkoutData.CompletePercentage() ),
 	OnCommand=function(s)
-		s:xy( 130, 16*7-2 ):zoom(0.6):halign(1):diffuse( PlayerColor(player) ):maxwidth(210)
+		s:xy( 130, 16*7-2+itgstylemargin ):zoom(0.6):halign(1):diffuse( PlayerColor(player) ):maxwidth(210)
 	end;
 };
 
 WorkoutActors[#WorkoutActors+1] = Def.BitmapText{ Font="Common Normal",
 	Text=GAMESTATE:Env()["WorkoutComplete"..player] and WorkoutData.Conditions[4] and THEME:GetString("ScreenEvaluation","Goal Complete!") or THEME:GetString("ScreenEvaluation","Keep Going!"),
 	OnCommand=function(s)
-		s:xy( -130, 16*7-2 ):zoom(0.6):halign(0):maxwidth(210)
+		s:xy( -130, 16*7-2+itgstylemargin ):zoom(0.6):halign(0):maxwidth(210)
 		if PROFILEMAN:GetProfile(player):GetGoalType() == 2 then s:x( 0 ):halign(0.5) end
 		if GAMESTATE:Env()["WorkoutComplete"..player] then s:diffuseshift() end
 	end;

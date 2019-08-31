@@ -6,7 +6,7 @@ bnhelp[#bnhelp+1] = Def.ActorFrame{
 	Condition=GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:GetPlayMode()=="PlayMode_Regular" and GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()=="Difficulty_Beginner" or GAMESTATE:IsHumanPlayer(PLAYER_2) and GAMESTATE:GetPlayMode()=="PlayMode_Regular" and GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()=="Difficulty_Beginner";
 	InitCommand=function(s) s:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y-30) end;
 	Def.ActorFrame{
-		Def.Sprite{ Texture="light_frame" };
+		Def.Sprite{ Texture=ThemePrefs.Get("ITG1") and "light_frame1" or "light_frame2" };
 		Def.ActorFrame{
 			Def.Sprite{
 				Texture="light_green",

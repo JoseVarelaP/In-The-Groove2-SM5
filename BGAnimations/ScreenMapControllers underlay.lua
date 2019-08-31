@@ -1,8 +1,9 @@
+local style = ThemePrefs.Get("ITG1") and "_" or ""
 return Def.ActorFrame{
 
 	LoadActor( "ScreenWithMenuElements underlay" ),
 
-	LoadActor("ScreenOptions overlay/ScreenOptions frame")..{
+	LoadActor("ScreenOptions overlay/".. style .."options frame")..{
 	InitCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y):addy(18)
 	end;

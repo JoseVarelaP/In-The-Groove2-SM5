@@ -30,6 +30,40 @@ return Def.ActorFrame{
 				end;
 			};
 
+			Def.Sprite{
+				Texture=ThemePrefs.Get("ITG1") and "../ITG1/Common fallback banner" or "../ITG2 Common fallback banner",
+				InitCommand=function(s)
+					s:ztest(1)
+					if IsUsingWideScreen() then
+						s:x(63):y(-3):setsize(418,164):zoomy(0.8):zoomx(1.34)
+					else
+						s:x(10):y(-3):setsize(418,164):zoomy(0.8):zoomx(1.1)
+					end
+				end;
+				CurrentCourseChangedMessageCommand=function(s)
+					if GAMESTATE:GetCurrentCourse() then
+						s:stoptweening():linear(0.3):diffusealpha(1)
+						if GAMESTATE:GetCurrentCourse():GetBannerPath() ~= nil then 
+							s:diffusealpha(0)
+						end
+					end
+				end;
+				CurrentSongChangedMessageCommand=function(s)
+					s:stoptweening():linear(0.3):diffusealpha(1)
+					if GAMESTATE:GetCurrentSong() then
+						if GAMESTATE:GetCurrentSong():GetBannerPath() ~= nil then 
+							s:diffusealpha(0)
+						end
+					else
+						if GAMESTATE:Env()["CurrentGroupSelected"] then
+							if SONGMAN:GetSongGroupBannerPath( GAMESTATE:Env()["CurrentGroupSelected"] ) ~= "" then
+								s:diffusealpha(0)
+							end
+						end
+					end
+				end;
+			};
+
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{ OnCommand=function(s) s:y(126):zoomx(1):zoomy(0.94) end };
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{ OnCommand=function(s) s:y(126):zoomx(1):zoomy(0.94) end };
 

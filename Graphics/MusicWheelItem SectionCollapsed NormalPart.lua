@@ -17,6 +17,9 @@ return Def.ActorFrame{
 	local Group = params.Text;
 		if Group then
 			self:settext(Group)
+			if params.HasFocus then
+				GAMESTATE:Env()["CurrentGroupSelected"] = Group
+			end
 		end
 	end
 	},
