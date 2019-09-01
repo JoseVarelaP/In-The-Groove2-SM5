@@ -18,6 +18,22 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	},
 
+	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMusic wheel inner","mask"),
+		InitCommand=function(self)
+			self:x(SCREEN_CENTER_X+80):y(SCREEN_CENTER_Y-10):zoom(1.1):zoomy(1.28):zwrite(true):z(1):blend("BlendMode_NoEffect"):croptop(0.34)
+		end;
+	},
+
+	Def.ActorFrame{
+		OnCommand=function(s) s:fov(45) end;
+		Def.Quad{
+			InitCommand=function(s)
+				s:zoomto(30,10):x(SCREEN_CENTER_X-36):y(SCREEN_CENTER_Y-66):rotationy(-20):zwrite(true):z(1):blend("BlendMode_NoEffect"):croptop(0.34)
+			end;
+		},
+	};
+
 	Def.ActorProxy{
 		BeginCommand=function(self) local banner = SCREENMAN:GetTopScreen():GetChild('MusicWheel'); self:SetTarget(banner); end,
 		InitCommand=function(self) end,
