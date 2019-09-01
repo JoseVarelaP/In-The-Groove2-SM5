@@ -58,7 +58,6 @@ local function CheckValueOffsets()
             end
         end
     end
-    SCREENMAN:SystemMessage( GAMESTATE:GetCoinsNeededToJoin() )
     SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
     MESSAGEMAN:Broadcast("MenuUpAllVal")
     return
