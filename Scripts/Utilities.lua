@@ -13,7 +13,11 @@ end
 function MenuTimerSet(self)
 	self:draworder(101):zoom(1.1)
 	:visible( (PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG") and true or false )
-	:addx(200):decelerate(0.3):addx(-200)
+	if ThemePrefs.Get("ITG1") then
+		self:addx(-200):decelerate(0.3):addx(200)
+	else
+		self:addx(200):decelerate(0.3):addx(-200)
+	end
 end
 
 function TimerWarning(s)
