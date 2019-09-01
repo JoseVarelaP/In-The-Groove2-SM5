@@ -35,6 +35,7 @@ t[#t+1] = Def.Sprite{
 };
 
 t[#t+1] = Def.Sprite{
+	Condition=not GAMESTATE:IsEventMode() and not GAMESTATE:GetCurrentStage() == "Stage_Final",
 	Texture="_stage ".. StageIndexBySegment(),
 	OnCommand=function(s)
 		s:x(186):diffusealpha(0):sleep(0.6):diffusealpha(1):linear(0.25):zoom(1.6):diffusealpha(0)
