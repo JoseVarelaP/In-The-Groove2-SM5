@@ -244,13 +244,6 @@ local function CheckValueOffsets()
     print( "CheckValueOffsets ".. MenuIndex )
     if MenuIndex > UNLOCKMAN:GetNumUnlocks() then MenuIndex = UNLOCKMAN:GetNumUnlocks() end
     if MenuIndex < 1 then MenuIndex = 1 end
-    if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
-        if MenuIndex == 2 or MenuIndex == 3 then
-            if GAMESTATE:GetNumPlayersEnabled() < 2 and (GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin()) then
-                MenuIndex = 1
-            end
-        end
-    end
     SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
     MESSAGEMAN:Broadcast("MenuUpAllVal")
     return

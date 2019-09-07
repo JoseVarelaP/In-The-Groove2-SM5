@@ -1,4 +1,4 @@
-return Def.ActorFrame{
+local t = Def.ActorFrame{
 	LoadActor("_menu in"),
 	-- my attempt at making input locking.
 	
@@ -8,3 +8,30 @@ return Def.ActorFrame{
 		end
 	},
 }
+
+local function IsAnyPlayerUsingMemoryCard()
+	for player in ivalues(PlayerNumber) do
+		if GAMESTATE:IsEventMode() and MEMCARDMAN:GetCardState(player) == "MemoryCardState_ready" then
+			return true
+		end
+	end
+	return false
+end
+
+if IsAnyPlayerUsingMemoryCard() then
+	t[#t+1] = Def.Sprite{
+		Texture="_red streak",
+		OnCommand=function(s)
+			s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):fadeleft(0.3):faderight(0.3):cropleft(-0.3):cropright(-0.3)
+			:zoom(1.5):linear(0.5):cropright(1.3):zoom(0.5)
+		end;
+	}
+	t[#t+1] = Def.Sprite{
+		Texture=THEME:GetPathG("","_saving"),
+		OnCommand=function(s)
+			s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):accelerate(0.5):addx(-SCREEN_WIDTH)
+		end;
+	}
+end
+
+return t;

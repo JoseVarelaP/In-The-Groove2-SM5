@@ -59,6 +59,21 @@ local function pnum(pn)
 	return 1
 end
 
+local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
+local battlegraphloc = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+t[#t+1] = Def.Sprite{
+	Condition=GAMESTATE:GetPlayMode() == "PlayMode_Rave",
+	Texture=THEME:GetPathG("ScreenEvaluation grade frame/battle/"..battlegraphloc.."graph","frame"),
+	BeginCommand=function(s)
+		s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+500)
+		:sleep(2.8):decelerate(0.5)
+		s:y(SCREEN_CENTER_Y+54+itgstylemargin*1.8)
+	end;
+	OffCommand=function(s)
+		s:accelerate(0.3):addy(500)
+	end;
+};
+
 -- Grade and Frame Info
 local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
 for player in ivalues(PlayerNumber) do
@@ -66,7 +81,8 @@ for player in ivalues(PlayerNumber) do
 	Condition=GAMESTATE:IsPlayerEnabled(player);
 		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
 		InitCommand=function(self)
-		self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+((-145+itgstylemargin*1.2)*side(player)) ),SCREEN_CENTER_Y+54)
+		local margin = GAMESTATE:GetPlayMode() == "PlayMode_Rave" and 164 or 145
+		self:xy( DoublesIsOn and SCREEN_CENTER_X or ( SCREEN_CENTER_X+((-margin+itgstylemargin*1.2)*side(player)) ),SCREEN_CENTER_Y+54)
 		end,
 		OnCommand=function(self)
 			self:addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
@@ -80,7 +96,7 @@ for player in ivalues(PlayerNumber) do
 	};
 
 	t[#t+1] = Def.ActorFrame{
-		Condition=GAMESTATE:IsPlayerEnabled(player);
+		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave";
 		BeginCommand=function(self)
 			self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
 			:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)

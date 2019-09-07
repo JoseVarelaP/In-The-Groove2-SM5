@@ -157,7 +157,7 @@ for player in ivalues(PlayerNumber) do
 	}
 
 	t[#t+1] = LoadActor( "Lifebar", player )..{
-		Condition=(GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar")) and not GAMESTATE:Env()["WorkoutMode"],
+		Condition=(GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar")) and not GAMESTATE:Env()["WorkoutMode"] and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave",
 		OnCommand=function(s)
 			local tsns = ToEnumShortString(player)
 			s:xy( THEME:GetMetric("ScreenGameplay","Life"..tsns.."X") , THEME:GetMetric("ScreenGameplay","Life"..tsns.."Y") )

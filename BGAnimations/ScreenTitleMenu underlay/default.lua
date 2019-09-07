@@ -1,4 +1,5 @@
 local style = ThemePrefs.Get("ITG1") and "_flare" or "flare"
+local num = ThemePrefs.Get("ITG1") and "" or " 2"
 return Def.ActorFrame{
 	LoadActor("../ScreenLogo background"),
 
@@ -41,7 +42,7 @@ return Def.ActorFrame{
 			end
 
 			s:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
-			:halign(1):xy(SCREEN_RIGHT-30,SCREEN_CENTER_Y+130):zoom(0.6):diffusealpha(0.5)
+			:halign(1):xy(SCREEN_RIGHT-30,SCREEN_CENTER_Y+100):zoom(0.6):diffusealpha(0.5)
 		end;
 	};
 
@@ -68,8 +69,38 @@ return Def.ActorFrame{
 			or THEME:GetPathS("_ITGCommon","start") )
 		end;
 	},
+	
 
 	LoadActor("../ScreenWithMenuElements underlay"),
 	LoadActor("PercentComplete","StepsType_Dance_Single")..{ OnCommand=function(self) self:xy(SCREEN_RIGHT-90,SCREEN_TOP+30):zoom(0.9) end; };
 	LoadActor("PercentComplete","StepsType_Dance_Double")..{ OnCommand=function(self) self:xy(SCREEN_RIGHT-90,SCREEN_TOP+50):zoom(0.9) end; };
+	Def.ActorFrame{
+		OnCommand=function(self)
+			self:xy(SCREEN_RIGHT-90,SCREEN_CENTER_Y+130):zoom(0.9)
+			:addx(SCREEN_WIDTH):decelerate(0.5):addx(-SCREEN_WIDTH)
+		end;
+		LoadActor("../_frame 3x1", {"product bar",120})..{
+			OnCommand=function(s)
+				s:diffuse(color("#3DA1FF"))
+				if SONGMAN:DoesSongGroupExist("In The Groove 2") then
+					s:diffuse( color("#FE2424") )
+				end
+			end;
+		};
+		Def.BitmapText{ Font="_eurostile normal", Text=THEME:GetString("Product","Base") .. num;
+			OnCommand=function(s)
+				s:zoom(0.6):y(-2):shadowlength(2):maxwidth(200)
+				if SONGMAN:DoesSongGroupExist("In The Groove 2") then
+					s:settext( THEME:GetString("Product","PackA") )
+				end
+			end;
+		};
+	};
+
+	Def.Sprite{
+		Texture="../ScreenLogo background/roxor",
+		OnCommand=function(self)
+			self:xy(SCREEN_LEFT+90,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
+		end;
+	};
 }
