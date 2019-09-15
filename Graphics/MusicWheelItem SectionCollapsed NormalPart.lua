@@ -16,7 +16,13 @@ return Def.ActorFrame{
 	self:shadowlength(1)
 	local Group = params.Text;
 		if Group then
-			self:settext(Group)
+			self:settext(Group):diffuse(Color.White)
+			for pn in ivalues(PlayerNumber) do
+				if Group == PROFILEMAN:GetProfile(pn):GetDisplayName() then
+					self:settext(Group.."'s Songs")
+					self:diffuse(Color.Orange)
+				end
+			end
 			if params.HasFocus then
 				GAMESTATE:Env()["CurrentGroupSelected"] = Group
 			end

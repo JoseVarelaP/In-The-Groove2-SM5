@@ -183,16 +183,23 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 
-	Def.Banner{
+	Def.Sprite{
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
 	if GAMESTATE:IsCourseMode() then
-		self:LoadFromCourse( GAMESTATE:GetCurrentCourse() )
+		self:Load( GAMESTATE:GetCurrentCourse():GetBannerPath() )
 	else
-		self:LoadFromSong( GAMESTATE:GetCurrentSong() )
+		if GAMESTATE:GetCurrentSong():GetBannerPath() ~= nil then 
+			self:Load( GAMESTATE:GetCurrentSong():GetBannerPath() )
+		end
+		for pn in ivalues(PlayerNumber) do
+			if GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(pn):GetDisplayName() then
+				self:Load( THEME:GetPathG("Banner","custom") )
+			end
+		end
 	end
 	end,
 	OnCommand=function(self)
-		self:setsize( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
+		self:scaletoclipped( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
 	end;
 	OffCommand=function(self)
 		self:accelerate(0.3):addy(-SCREEN_CENTER_X)

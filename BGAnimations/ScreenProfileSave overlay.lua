@@ -35,6 +35,7 @@ if IsAnyPlayerUsingMemoryCard() then
 		Texture="_red streak",
 		InitCommand=function(s)
 			s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5):fadeleft(0.3):cropleft(1.3):cropright(-0.3)
+			GAMESTATE:Env()["GameplayMemoryCardTransition"] = true
 		end;
 		ShowMemoryFrameMessageCommand=function(s) s:linear(0.5):cropleft(-0.3):zoom(1.5) end;
 	}

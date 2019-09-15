@@ -18,12 +18,13 @@ local function IsAnyPlayerUsingMemoryCard()
 	return false
 end
 
-if IsAnyPlayerUsingMemoryCard() then
+if IsAnyPlayerUsingMemoryCard() and GAMESTATE:Env()["GameplayMemoryCardTransition"] then
 	t[#t+1] = Def.Sprite{
 		Texture="_red streak",
 		OnCommand=function(s)
 			s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):fadeleft(0.3):faderight(0.3):cropleft(-0.3):cropright(-0.3)
 			:zoom(1.5):linear(0.5):cropright(1.3):zoom(0.5)
+			GAMESTATE:Env()["GameplayMemoryCardTransition"] = false
 		end;
 	}
 	t[#t+1] = Def.Sprite{

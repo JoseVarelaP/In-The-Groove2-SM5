@@ -19,6 +19,13 @@ t[#t+1] = Def.ActorFrame{
 	},
 
 	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMusic wheel","mask"),
+		InitCommand=function(self)
+			self:x(SCREEN_CENTER_X-385):y(SCREEN_CENTER_Y-12):croptop(0.5):zwrite(true):z(1):blend("BlendMode_NoEffect")
+		end;
+	},
+
+	Def.Sprite{
 		Texture=THEME:GetPathG("ScreenSelectMusic wheel inner","mask"),
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X+80):y(SCREEN_CENTER_Y-10):zoom(1.1):zoomy(1.28):zwrite(true):z(1):blend("BlendMode_NoEffect"):croptop(0.34)
