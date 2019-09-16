@@ -1,13 +1,25 @@
 local t = Def.ActorFrame{};
-local StageNum,CurrentScreen = 1,""
+local Settings = {
+	StageNum = 1,
+	CurrentScreen = "",
+	Rewards = {
+		["W1"] = "+0.2",
+		["W3"] = "-0.5",
+		["W4"] = "-1.0",
+		["W5"] = "-2.0",
+		["Miss"] = "-4.0",
+	}
+}
+
 for player in ivalues(PlayerNumber) do
+	local pn = ToEnumShortString(player)
 	local CurColor = function()
 		return player == PLAYER_1 and color("#FBBE03") or color("#56FF48")
 	end
 	t[#t+1] = Def.Actor{
 		OnCommand=function()
 			if SCREENMAN:GetTopScreen() then
-				CurrentScreen = SCREENMAN:GetTopScreen():GetName()
+				Settings.CurrentScreen = SCREENMAN:GetTopScreen():GetName()
 			end
 		end;
 	}
@@ -32,7 +44,7 @@ for player in ivalues(PlayerNumber) do
 		Text=" 0.00%";
 		OnCommand=function(s)
 			s:xy( player == PLAYER_1 and SCREEN_CENTER_X-180 or SCREEN_CENTER_X+180, SCREEN_TOP+56 )
-			:visible( CurrentScreen ~= "ScreenGameplaySyncMachine" )
+			:visible( Settings.CurrentScreen ~= "ScreenGameplaySyncMachine" )
 			:diffuse( CurColor() ):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
 			if ThemePrefs.Get("CompareScores") and GAMESTATE:GetNumPlayersEnabled() == 2 then
@@ -64,16 +76,9 @@ for player in ivalues(PlayerNumber) do
 			:diffusealpha(0)
 		end;
 		JudgmentMessageCommand=function(s,params)
-			local rewards = {
-				["W1"] = "+0.2",
-				["W3"] = "-0.5",
-				["W4"] = "-1.0",
-				["W5"] = "-2.0",
-				["Miss"] = "-4.0",
-			}
 			if params.Player == player and params.Notes then
 				local score = ToEnumShortString(params.TapNoteScore)
-				s:settext( rewards[score] and rewards[score].."s" or "" )
+				s:settext( Settings.Rewards[score] and Settings.Rewards[score].."s" or "" )
 				:finishtweening():shadowlength(2):diffusealpha(1):zoom(0.9):linear(0.2):zoom(0.8):sleep(0.2):diffusealpha(0)
 			end
 		end;
@@ -159,8 +164,7 @@ for player in ivalues(PlayerNumber) do
 	t[#t+1] = LoadActor( "Lifebar", player )..{
 		Condition=(GAMESTATE:IsPlayerEnabled(player) and ThemePrefs.Get("ExperimentalLifebar")) and not GAMESTATE:Env()["WorkoutMode"] and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave",
 		OnCommand=function(s)
-			local tsns = ToEnumShortString(player)
-			s:xy( THEME:GetMetric("ScreenGameplay","Life"..tsns.."X") , THEME:GetMetric("ScreenGameplay","Life"..tsns.."Y") )
+			s:xy( THEME:GetMetric("ScreenGameplay","Life"..pn.."X") , THEME:GetMetric("ScreenGameplay","Life"..pn.."Y") )
 			:addx( player == PLAYER_1 and -100 or 100)
 			:sleep(0.5):decelerate(0.8)
 			:addx( player == PLAYER_1 and 100 or -100)
@@ -285,7 +289,7 @@ t[#t+1] = Def.ActorFrame{
 		s:settext( GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	-- The only elseif of the entire theme.
 	elseif GAMESTATE:GetCurrentCourse() then
-		s:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." ".. (GAMESTATE:GetPlayMode() == "PlayMode_Endless" and "- "..StageNum.." " or "") .."- "..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
+		s:settext( GAMESTATE:GetCurrentCourse():GetTranslitFullTitle().." ".. (GAMESTATE:GetPlayMode() == "PlayMode_Endless" and "- "..Settings.StageNum.." " or "") .."- "..GAMESTATE:GetCurrentSong():GetDisplayFullTitle() )
 	end
 	s:maxwidth(SCREEN_WIDTH+20)
 	end,
@@ -340,12 +344,12 @@ if GAMESTATE:IsCourseMode() then
 				s:finishtweening():linear(0.3):Center():zoom(1):sleep(0.5):zoom(0.25):y(SCREEN_BOTTOM-40)
 			end,
 			Def.Sprite{
-			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum),
+			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..Settings.StageNum),
 			OnCommand=function(s) s:animate(0) end;
 			BeforeLoadingNextCourseSongMessageCommand=function(s)
-				StageNum = StageNum + 1
+				Settings.StageNum = Settings.StageNum + 1
 				if GAMESTATE:GetPlayMode() ~= "PlayMode_Endless" then
-					s:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..StageNum) )
+					s:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..Settings.StageNum) )
 				end
 			end,
 			},

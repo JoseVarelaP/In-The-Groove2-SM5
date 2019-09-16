@@ -22,32 +22,11 @@ local function CreditsText( pn )
 	return text;
 end;
 
---[[ local function PlayerPane( PlayerNumber ) 
-	t[#t+1] = Def.BitmapText{
-		Font="Common Normal";
-		Name = "PlayerText";
-		InitCommand=cmd(x,-60;maxwidth,80/0.5;zoom,0.5;queuecommand,"On");
-		OnCommand=cmd(playcommand,"Set");
-		SetCommand=function(self)
-			local profile = PROFILEMAN:GetProfile( PlayerNumber) or PROFILEMAN:GetMachineProfile()
-			if profile then
-				self:settext( profile:GetDisplayName() );
-			else
-				self:settext( "NoProf" );
-			end
-		end;
-	};
-	return t
-end --]]
---
 local t = Def.ActorFrame {}
 	-- Aux
 t[#t+1] = LoadActor(THEME:GetPathB("ScreenSystemLayer","aux"));
 	-- Credits
 t[#t+1] = Def.ActorFrame {
---[[  	PlayerPane( PLAYER_1 ) .. {
-		InitCommand=cmd(x,scale(0.125,0,1,SCREEN_LEFT,SCREEN_WIDTH);y,SCREEN_BOTTOM-16)
-	}; --]]
  	CreditsText( PLAYER_1 );
 	CreditsText( PLAYER_2 ); 
 };

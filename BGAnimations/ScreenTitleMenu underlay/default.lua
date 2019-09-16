@@ -10,9 +10,6 @@ return Def.ActorFrame{
 			self:Center():zoomtowidth(SCREEN_WIDTH):faderight(0.1):fadeleft(0.1):cropright(1.1):cropleft(-0.1):linear(1):cropright(-0.1)
 			GAMESTATE:Env()["WorkoutMode"] = nil
 		end;
-		CodeMessageCommand=function(s,param)
-			Unlock( param.Name )
-		end;
 	},
 	
 	Def.Sprite{
