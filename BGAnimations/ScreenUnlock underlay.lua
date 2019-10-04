@@ -2,6 +2,7 @@
 local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
 local MenuIndex = 1;
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
+local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem")
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
@@ -41,11 +42,11 @@ t[#t+1] = Def.ActorFrame{
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            if not itemid:IsLocked() then
-            s:settext(
-                string.format( THEME:GetString("ScreenUnlock","Unlocked %s:"),
-                itemnames[itemid:GetUnlockRewardType()+1] ) 
-            )
+            if not itemid:IsLocked() and itemid:GetSong() then
+                s:settext(
+                    string.format( THEME:GetString("ScreenUnlock","Unlocked %s:"),
+                    itemnames[itemid:GetUnlockRewardType()+1] ) 
+                )
             end
         end;
     };
@@ -54,7 +55,7 @@ t[#t+1] = Def.ActorFrame{
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            if not itemid:IsLocked() then
+            if not itemid:IsLocked() and itemid:GetSong() then
                 s:settext(itemid:GetDescription()..", "..itemnames[itemid:GetUnlockRewardType()+1])
             end
             s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
@@ -69,8 +70,9 @@ t[#t+1] = Def.ActorFrame{
         OnCommand=function(s) s:xy(-122,38):zoom(0.5):halign(0) end;
         MenuUpAllValMessageCommand=function(s)
             local text = "CODE"
+            local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             s:settext("???")
-            if not UNLOCKMAN:GetUnlockEntry(MenuIndex-1):IsLocked() then
+            if not itemid:IsLocked() and itemid:GetSong() then
                 s:settext( text )
             end
             s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
@@ -122,25 +124,6 @@ t[#t+1] = LoadActor("ScreenWithMenuElements underlay")..{
     TweenOffCommand=function(s) s:stoptweening():linear(.5):diffusealpha(0) end;
 }
 
-t[#t+1] = Def.ActorFrame{
-    OnCommand=function(self)
-        self:xy(SCREEN_LEFT+35,SCREEN_TOP+38)
-    end;
-
-    Def.BitmapText{
-    Font=_eurostileColorPick(),
-    Text=THEME:GetString("ScreenUnlockBrowse","HeaderText"),
-    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
-    OnCommand=function(self)
-        self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
-    end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
-    };
-
-};
-
 local function MainMenuChoices()
     local t=Def.ActorFrame{};
 
@@ -167,7 +150,7 @@ local function MainMenuChoices()
                 Font="_eurostile normal", Text=i,
                 OnCommand=function(s)
                     s:zoom(0.6)
-                    s:diffuse( UNLOCKMAN:GetUnlockEntry(i-1):IsLocked() and color("#444444FF") or Color.White )
+                    s:diffuse( (UNLOCKMAN:GetUnlockEntry(i-1):IsLocked() or not UNLOCKMAN:GetUnlockEntry(i-1):GetSong()) and color("#444444FF") or Color.White )
                 end;
             };
         }
@@ -224,28 +207,14 @@ t[#t+1] = Def.ActorFrame{
     };
 }
 
-t[#t+1] = Def.HelpDisplay {
-    File="_eurostile normal",
-    OnCommand=function(self)
-        self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
-        :zoomy(0):linear(0.4):zoomy(0.7)
-    end;
-    InitCommand=function(self)
-        self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
-        self:SetTipsColonSeparated( THEME:GetString("ScreenUnlockBrowse","HelpText") );
-    end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():linear(0.5):zoomy(0) end;
-};
-
 -- Controller Logic
 local function CheckValueOffsets()
-    print( "CheckValueOffsets ".. MenuIndex )
-    if MenuIndex > UNLOCKMAN:GetNumUnlocks() then MenuIndex = UNLOCKMAN:GetNumUnlocks() end
-    if MenuIndex < 1 then MenuIndex = 1 end
-    SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
-    MESSAGEMAN:Broadcast("MenuUpAllVal")
+    if UnlocksEnabled then
+        if MenuIndex > UNLOCKMAN:GetNumUnlocks() then MenuIndex = UNLOCKMAN:GetNumUnlocks() end
+        if MenuIndex < 1 then MenuIndex = 1 end
+        SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
+        MESSAGEMAN:Broadcast("MenuUpAllVal")
+    end
     return
 end
 
@@ -291,4 +260,49 @@ local Controller = Def.ActorFrame{
 
 t[#t+1] = Controller
 
+t[#t+1] = Def.ActorFrame{
+    Condition=not UnlocksEnabled,
+    OnCommand=function(s) s:diffusealpha(0):linear(0.5):diffusealpha(1) end,
+    OffCommand=function(s) s:linear(0.5):diffusealpha(0) end,
+    Def.Quad{ OnCommand=function(s) s:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
+    Def.BitmapText{
+        Font="_eurostile normal",
+        Text="Unlocks are not enabled, thus this screen won't work properly.\nYou can enabled this on 'Advanced Options'.",
+        OnCommand=function(s) s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5) end
+    };
+}
+
+t[#t+1] = Def.HelpDisplay {
+    File="_eurostile normal",
+    OnCommand=function(self)
+        self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
+        :zoomy(0):linear(0.4):zoomy(0.7)
+    end;
+    InitCommand=function(self)
+        self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
+        self:SetTipsColonSeparated( THEME:GetString("ScreenUnlockBrowse","HelpText") );
+    end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():linear(0.5):zoomy(0) end;
+};
+
+t[#t+1] = Def.ActorFrame{
+    OnCommand=function(self)
+        self:xy(SCREEN_LEFT+35,SCREEN_TOP+38)
+    end;
+
+    Def.BitmapText{
+    Font=_eurostileColorPick(),
+    Text=THEME:GetString("ScreenUnlockBrowse","HeaderText"),
+    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+    OnCommand=function(self)
+        self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
+    end;
+    OffCommand=function(s) s:playcommand("TweenOff") end;
+    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
+    TweenOffCommand=function(s) s:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+    };
+
+};
 return t;

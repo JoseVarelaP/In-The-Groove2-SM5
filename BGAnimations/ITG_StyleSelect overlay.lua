@@ -40,17 +40,12 @@ local MenuIndex = 1;
 
 local modes = { "single", "versus", "double" };
 local MenuChoices = { 1,2,3 };
-
-local PadChoices = {
-    LoadActor( THEME:GetPathG("ScreenSelectStyle","scroll/Single") ),
-    LoadActor( THEME:GetPathG("ScreenSelectStyle","scroll/Versus") ),
-    LoadActor( THEME:GetPathG("ScreenSelectStyle","scroll/Double") ),
-};
+local padloc = {"Single","Versus","Double"}
 
 local function CheckValueOffsets()
     print( "CheckValueOffsets ".. MenuIndex )
-    if MenuIndex > #PadChoices  then MenuIndex = 1 end
-    if MenuIndex < 1            then MenuIndex = #PadChoices end
+    if MenuIndex > #padloc  then MenuIndex = 1 end
+    if MenuIndex < 1            then MenuIndex = #padloc end
     if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
         if MenuIndex == 2 or MenuIndex == 3 then
             if GAMESTATE:GetNumPlayersEnabled() < 2 and (GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin()) then
@@ -118,7 +113,7 @@ local function MainMenuChoices()
     -- This will be out choices 
     for index,mch in ipairs( MenuChoices ) do
         -- add the choice actorframes
-        t[#t+1] = PadChoices[index]..{
+        t[#t+1] = loadfile( THEME:GetPathG("ScreenSelectStyle","scroll/"..padloc[index]) )()..{
             Name="pad"..index;
             MenuUpAllValMessageCommand=function(self)
                 self:finishtweening():stopeffect()
@@ -177,7 +172,8 @@ t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:x(SCREEN_CENTER_X+80):y(SCREEN_CENTER_Y+60):zoom(1.3):fov(45)
     end;    
-        LoadActor( THEME:GetPathG("","chars/Style") )..{
+        Def.Sprite{
+            Texture=THEME:GetPathG("","chars/Style"),
             OnCommand=function(self)
                 self:z(-100):zbuffer(true):glow(1,1,1,0):diffusealpha(0):linear(0.3):glow(1,1,1,1):sleep(0.001):diffusealpha(1):linear(0.3):glow(1,1,1,0)
             end;
@@ -187,7 +183,7 @@ t[#t+1] = Def.ActorFrame{
         },
 };
 
---t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore");
+t[#t+1] = loadfile( THEME:GetPathB("ScreenWithMenuElements","underlay/fore.lua"))()
 
 t[#t+1] = Def.ActorScroller{
 	NumItemsToDraw=3;
@@ -224,7 +220,7 @@ t[#t+1] = Def.ActorFrame{
 		self:linear(0.5):diffusealpha(0)
     end;
     
-    LoadActor("ScreenSelectStyle underlay/explanation frame"),
+    Def.Sprite{ Texture="ScreenSelectStyle underlay/explanation frame" },
     Def.BitmapText{
         Font="_eurostile normal",
         OnCommand=function(self)
@@ -242,7 +238,7 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = Controller;
 
-t[#t+1] = LoadActor("_shared underlay arrows")
+t[#t+1] = loadfile( THEME:GetPathB("_shared underlay","arrows") )()
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:xy(SCREEN_LEFT+35,SCREEN_TOP+38)
@@ -282,7 +278,7 @@ t[#t+1] = Def.HelpDisplay {
     end;
 };
 
-t[#t+1] = LoadActor("_menu out")..{
+t[#t+1] = loadfile( THEME:GetPathB("_menu","out") )()..{
     OnCommand=function(s)
         if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
         s:diffusealpha(0)
