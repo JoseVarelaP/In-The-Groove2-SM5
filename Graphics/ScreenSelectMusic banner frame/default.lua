@@ -99,7 +99,7 @@ return Def.ActorFrame{
 			-- Long/Marathon labels - ITG style
 			Def.BitmapText{
 			Text=THEME:GetString("Balloons","ITGLong"),
-			Font="_big blue glow",
+			Font=ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow",
 			OnCommand=function(s) s:shadowlength(2):zoom(1):xy(5,200):diffuseshift():playcommand("Set") end;
 			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
 			SetCommand=function(s) s:diffusealpha(0)

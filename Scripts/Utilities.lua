@@ -198,7 +198,7 @@ Branch.TitleMenu = function()
 		-- if no credits are inserted, don't show the Join screen. SM4 has
 		-- this as the initial screen, but that means we'd be stuck in a
 		-- loop with ScreenInit. No good.
-		return "ScreenTitleJoin"
+		return "ScreenCompany"
 	else
 		return "ScreenTitleJoin"
 	end
