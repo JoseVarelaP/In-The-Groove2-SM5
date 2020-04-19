@@ -349,7 +349,7 @@ local WorkoutData = {
 			}
 			for i,v in ipairs(goals) do
 				if PROFILEMAN:GetProfile(player):GetGoalType() == i-1 then
-					return string.format( "%.2f", (v[2]/v[1])*100 )
+					return (v[2]/v[1])*100
 				end
 			end
 		end
