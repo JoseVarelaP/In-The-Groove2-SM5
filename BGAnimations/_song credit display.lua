@@ -7,7 +7,7 @@ t[#t+1] = Def.ActorFrame{
 	local StepCharters = ""
 	if not GAMESTATE:IsCourseMode() then
 		local DataToPick = {
-			Title = GAMESTATE:GetCurrentSong():GetDisplayMainTitle(),
+			Title = GAMESTATE:GetCurrentSong():GetDisplayFullTitle(),
 			Artist = GAMESTATE:GetCurrentSong():GetDisplayArtist(),
 		}
 		FinalText = DataToPick.Title .. "\n" .. DataToPick.Artist

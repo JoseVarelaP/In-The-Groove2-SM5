@@ -1,44 +1,3 @@
-
--- fuck it i'll make my own grade tier system
-local GradePercentages = {
-	1.00, -- quad star
-	0.99, -- triple star
-	0.98, -- double star
-	0.96, -- single star
-	0.94, -- S+
-	0.92, -- S
-	0.89, -- S-
-	0.86, -- A+
-	0.83, -- A
-	0.80, -- A-
-	0.76, -- B+
-	0.72, -- B
-	0.68, -- B-
-	0.64, -- C+
-	0.60, -- C
-	0.55, -- C-
-};
-
-PlayerTier = {
-	["PlayerNumber_P1"] = "Grade_Tier17",
-	["PlayerNumber_P2"] = "Grade_Tier17",
-};
-
-for player in ivalues(PlayerNumber) do
-	local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
-	for index, Perc in ipairs(GradePercentages) do
-		-- If the player fails, give them a big F.
-		if PSS:GetFailed( player ) then
-			PlayerTier[player] = "Grade_Failed"
-			break
-		end
-		if (CalPerNum( player ) >= Perc) then
-			PlayerTier[player] = "Grade_Tier"..index
-			break
-		end
-	end
-end
-
 local t = Def.ActorFrame{};
 local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
 
@@ -106,7 +65,7 @@ for player in ivalues(PlayerNumber) do
 		OffCommand=function(self)
 			self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))
 		end;
-			LoadActor( THEME:GetPathG("", "_grade models/"..PlayerTier[player]..".lua" ) );
+			LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()..".lua" ) );
 		};
 end
 
