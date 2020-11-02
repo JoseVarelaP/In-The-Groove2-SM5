@@ -39,22 +39,17 @@ Scores.SetCommand=function(self,param)
 	if not sel then return end
 
 	for i, item in pairs(param.Entries) do
-		if item then
-			local hsl = profile:GetHighScoreList(sel, item);
-			local hs = hsl and hsl:GetHighScores();
+		local hsl = profile:GetHighScoreList(sel, item);
+		local hs = hsl and hsl:GetHighScores();
 
-			assert(c["Name"..i])
-			assert(c["Score"..i])
-
-			c["Name"..i]:visible(true)
-			c["Score"..i]:visible(true)
-			if hs and #hs > 0 then
-				c["Name"..i]:settext( hs[1]:GetName() );
-				c["Score"..i]:settext( FormatPercentScore( hs[1]:GetPercentDP() ) );
-			else
-				c["Name"..i]:settext( "-----" );
-				c["Score"..i]:settext( FormatPercentScore( 0 ) );
-			end
+		c["Name"..i]:visible(true)
+		c["Score"..i]:visible(true)
+		if hs and #hs > 0 then
+			c["Name"..i]:settext( hs[1]:GetName() );
+			c["Score"..i]:settext( FormatPercentScore( hs[1]:GetPercentDP() ) );
+		else
+			c["Name"..i]:settext( "-----" );
+			c["Score"..i]:settext( FormatPercentScore( 0 ) );
 		end
 	end
 end;

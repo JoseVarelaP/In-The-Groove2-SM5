@@ -13,7 +13,7 @@ t[#t+1] = Def.ActorFrame{
 
     Def.Banner{
         MenuUpAllValMessageCommand=function(s)
-            if not UNLOCKMAN:GetUnlockEntry(MenuIndex-1):IsLocked() then
+            if UNLOCKMAN:GetUnlockEntry(MenuIndex-1) and not UNLOCKMAN:GetUnlockEntry(MenuIndex-1):IsLocked() then
                 s:LoadBannerFromUnlockEntry( UNLOCKMAN:GetUnlockEntry(MenuIndex-1) )
                 :setsize(234,78)
             else
@@ -42,11 +42,13 @@ t[#t+1] = Def.ActorFrame{
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            if not itemid:IsLocked() and itemid:GetSong() then
-                s:settext(
-                    string.format( THEME:GetString("ScreenUnlock","Unlocked %s:"),
-                    itemnames[itemid:GetUnlockRewardType()+1] ) 
-                )
+            if itemid then
+                if not itemid:IsLocked() and itemid:GetSong() then
+                    s:settext(
+                        string.format( THEME:GetString("ScreenUnlock","Unlocked %s:"),
+                        itemnames[itemid:GetUnlockRewardType()+1] ) 
+                    )
+                end
             end
         end;
     };
@@ -55,8 +57,10 @@ t[#t+1] = Def.ActorFrame{
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            if not itemid:IsLocked() and itemid:GetSong() then
-                s:settext(itemid:GetDescription()..", "..itemnames[itemid:GetUnlockRewardType()+1])
+            if itemid then
+                if not itemid:IsLocked() and itemid:GetSong() then
+                    s:settext(itemid:GetDescription()..", "..itemnames[itemid:GetUnlockRewardType()+1])
+                end
             end
             s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
         end;
@@ -72,8 +76,10 @@ t[#t+1] = Def.ActorFrame{
             local text = "CODE"
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             s:settext("???")
-            if not itemid:IsLocked() and itemid:GetSong() then
-                s:settext( text )
+            if itemid then
+                if not itemid:IsLocked() and itemid:GetSong() then
+                    s:settext( text )
+                end
             end
             s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
         end;
@@ -110,8 +116,10 @@ t[#t+1] = Def.ActorFrame{
         MenuUpAllValMessageCommand=function(s)
             s:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            if not itemid:IsLocked() then
-                s:settext( itemid:GetDescription()..", ".. itemnames[itemid:GetUnlockRewardType()+1])
+            if itemid then
+                if not itemid:IsLocked() then
+                    s:settext( itemid:GetDescription()..", ".. itemnames[itemid:GetUnlockRewardType()+1])
+                end
             end
         end;
     };

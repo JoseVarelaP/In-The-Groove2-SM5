@@ -22,7 +22,7 @@ local function Unlock(name)
 			"Hardcore Symphony", -- Down,Up,Up,Left,Down,Right,Down,Right,Right,Down,Up
 		}
     }
-    local unlockid = Series == "ITG1_" and codenumber or codenumber+10
+    local unlockid = Series == "ITG1_" and codenumber or codenumber+#codes["ITG1_"]
     if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
         if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
 	        SOUND:DimMusic( 0.2, 3 )

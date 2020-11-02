@@ -276,20 +276,10 @@ end
 
 function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 	self:y(SCREEN_CENTER_Y-96+24*offsetFromCenter)
-	if itemIndex == 6 then
-		self:y( SCREEN_CENTER_Y+24 )
-	end
-	if itemIndex == 3 then
-		self:xy( 220, SCREEN_CENTER_Y-48 )
-		if not GAMESTATE:IsPlayerEnabled(1) then self:zoom(0) end
-	end
-	if itemIndex == 2 then
-		self:xy( -80, SCREEN_CENTER_Y-48 )
-		if not GAMESTATE:IsPlayerEnabled(0) then self:zoom(0) end
-	end
-	if itemIndex == 4 then
-		self:y( SCREEN_CENTER_Y-24 )
-	end
+	-- Select Type
+	if itemIndex == 4 then self:y( SCREEN_CENTER_Y+24 ) end
+	-- Simple Steps
+	if itemIndex == 3 then self:y( SCREEN_CENTER_Y-24 ) end
 end;
 
 function _eurostileColorPick()
@@ -363,27 +353,20 @@ function WorkoutSelector(OptionToSelect)
 			end
 		},
 		----------------------------------------------------
-		["GoalAmountP1"] = {
+		["GoalAmount"] = {
 			Name="GoalCalories",
 			LayoutType = "ShowOneInRow",
 			SelectType = "SelectOne",
-			OneChoiceForAllPlayers = true,
+			OneChoiceForAllPlayers = false,
 			ExportOnChange = true,
 			Choices = CaloriesList(),
-			EnabledForPlayers = function()
-				local t = {}
-				if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-					if GAMESTATE:Env()["TypeChangePlayerNumber_P1"] ~= 3 then
-						t[PLAYER_1] = PLAYER_1
-					end
-				end
-				return t
-			end,
 			ReloadRowMessages = { "GoalTypeChanged" },
-			LoadSelections = function(s, list, pn)
-				if GAMESTATE:Env()["NewTimingModeP1"] == "time" then
+			LoadSelections = function(self, list, pn)
+				self.Player = pn
+				local shortened = ToEnumShortString(pn)
+				if GAMESTATE:Env()["NewTimingMode"..shortened] == "time" then
 					local val = PROFILEMAN:GetProfile(PLAYER_1):GetGoalSeconds()
-					for i = 1,table.getn(s.Choices) do
+					for i = 1,table.getn(self.Choices) do
 						if val == IndexToSeconds(i) then
 							list[i] = true
 							return
@@ -391,9 +374,9 @@ function WorkoutSelector(OptionToSelect)
 					end
 					list[6] = true	-- 10 mins
 				end
-				if GAMESTATE:Env()["NewTimingModeP1"] == "calories" then
+				if GAMESTATE:Env()["NewTimingMode"..shortened] == "calories" then
 					local val = PROFILEMAN:GetProfile(PLAYER_1):GetGoalCalories()
-					for i = 1,table.getn(s.Choices) do
+					for i = 1,table.getn(self.Choices) do
 						if val == IndexToCalories(i) then
 							list[i] = true
 							return
@@ -401,21 +384,22 @@ function WorkoutSelector(OptionToSelect)
 					end
 					list[13] = true	-- 150 cals
 				end
-				if GAMESTATE:Env()["NewTimingModeP1"] == "none" then
+				if GAMESTATE:Env()["NewTimingMode"..shortened] == "none" then
 					list[1] = true
 				end
 			end,
 			SaveSelections = function(s, list, pn)
-				local profile = PROFILEMAN:GetProfile(PLAYER_1)
+				local shortened = ToEnumShortString(pn)
+				local profile = PROFILEMAN:GetProfile(pn)
 				for i = 1,table.getn(s.Choices) do
 					if list[i] then
-						if GAMESTATE:Env()["NewTimingModeP1"] == "calories" then
+						if GAMESTATE:Env()["NewTimingMode"..shortened] == "calories" then
 							profile:SetGoalType(0):SetGoalCalories( IndexToCalories(i) )
 						end
-						if GAMESTATE:Env()["NewTimingModeP1"] == "time" then
+						if GAMESTATE:Env()["NewTimingMode"..shortened] == "time" then
 							profile:SetGoalType(1):SetGoalSeconds( IndexToSeconds(i) )
 						end
-						if GAMESTATE:Env()["NewTimingModeP1"] == "none" then
+						if GAMESTATE:Env()["NewTimingMode"..shortened] == "none" then
 							profile:SetGoalType(2)
 						end
 						return
@@ -424,96 +408,21 @@ function WorkoutSelector(OptionToSelect)
 				GAMESTATE:Env()["WorkoutComplete"..pn] = false
 			end,
 			Reload = function(self)
-				-- Get the original values
-				local origVals = self.Choices
-				local Types = {
-					["calories"] = CaloriesList(),
-					["time"] = SecondsList(),
-					["none"] = { "" },
-				}
+				if self.Player then
+					local shortened = ToEnumShortString(self.Player)
+					-- Get the original values
+					local origVals = self.Choices
+					local Types = {
+						["calories"] = CaloriesList(),
+						["time"] = SecondsList(),
+						["none"] = { "" },
+					}
 
-				self.Choices = Types[ GAMESTATE:Env()["NewTimingModeP1"] ]
-				self.Values= Types[ GAMESTATE:Env()["NewTimingModeP1"] ]
-				if #origVals ~= #self.Choices then
-					return "ReloadChanged_All"
-				end
-				return "ReloadChanged_None"
-			end,
-		},
-		----------------------------------------------------
-		["GoalAmountP2"] = {
-			Name="GoalCalories",
-			LayoutType = "ShowOneInRow",
-			SelectType = "SelectOne",
-			OneChoiceForAllPlayers = true,
-			ExportOnChange = true,
-			Choices = CaloriesList(),
-			EnabledForPlayers = function()
-				local t = {}
-				if GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-					if GAMESTATE:Env()["TypeChangePlayerNumber_P2"] ~= 3 then
-						t[PLAYER_2] = PLAYER_2
+					self.Choices = Types[ GAMESTATE:Env()["NewTimingMode"..shortened] ]
+					self.Values= Types[ GAMESTATE:Env()["NewTimingMode"..shortened] ]
+					if #origVals ~= #self.Choices then
+						return "ReloadChanged_All"
 					end
-				end
-				return t
-			end,
-			ReloadRowMessages = { "GoalTypeChanged" },
-			LoadSelections = function(s, list, pn)
-				if GAMESTATE:Env()["NewTimingModeP2"] == "time" then
-					local val = PROFILEMAN:GetProfile(PLAYER_2):GetGoalSeconds()
-					for i = 1,table.getn(s.Choices) do
-						if val == IndexToSeconds(i) then
-							list[i] = true
-							return
-						end
-					end
-					list[6] = true	-- 10 mins
-				end
-				if GAMESTATE:Env()["NewTimingModeP2"] == "calories" then
-					local val = PROFILEMAN:GetProfile(PLAYER_2):GetGoalCalories()
-					for i = 1,table.getn(s.Choices) do
-						if val == IndexToCalories(i) then
-							list[i] = true
-							return
-						end
-					end
-					list[13] = true	-- 150 cals
-				end
-				if GAMESTATE:Env()["NewTimingModeP2"] == "none" then
-					list[1] = true
-				end
-			end,
-			SaveSelections = function(s, list, pn)
-				local profile = PROFILEMAN:GetProfile(PLAYER_2)
-				for i = 1,table.getn(s.Choices) do
-					if list[i] then
-						if GAMESTATE:Env()["NewTimingModeP2"] == "calories" then
-							profile:SetGoalType(0):SetGoalCalories( IndexToCalories(i) )
-						end
-						if GAMESTATE:Env()["NewTimingModeP2"] == "time" then
-							profile:SetGoalType(1):SetGoalSeconds( IndexToSeconds(i) )
-						end
-						if GAMESTATE:Env()["NewTimingModeP2"] == "none" then
-							profile:SetGoalType(2)
-						end
-						return
-					end
-				end
-				GAMESTATE:Env()["WorkoutComplete"..pn] = false
-			end,
-			Reload = function(self)
-				-- Get the original values
-				local origVals = self.Choices
-				local Types = {
-					["calories"] = CaloriesList(),
-					["time"] = SecondsList(),
-					["none"] = { "" },
-				}
-
-				self.Choices = Types[ GAMESTATE:Env()["NewTimingModeP2"] ]
-				self.Values= Types[ GAMESTATE:Env()["NewTimingModeP2"] ]
-				if #origVals ~= #self.Choices then
-					return "ReloadChanged_All"
 				end
 				return "ReloadChanged_None"
 			end,
