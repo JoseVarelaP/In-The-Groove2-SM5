@@ -275,7 +275,7 @@ t[#t+1] = Def.ActorFrame{
     Def.Quad{ OnCommand=function(s) s:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
     Def.BitmapText{
         Font="_eurostile normal",
-        Text="Unlocks are not enabled, thus this screen won't work properly.\nYou can enabled this on 'Advanced Options'.",
+        Text=THEME:GetString("ScreenUnlock","NotEnabled"),
         OnCommand=function(s) s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5) end
     };
 }

@@ -1,5 +1,5 @@
 return Def.ActorFrame{
     StartTransitioningCommand=function(self)
-        self:sleep(1)
+        self:sleep(0.5)
     end;
 }
