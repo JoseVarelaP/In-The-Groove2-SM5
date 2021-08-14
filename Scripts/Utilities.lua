@@ -70,8 +70,8 @@ function SpeedMods()
 						end
 					end
 				end
-				list[1] = true
 			end
+			list[1] = true
 		end,
 		SaveSelections = function(s, list, pn)
 			local playeroptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
