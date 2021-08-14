@@ -63,9 +63,14 @@ function SpeedMods()
 				local speedfound = false
 				local checkspeeds = {playeroptions:XMod(),playeroptions:CMod()}
 				for sm in ivalues(checkspeeds) do
-					if sm ~= nil then if val == sm then list[i] = true speedfound = true end end
+					if sm ~= nil then
+						if val == sm then
+							list[i] = true
+							return
+						end
+					end
 				end
-				if not speedfound then list[i] = false end
+				list[1] = true
 			end
 		end,
 		SaveSelections = function(s, list, pn)

@@ -40,7 +40,5 @@ return Def.ActorFrame{
 		CancelMessageCommand=function(self)
 			self:linear(0.5):zoomy(0)
 		end;
-		},
-
-
+	}
 }
