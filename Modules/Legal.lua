@@ -1,5 +1,5 @@
-function GetLegalText( firstLineToGet, lastLineToGet )
-local s =
+return setmetatable({
+s =
 [[
 The following licenses apply to portions of
 In The Groove:
@@ -273,11 +273,19 @@ PCRE library package, which is open source
 software, written by Philip Hazel, and
 copyright by the University of Cambridge,
 England.
-]]
-	s = string.gsub( s, "\r\n", "\n" )
-	local lines = split( "\n", s )
-	local ret = {}
-	for i = firstLineToGet,lastLineToGet do ret[i-firstLineToGet+1] = lines[i] end
-	return join( "\n", ret )
-end
+]],
 
+	Get = function(this, firstLineToGet, lastLineToGet)
+		local s = string.gsub( this.s, "\r\n", "\n" )
+		local lines = split( "\n", s )
+		local ret = {}
+		for i = firstLineToGet,lastLineToGet do
+			ret[i-firstLineToGet+1] = lines[i]
+		end
+		return join( "\n", ret )
+	end
+},{
+	__call = function(this)
+		return this
+	end
+})
