@@ -14,7 +14,7 @@ t[#t+1] = Def.Sprite{ Texture=THEME:GetPathG("LifeMeterBar","under"), OnCommand=
 -- I'll explain about the mask eventually.
 t[#t+1] = Def.Quad{ Name="QuadUpdater", OnCommand=function(s) s:zoomto(28,272):y(272/2):MaskSource():vertalign("bottom") end;
     UpdateAllCommand=function(s)
-        local calculation = math.sin( s:GetParent():GetChild("LifeAux"..player):getaux() )/10
+        local calculation = math.sin( s:GetParent():GetChild("LifeAux"):getaux() )/10
         s:stoptweening():spring(1/2):cropbottom( Life[player]+(calculation/10) ):sleep(1/30):queuecommand("UpdateAll")
     end;
 };
@@ -25,10 +25,12 @@ end
 t[#t+1] = Def.Sprite{ Texture=THEME:GetPathG("LifeMeterBar","over"), OnCommand=function(s) s:rotationz(-90) end };
 
 -- Actor specifically made for aux values.
-t[#t+1] = Def.Actor{ OnCommand=function(s) s:aux(50):queuecommand("tweentest") end; Name="LifeAux"..player,
-tweentestCommand=function(s)
-    s:aux( s:getaux() > 50 and 50 or (s:getaux() > 0 and s:getaux()-0.2 or s:getaux()) ):sleep(1/60):queuecommand("tweentest")
-end;
+t[#t+1] = Def.Actor{
+	Name="LifeAux",
+	OnCommand=function(s) s:aux(50):queuecommand("tweentest") end;
+	tweentestCommand=function(s)
+		s:aux( s:getaux() > 50 and 50 or (s:getaux() > 0 and s:getaux()-0.2 or s:getaux()) ):sleep(1/60):queuecommand("tweentest")
+	end;
 };
 
 t.OnCommand=function(s)
@@ -43,7 +45,7 @@ end;
 t.BPMCheckCommand=function(s)
     -- Current song BPM
     local BPM = (GAMESTATE:GetSongBPS()*60)
-    -- We nee SongPosition to check for stops.
+    -- We need SongPosition to check for stops.
     local NF = (not GAMESTATE:GetSongPosition():GetFreeze() and not GAMESTATE:GetSongPosition():GetDelay())
     -- Update both StreamDisplay with the new BPM, while checking that are no stops currently playing.
     for v in ivalues(Streams) do s:GetChild("Life"..v):texcoordvelocity( NF and -BPM/100 or 0,0 ) end
@@ -58,7 +60,7 @@ end;
 t.LifeChangedMessageCommand=function(s, param)
     if (param.Player == player) then
         Life[player] = param.LifeMeter:GetLife()
-        s:GetChild("LifeAux"..player):aux( s:GetChild("LifeAux"..player):getaux()+2 )
+        s:GetChild("LifeAux"):aux( s:GetChild("LifeAux"):getaux()+2 )
     end
 end;
 -- This will change the transparency of both StreamDisplays accordingly based on the player's HealthState.
