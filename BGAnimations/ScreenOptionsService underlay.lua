@@ -1,5 +1,5 @@
-local t = Def.ActorFrame{};
-InitUserPrefs();
+local t = Def.ActorFrame{}
+InitUserPrefs()
 
 local TweenNoList = {
 	["ScreenOptionsService"] = {5,6,7},
@@ -14,7 +14,7 @@ t[#t+1] = Def.ActorFrame {
             ThemePrefs.ForceSave()
         end
         ThemePrefs.Save()
-    end;
+    end,
 
 	Def.ActorFrame{
 		OnCommand=function(self)
@@ -29,8 +29,8 @@ t[#t+1] = Def.ActorFrame {
 				end
 			end
 			self:diffusealpha(di):accelerate(0.5):diffusealpha(1)
-		end;
-		OffCommand=function(s)
+		end,
+		OffCommand=function(self)
 			local di = 0
 			if GAMESTATE:Env()["LastScreen"] then
 				if TweenNoList[ GAMESTATE:Env()["LastScreen"] ] then
@@ -39,25 +39,24 @@ t[#t+1] = Def.ActorFrame {
 					end
 				end
 			end
-			s:accelerate(0.5):diffusealpha(di)
-		end;
+			self:accelerate(0.5):diffusealpha(di)
+		end,
 		
 		LoadActor("_frame 3x1",{"explanation metal",SCREEN_WIDTH/1.15})..{
 			OnCommand=function(self)
 				self:CenterX()
-			end;
-		};
+			end
+		},
 	
 		Def.BitmapText{
-			Font="Common Normal";
-			Text=THEME:GetString("ScreenOptionsService","HelpText");
+			Font="Common Normal",
+			Text=THEME:GetString("ScreenOptionsService","HelpText"),
 			OnCommand=function(self)
 				self:x(SCREEN_RIGHT-180):halign(0)
 				:diffuseblink():shadowlength(2):zoom(0.9):maxwidth(145)
-			end;
-		};
+			end
+		}
 	}
+}
 
-};
-
-return t;
+return t

@@ -1,13 +1,14 @@
 return Def.ActorFrame{
-	LoadActor("_logo.ogg")..{
+	Def.Sound{
+		File="_logo.ogg",
 		OnCommand=function(self)
 			self:play()
-		end;
+		end
 	},
 	
 	Def.Quad{
 		OnCommand=function(self)
 			self:FullScreen():linear(0.3):diffusealpha(0)
-		end;
-	},
+		end
+	}
 }

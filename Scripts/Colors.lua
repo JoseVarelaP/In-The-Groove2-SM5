@@ -4,10 +4,6 @@ function PlayerColor( pn )
 	return color("1,1,1,1")
 end
 
-function PlayerScoreColor( pn )
-	return PlayerColor( pn );
-end
-
 function DifficultyColor( dc )
 	if dc == "Difficulty_Beginner"	then return color("#D05CF6") end
 	if dc == "Difficulty_Easy"		then return color("#09FF10") end

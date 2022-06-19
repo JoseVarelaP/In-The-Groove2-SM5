@@ -1,2 +1,2 @@
 local t = Def.ActorFrame{}
-return t;
+return t

@@ -186,7 +186,7 @@ function GetPSStageStats( pn ) return STATSMAN:GetCurStageStats():GetPlayerStage
 
 function CalculatePercentage( pn )
     if GAMESTATE:IsPlayerEnabled(pn) then
-        local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
+        local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 		local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
 		return ScoreToCalculate > 0 and FormatPercentScore( ScoreToCalculate ) or " 0.00%"
 	end
@@ -195,7 +195,7 @@ end
 
 function CalPerNum(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
-        local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn);
+        local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
         local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
 
         return ScoreToCalculate
@@ -311,35 +311,27 @@ function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 	if itemIndex == 4 then self:y( SCREEN_CENTER_Y+24 ) end
 	-- Simple Steps
 	if itemIndex == 3 then self:y( SCREEN_CENTER_Y-24 ) end
-end;
+end
 
 function _eurostileColorPick()
 	return ThemePrefs.Get("ITG1") and "_eurostile blue glow" or "_eurostile red glow"
 end
 
 function WorkoutSelector(OptionToSelect)
-	local function IndexToPounds(i)
-		return i*5
-	end
-	
+	local function IndexToPounds(i) return i*5 end
+	local function IndexToCalories(i) return i*10+20 end
+	local function IndexToSeconds(i) return i*60+4*60 end
+
 	local function WeightLbs()
 		local ret = { }
 		for i = 1,100 do ret[i] = IndexToPounds(i).." Lbs" end
 		return ret
-	end
-
-	local function IndexToCalories(i)
-		return i*10+20
 	end
 	
 	local function CaloriesList()
 		local ret = { }
 		for i = 1,98 do ret[i] = IndexToCalories(i).." cals" end
 		return ret
-	end
-
-	local function IndexToSeconds(i)
-		return i*60+4*60
 	end
 	
 	local function SecondsList()
@@ -508,13 +500,7 @@ function WorkoutSelector(OptionToSelect)
 			end,
 			SaveSelections = function(s, list, pn)
 				local playeroption = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
-				for i, choice in ipairs(s.Choices) do
-					if list[2] == true then
-						playeroption:Little(true)
-					else
-						playeroption:Little(false)
-					end
-				end
+				playeroption:Little( list[2] == true )
 			end
 		},
 		----------------------------------------------------

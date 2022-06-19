@@ -158,28 +158,28 @@ local af = Def.ActorScroller {
 	TransformFunction = function( self, offset, itemIndex, numItems) self:y(offset*24) end,
 	OnCommand=function(self)
 		self:scrollwithpadding(6,stopatframe and -2 or 921)
-	end;
-};
+	end
+}
 
 if ThemePrefs.Get("ShowThemeCredits") then
 	for i=1,table.getn(ITGThemeCredits) do
 		af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGThemeCredits[i][2] or "", Font="_eurostile outline",
-		InitCommand=function(s)
-		s:zoom(0.7):ztest(1)
-			if ITGThemeCredits[i][1] == 1 then s:diffuse( color("#D57676") ) end
-			if ITGThemeCredits[i][1] == 2 then s:diffuse( color("#76B1D5") ):zoom(0.6) end
-		end
-		},
+			InitCommand=function(self)
+			self:zoom(0.7):ztest(1)
+				if ITGThemeCredits[i][1] == 1 then self:diffuse( color("#D57676") ) end
+				if ITGThemeCredits[i][1] == 2 then self:diffuse( color("#76B1D5") ):zoom(0.6) end
+			end
+		}
 	}
 	end
 end
 for i=1,table.getn(ITGCredits_Table) do
 	af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile outline",
-	InitCommand=function(s)
-	s:zoom(0.7):ztest(1)
-		if ITGCredits_Table[i][1] == 1 then s:diffuse( color("#D57676") ) end
-		if ITGCredits_Table[i][1] == 2 then s:diffuse( color("#76B1D5") ):zoom(0.6) end
-	end
+	InitCommand=function(self)
+		self:zoom(0.7):ztest(1)
+			if ITGCredits_Table[i][1] == 1 then self:diffuse( color("#D57676") ) end
+			if ITGCredits_Table[i][1] == 2 then self:diffuse( color("#76B1D5") ):zoom(0.6) end
+		end
 	},
 }
 end

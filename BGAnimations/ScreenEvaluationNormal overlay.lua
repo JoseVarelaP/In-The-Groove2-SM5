@@ -1,4 +1,4 @@
-local t = Def.ActorFrame{};
+local t = Def.ActorFrame{}
 local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
 
 local function side(pn)
@@ -23,50 +23,52 @@ local battlegraphloc = ThemePrefs.Get("ITG1") and "ITG1/" or ""
 t[#t+1] = Def.Sprite{
 	Condition=GAMESTATE:GetPlayMode() == "PlayMode_Rave",
 	Texture=THEME:GetPathG("ScreenEvaluation grade frame/battle/"..battlegraphloc.."graph","frame"),
-	BeginCommand=function(s)
-		s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+500)
+	OnCommand=function(self)
+		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+500)
 		:sleep(2.8):decelerate(0.5)
-		s:y(SCREEN_CENTER_Y+54+itgstylemargin*1.8)
-	end;
-	OffCommand=function(s)
-		s:accelerate(0.3):addy(500)
-	end;
-};
+		:y(SCREEN_CENTER_Y+54+itgstylemargin*1.8)
+	end,
+	OffCommand=function(self)
+		self:accelerate(0.3):addy(500)
+	end
+}
 
 -- Grade and Frame Info
 local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
 for player in ivalues(PlayerNumber) do
-	t[#t+1] = Def.ActorFrame{
-	Condition=GAMESTATE:IsPlayerEnabled(player);
-		LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
-		InitCommand=function(self)
-		local margin = GAMESTATE:GetPlayMode() == "PlayMode_Rave" and 164 or 145
-		self:xy( DoublesIsOn and SCREEN_CENTER_X or ( SCREEN_CENTER_X+((-margin+itgstylemargin*1.2)*side(player)) ),SCREEN_CENTER_Y+54)
-		end,
-		OnCommand=function(self)
-			self:addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
-			:sleep(3):decelerate(0.3)
-			:addx( (DoublesIsOn and SCREEN_WIDTH/1.2 or SCREEN_WIDTH/2)*side(player) )
-		end;
-		OffCommand=function(self)
-			self:accelerate(0.3):addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
-		end;
-		};
-	};
+	if GAMESTATE:IsPlayerEnabled(player) then
+		t[#t+1] = Def.ActorFrame{
+			LoadActor( THEME:GetPathG("","ScreenEvaluation grade frame"), player )..{
+				InitCommand=function(self)
+					local margin = GAMESTATE:GetPlayMode() == "PlayMode_Rave" and 164 or 145
+					self:xy( DoublesIsOn and SCREEN_CENTER_X or ( SCREEN_CENTER_X+((-margin+itgstylemargin*1.2)*side(player)) ),SCREEN_CENTER_Y+54)
+				end,
+				OnCommand=function(self)
+					self:addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
+					:sleep(3):decelerate(0.3)
+					:addx( (DoublesIsOn and SCREEN_WIDTH/1.2 or SCREEN_WIDTH/2)*side(player) )
+				end,
+				OffCommand=function(self)
+					self:accelerate(0.3):addx( (DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player) )
+				end,
+			}
+		}
 
-	t[#t+1] = Def.ActorFrame{
-		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() ~= "PlayMode_Rave";
-		BeginCommand=function(self)
-			self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
-			:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
-			:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
-			self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player) ) ,SCREEN_CENTER_Y-38+(itgstylemargin*2));
-		end;
-		OffCommand=function(self)
-			self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))
-		end;
-			LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()..".lua" ) );
-		};
+		t[#t+1] = Def.ActorFrame{
+			Condition=GAMESTATE:GetPlayMode() ~= "PlayMode_Rave",
+			OnCommand=function(self)
+				self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
+				:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
+				:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
+				self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player) ) ,SCREEN_CENTER_Y-38+(itgstylemargin*2))
+			end,
+			OffCommand=function(self)
+				self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))
+			end,
+			
+			LoadActor( THEME:GetPathG("", "_grade models/"..STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetGrade()..".lua" ) )
+		}
+	end
 end
 
 t[#t+1] = Def.ActorFrame{
@@ -76,115 +78,112 @@ t[#t+1] = Def.ActorFrame{
 	-- 																			Jose_Varela
 	Def.ActorFrame{
 		OnCommand=function(self)
-			self:xy(SCREEN_LEFT+35,SCREEN_TOP+38)
-		end;
+			self:xy(35,38)
+		end,
 
 		Def.BitmapText{
 		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenEvaluation","HeaderText")),
-			InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(0.3):zoom(1)
-			end;
+			end,
 			OffCommand=function(self)
 				self:accelerate(0.2):zoomx(2):zoomy(0):diffusealpha(0)
 				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
-			end;
+			end
 		},
 
 		Def.Sprite{
-		Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)),
-		Condition=not ThemePrefs.Get("ITG1"),
-		OnCommand=function(self)
-			if GAMESTATE:GetCurrentStage() == "Stage_Final" then
-				self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
+			Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)),
+			Condition=not ThemePrefs.Get("ITG1"),
+			OnCommand=function(self)
+				if GAMESTATE:GetCurrentStage() == "Stage_Final" then
+					self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
+				end
+				self:x(30):y(34):addx(-SCREEN_WIDTH):sleep(3):decelerate(0.3):addx(SCREEN_WIDTH)
+			end,
+			OffCommand=function(self)
+				self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
 			end
-			self:x(30):y(34):addx(-SCREEN_WIDTH):sleep(3):decelerate(0.3):addx(SCREEN_WIDTH)
-		end;
-		OffCommand=function(self)
-			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
-		end;
 		},
 	
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1"), true )..{
 			Condition=ThemePrefs.Get("ITG1"),
 			OnCommand=function(self)
 				self:xy(SCREEN_RIGHT-140,0):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
-			end;
-			OffCommand=function(self) self:accelerate(.5):addx(SCREEN_WIDTH) end;
-		};
-
+			end,
+			OffCommand=function(self) self:accelerate(.5):addx(SCREEN_WIDTH) end
+		}
 	},
 
 	-- Banner frame
-
-
 	LoadActor( THEME:GetPathG("Evaluation","banner frame mask") )..{
-	Condition=not ThemePrefs.Get("ITG1");
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
-	OnCommand=function(self)
-		self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-125):zoom(1.02)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end;
+		Condition=not ThemePrefs.Get("ITG1"),
+		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
+		OnCommand=function(self)
+			self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-125):zoom(1.02)
+		end,
+		OffCommand=function(self)
+			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
+		end
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
-		Condition=ThemePrefs.Get("ITG1");
+		Condition=ThemePrefs.Get("ITG1"),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 		OnCommand=function(self)
 			-- self:zwrite(1):z(1):blend("BlendMode_NoEffect")
-			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
-		end;
+			self:y(-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
+		end,
 		OffCommand=function(self)
 			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-		end;
-	};
+		end
+	},
 
 	Def.Sprite{
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
-	if GAMESTATE:IsCourseMode() then
-		self:Load( GAMESTATE:GetCurrentCourse():GetBannerPath() )
-	else
-		if GAMESTATE:GetCurrentSong():GetBannerPath() ~= nil then 
-			self:Load( GAMESTATE:GetCurrentSong():GetBannerPath() )
-		end
-		for pn in ivalues(PlayerNumber) do
-			if GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(pn):GetDisplayName() then
-				self:Load( THEME:GetPathG("Banner","custom") )
+		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
+			if GAMESTATE:IsCourseMode() then
+				self:Load( GAMESTATE:GetCurrentCourse():GetBannerPath() )
+			else
+				if GAMESTATE:GetCurrentSong():GetBannerPath() ~= nil then 
+					self:Load( GAMESTATE:GetCurrentSong():GetBannerPath() )
+				end
+				for pn in ivalues(PlayerNumber) do
+					if GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(pn):GetDisplayName() then
+						self:Load( THEME:GetPathG("Banner","custom") )
+					end
+				end
 			end
+		end,
+		OnCommand=function(self)
+			self:scaletoclipped( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
+		end,
+		OffCommand=function(self)
+			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 		end
-	end
-	end,
-	OnCommand=function(self)
-		self:scaletoclipped( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end;
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
-	Condition=ThemePrefs.Get("ITG1");
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
-	OnCommand=function(self)
-		self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end;
-	};
+		Condition=ThemePrefs.Get("ITG1"),
+		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
+		OnCommand=function(self)
+			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
+		end,
+		OffCommand=function(self)
+			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
+		end
+	},
 	
 	LoadActor( THEME:GetPathG("","ScreenEvaluation banner frame") )..{
-	Condition=not ThemePrefs.Get("ITG1");
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
-	OnCommand=function(self)
-		self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end;
+		Condition=not ThemePrefs.Get("ITG1"),
+		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
+		OnCommand=function(self)
+			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124)
+		end,
+		OffCommand=function(self)
+			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
+		end
 	},
 
 	Def.HelpDisplay {
@@ -192,18 +191,17 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self)
 			self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+203):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
 			:zoomy(0):sleep(2.5):linear(0.5):zoomy(0.7)
-		end;
+		end,
 		InitCommand=function(self)
 			local s = THEME:GetString("ScreenEvaluation","HelpTextNormal") .. "::" .. THEME:GetString("ScreenEvaluation","TakeScreenshotHelpTextAppend")
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
-			self:SetTipsColonSeparated(s);
-		end;
+			self:SetTipsColonSeparated(s)
+		end,
 		OffCommand=function(self)
 			self:linear(0.5):zoomy(0)
-		end;
-	},
+		end
+	}
 }
 
-
-collectgarbage();
-return t;
+collectgarbage()
+return t

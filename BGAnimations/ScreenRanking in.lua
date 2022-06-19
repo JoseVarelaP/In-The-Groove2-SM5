@@ -1,3 +1,3 @@
 return Def.ActorFrame{
-	LoadActor("_fade in normal");
+	LoadActor("_fade in normal")
 }

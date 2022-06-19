@@ -1,13 +1,12 @@
 return Def.ActorFrame{
 	Def.Quad{
-	InitCommand=function(self)
-		self:diffuse(color("#000000")):FullScreen()
-	end;
-	OnCommand=function(self)
-		self:cropleft(1):fadeleft(.5):linear(0.5):cropleft(-0.5)
-	end;
+		InitCommand=function(self)
+			self:diffuse(color("#000000")):FullScreen()
+		end,
+		OnCommand=function(self)
+			self:cropleft(1):fadeleft(.5):linear(0.5):cropleft(-0.5)
+		end
 	},
-
 	
 	LoadActor("_menu out")..{
 		 OnCommand=function(self)
@@ -18,6 +17,6 @@ return Def.ActorFrame{
 	LoadActor( THEME:GetPathS("","_screen cancel") )..{
 		StartTransitioningCommand=function(self)
 			self:play()
-		end;
-	},
+		end
+	}
 }

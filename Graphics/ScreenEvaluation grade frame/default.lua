@@ -61,45 +61,43 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=function(s)
 			s:y(itgstylemargin*1.8)
 			:x( GAMESTATE:GetPlayMode() == "PlayMode_Rave" and 0 or 0 )
-		end;
-	};
+		end
+	},
 
 	Def.ActorFrame{
 	OnCommand=function(self)
 		self:xy( ((DoublesIsOn and -170 or ( GAMESTATE:GetPlayMode() == "PlayMode_Rave" and -75 or -95))+(itgstylemargin*-1)*3)*side(player), (DoublesIsOn and -190 or -149)+itgstylemargin*6 )
-	end;
+	end,
 		Def.Sprite{
 			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),
 			OnCommand=function(self)
-				self:xy(0,0):animate(0):playcommand("Update")
-			end;
+				self:animate(0):playcommand("Update")
+			end,
 			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(player,true) ) end,
 		},
 
 		LoadActor( THEME:GetPathG("_name","frame"), player )..{
 			Condition=ThemePrefs.Get("ITG1"),
-			OnCommand=function(self)
-				self:xy(0,30)
-			end;
-		};
+			OnCommand=function(self) self:y(30) end
+		},
 
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=function(self)
 				self:zoom(0.5):x( -38*side(player) )
-				:halign( pnum(player)-1 ):playcommand("Update");
-			end;
+				:halign( pnum(player)-1 ):playcommand("Update")
+			end,
 			UpdateCommand=function(self)
-					local steps = TrailOrSteps(player):GetDifficulty();
-						if GAMESTATE:IsCourseMode() then
-							self:settext( DifficultyName("Trail", player) )
-						else
-							self:settext( DifficultyName("Steps", player) )
-						end
-					self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
-					:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
-				end,
-			},
+				local steps = TrailOrSteps(player):GetDifficulty()
+				if GAMESTATE:IsCourseMode() then
+					self:settext( DifficultyName("Trail", player) )
+				else
+					self:settext( DifficultyName("Steps", player) )
+				end
+				self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
+				:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
+			end
+		},
 
 		Def.BitmapText{
 			Font="Common Normal",
@@ -107,11 +105,11 @@ t[#t+1] = Def.ActorFrame{
 				self:zoom(0.5):x(36*side(player)):horizalign(player == PLAYER_1 and right or left):playcommand("Update")
 			end;
 			UpdateCommand=function(self)
-					self:settext( TrailOrSteps(player):GetMeter() )
-					self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
-					:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
-				end,
-			},
+				self:settext( TrailOrSteps(player):GetMeter() )
+				self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
+				:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
+			end
+		}
 	};
 
 		Def.GraphDisplay{
@@ -122,7 +120,7 @@ t[#t+1] = Def.ActorFrame{
 					:zoomx( 0.85*side(player) )
 				end
 			end,
-			BeginCommand=function(self)
+			OnCommand=function(self)
 				self:Load("GraphDisplayP"..pnum(player))
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 				local stageStats = STATSMAN:GetCurStageStats()
@@ -132,8 +130,8 @@ t[#t+1] = Def.ActorFrame{
 					:zoomy(1.6)
 				end
 			end,
-			OffCommand=function(s)
-				s:accelerate(0.1):zoomy(0)
+			OffCommand=function(self)
+				self:accelerate(0.1):zoomy(0)
 			end
 		},
 
@@ -142,7 +140,7 @@ t[#t+1] = Def.ActorFrame{
 			InitCommand=function(self)
 				self:y(-7+(itgstylemargin*1.3))
 			end,
-			BeginCommand=function(self)
+			OnCommand=function(self)
 				self:Load("ComboGraphP"..pnum(player))
 				local playerStageStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 				local stageStats = STATSMAN:GetCurStageStats()

@@ -1,186 +1,186 @@
 -- Unlock Display
 local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
-local MenuIndex = 1;
+local MenuIndex = 1
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
 local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem")
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
-    OnCommand=function(s) s:xy(SCREEN_CENTER_X+150,SCREEN_CENTER_Y-40):addx(SCREEN_WIDTH):decelerate(0.5):addx(-SCREEN_WIDTH) end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):addx(SCREEN_WIDTH) end;
+    OnCommand=function(self) self:xy(SCREEN_CENTER_X+150,SCREEN_CENTER_Y-40):addx(SCREEN_WIDTH):decelerate(0.5):addx(-SCREEN_WIDTH) end,
+    OffCommand=function(self) self:playcommand("TweenOff") end,
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
+    TweenOffCommand=function(self) self:stoptweening():accelerate(0.5):addx(SCREEN_WIDTH) end,
 
     Def.Banner{
-        MenuUpAllValMessageCommand=function(s)
-            if UNLOCKMAN:GetUnlockEntry(MenuIndex-1) and not UNLOCKMAN:GetUnlockEntry(MenuIndex-1):IsLocked() then
-                s:LoadBannerFromUnlockEntry( UNLOCKMAN:GetUnlockEntry(MenuIndex-1) )
-                :setsize(234,78)
+        MenuUpAllValMessageCommand=function(self)
+            local entry = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
+            if entry and not entry:IsLocked() then
+                self:LoadBannerFromUnlockEntry( entry )
             else
-                s:Load( THEME:GetPathG("ITG2 Common fallback","Banner") )
-                :setsize(234,78)
+                self:Load( THEME:GetPathG("ITG2 Common fallback","Banner") )
             end
-        end;
-    };
+            self:setsize(234,78)
+        end
+    },
 
-    LoadActor("_frame 3x3", {"banner",200,32,1.36});
+    LoadActor("_frame 3x3", {"banner",200,32,1.36})
 }
 
 t[#t+1] = Def.ActorFrame{
-    OnCommand=function(s)
-        s:xy(SCREEN_CENTER_X-130,SCREEN_CENTER_Y-40)
+    OnCommand=function(self)
+        self:xy(SCREEN_CENTER_X-130,SCREEN_CENTER_Y-40)
         :addx(-SCREEN_WIDTH):decelerate(0.5):addx(SCREEN_WIDTH)
-    end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH) end;
+    end,
+    OffCommand=function(self) self:playcommand("TweenOff") end,
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
+    TweenOffCommand=function(self) self:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH) end,
 
-    LoadActor("_frame 3x3", {"info",240,60,1.67});
+    LoadActor("_frame 3x3", {"info",240,60,1.67}),
 
     Def.BitmapText{ Font="_eurostile normal",
-        OnCommand=function(s) s:xy(-123,-30):zoom(0.6):halign(0) end;
-        MenuUpAllValMessageCommand=function(s)
-            s:settext("???")
+        OnCommand=function(self) self:xy(-123,-30):zoom(0.6):halign(0) end;
+        MenuUpAllValMessageCommand=function(self)
+            self:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             if itemid then
                 if not itemid:IsLocked() and itemid:GetSong() then
-                    s:settext(
+                    self:settext(
                         string.format( THEME:GetString("ScreenUnlock","Unlocked %s:"),
                         itemnames[itemid:GetUnlockRewardType()+1] ) 
                     )
                 end
             end
-        end;
-    };
+        end
+    },
     Def.BitmapText{ Font="_eurostile normal",
-        OnCommand=function(s) s:xy(-123,-14):zoom(0.5):halign(0) end;
-        MenuUpAllValMessageCommand=function(s)
-            s:settext("???")
+        OnCommand=function(self) self:xy(-123,-14):zoom(0.5):halign(0) end;
+        MenuUpAllValMessageCommand=function(self)
+            self:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             if itemid then
                 if not itemid:IsLocked() and itemid:GetSong() then
-                    s:settext(itemid:GetDescription()..", "..itemnames[itemid:GetUnlockRewardType()+1])
+                    self:settext(itemid:GetDescription()..", "..itemnames[itemid:GetUnlockRewardType()+1])
                 end
             end
-            s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
-        end;
-    };
+            self:finishtweening():cropright(1):decelerate(0.3):cropright(0)
+        end
+    },
 
     Def.BitmapText{ Font="_eurostile normal", Text=THEME:GetString("ScreenUnlock","Trigger:"),
-        OnCommand=function(s) s:xy(-123,20):zoom(0.6):halign(0) end;
-    };
+        OnCommand=function(self) self:xy(-123,20):zoom(0.6):halign(0) end;
+    },
 
     Def.BitmapText{ Font="_eurostile normal",
-        OnCommand=function(s) s:xy(-122,38):zoom(0.5):halign(0) end;
-        MenuUpAllValMessageCommand=function(s)
+        OnCommand=function(self) self:xy(-122,38):zoom(0.5):halign(0) end;
+        MenuUpAllValMessageCommand=function(self)
             local text = "CODE"
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
-            s:settext("???")
+            self:settext("???")
             if itemid then
                 if not itemid:IsLocked() and itemid:GetSong() then
-                    s:settext( text )
+                    self:settext( text )
                 end
             end
-            s:finishtweening():cropright(1):decelerate(0.3):cropright(0)
-        end;
-    };
+            self:finishtweening():cropright(1):decelerate(0.3):cropright(0)
+        end
+    }
 }
 
 t[#t+1] = Def.ActorFrame{
-    OnCommand=function(s)
-        s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-140)
+    OnCommand=function(self)
+        self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-140)
         :zoom(0):decelerate(0.5):zoom(1)
-    end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):zoom(0) end;
+    end,
+    OffCommand=function(self) self:playcommand("TweenOff") end,
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
+    TweenOffCommand=function(self) self:stoptweening():accelerate(0.5):zoom(0) end,
 
-    LoadActor("_frame 3x1", {"answer",520});
+    LoadActor("_frame 3x1", {"answer",520}),
     Def.BitmapText{
         Font=glowcolor,
         Text="#15",
-        OnCommand=function(s)
-            s:xy(-230,-2):zoom(1)
-        end;
-        MenuUpAllValMessageCommand=function(s)
-            s:settext( "#"..MenuIndex )
-        end;
-    };
+        OnCommand=function(self)
+            self:xy(-230,-2):zoom(1)
+        end,
+        MenuUpAllValMessageCommand=function(self)
+            self:settext( "#"..MenuIndex )
+        end
+    },
 
     Def.BitmapText{
         Font=glowcolor,
         Text="#15",
-        OnCommand=function(s)
-            s:xy(40,-2):zoom(0.7):maxwidth(600)
-        end;
-        MenuUpAllValMessageCommand=function(s)
-            s:settext("???")
+        OnCommand=function(self)
+            self:xy(40,-2):zoom(0.7):maxwidth(600)
+        end,
+        MenuUpAllValMessageCommand=function(self)
+            self:settext("???")
             local itemid = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             if itemid then
                 if not itemid:IsLocked() then
-                    s:settext( itemid:GetDescription()..", ".. itemnames[itemid:GetUnlockRewardType()+1])
+                    self:settext( itemid:GetDescription()..", ".. itemnames[itemid:GetUnlockRewardType()+1])
                 end
             end
-        end;
-    };
+        end
+    }
 }
 
 t[#t+1] = LoadActor("ScreenWithMenuElements underlay")..{
-    OnCommand=function(self) self:diffusealpha(0):linear(.5):diffusealpha(1) end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():linear(.5):diffusealpha(0) end;
+    OnCommand=function(self) self:diffusealpha(0):linear(.5):diffusealpha(1) end,
+    OffCommand=function(self) self:playcommand("TweenOff") end,
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
+    TweenOffCommand=function(self) self:stoptweening():linear(.5):diffusealpha(0) end
 }
 
 local function MainMenuChoices()
-    local t=Def.ActorFrame{};
+    local t=Def.ActorFrame{}
 
     -- This will be our choices 
     for i=1,UNLOCKMAN:GetNumUnlocks() do
         -- add the choice actorframes
         t[#t+1] = Def.ActorFrame{
-            Def.Sprite{
-                Texture=THEME:GetPathG("ScreenUnlock","grid")
-            };
+            MenuUpAllValMessageCommand = function(self)
+                self:GetChild("Add"):visible( MenuIndex == i  )
+                self:GetChild("Diffuse"):visible( MenuIndex == i  )
+            end,
+            Def.Sprite{ Texture=THEME:GetPathG("ScreenUnlock","grid") },
             LoadActor("_frame 3x1", {"square cursor diffuse",6})..{
-                OnCommand=function(s) s:x(-0.5):zoomy(1.3) end;
-                MenuUpAllValMessageCommand=function(s)
-                    s:visible( MenuIndex == i )
-                end;
-            };
+                Name="Diffuse",
+                OnCommand=function(self) self:x(-0.5):zoomy(1.3) end,
+            },
             LoadActor("_frame 3x1", {"square cursor add",6})..{
-                OnCommand=function(s) s:x(-0.5):zoomy(1.3):diffuseshift():effectcolor1(color("1,1,1,0")) end;
-                MenuUpAllValMessageCommand=function(s)
-                    s:visible( MenuIndex == i )
-                end;
-            };
+                Name="Add",
+                OnCommand=function(self) self:x(-0.5):zoomy(1.3):diffuseshift():effectcolor1(color("1,1,1,0")) end
+            },
             Def.BitmapText{
-                Font="_eurostile normal", Text=i,
-                OnCommand=function(s)
-                    s:zoom(0.6)
-                    s:diffuse( (UNLOCKMAN:GetUnlockEntry(i-1):IsLocked() or not UNLOCKMAN:GetUnlockEntry(i-1):GetSong()) and color("#444444FF") or Color.White )
-                end;
-            };
+                Font="_eurostile normal",
+                Text=i,
+                OnCommand=function(self)
+                    local entry = UNLOCKMAN:GetUnlockEntry(i-1)
+                    self:zoom(0.6)
+                    :diffuse( (entry:IsLocked() or not entry:GetSong()) and color("#444444FF") or Color.White )
+                end
+            }
         }
     end
 
-    return t;
+    return t
 end
 
 t[#t+1] = Def.ActorFrame{
-    OnCommand=function(s)
-        s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+110)
+    OnCommand=function(self)
+        self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+110)
         :zoom(0):decelerate(0.5):zoom(1)
-    end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(0.5):zoom(0) end;
+    end,
+    OffCommand=function(self) self:playcommand("TweenOff") end,
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
+    TweenOffCommand=function(self) self:stoptweening():accelerate(0.5):zoom(0) end,
 
     LoadActor("_frame 3x3", {"keyboard",460,60,1.80})..{
-        OnCommand=function(s)
-            s:diffuse( ThemePrefs.Get("ITG1") and color("#0099FF") or color("#EE3333"))
-        end;
-    };
+        OnCommand=function(self)
+            self:diffuse( ThemePrefs.Get("ITG1") and color("#0099FF") or color("#EE3333"))
+        end
+    },
     Def.ActorScroller{
         NumItemsToDraw=99;
         OnCommand=function(self)
@@ -200,7 +200,7 @@ t[#t+1] = Def.ActorFrame{
     Def.BitmapText{
         Condition=PREFSMAN:GetPreference("UseUnlockSystem"),
         Font="Common Normal",
-        OnCommand=function(s)
+        OnCommand=function(self)
             local unlocked = 0
             for i=1,UNLOCKMAN:GetNumUnlocks() do
                 local Code = UNLOCKMAN:GetUnlockEntry( i-1 )
@@ -209,7 +209,7 @@ t[#t+1] = Def.ActorFrame{
                 end
             end
     
-            s:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
+            self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
             :y(-30):zoom(0.6):diffuseshift():effectcolor1(color("#777777"))
         end;
     };
@@ -270,13 +270,13 @@ t[#t+1] = Controller
 
 t[#t+1] = Def.ActorFrame{
     Condition=not UnlocksEnabled,
-    OnCommand=function(s) s:diffusealpha(0):linear(0.5):diffusealpha(1) end,
-    OffCommand=function(s) s:linear(0.5):diffusealpha(0) end,
-    Def.Quad{ OnCommand=function(s) s:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
+    OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
+    OffCommand=function(self) self:linear(0.5):diffusealpha(0) end,
+    Def.Quad{ OnCommand=function(self) self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
     Def.BitmapText{
         Font="_eurostile normal",
         Text=THEME:GetString("ScreenUnlock","NotEnabled"),
-        OnCommand=function(s) s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5) end
+        OnCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5) end
     };
 }
 
@@ -290,9 +290,9 @@ t[#t+1] = Def.HelpDisplay {
         self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
         self:SetTipsColonSeparated( THEME:GetString("ScreenUnlockBrowse","HelpText") );
     end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():linear(0.5):zoomy(0) end;
+    OffCommand=function(self) self:playcommand("TweenOff") end;
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end;
+    TweenOffCommand=function(self) self:stoptweening():linear(0.5):zoomy(0) end;
 };
 
 t[#t+1] = Def.ActorFrame{
@@ -307,9 +307,9 @@ t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
     end;
-    OffCommand=function(s) s:playcommand("TweenOff") end;
-    CancelMessageCommand=function(s) s:playcommand("TweenOff") end;
-    TweenOffCommand=function(s) s:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
+    OffCommand=function(self) self:playcommand("TweenOff") end;
+    CancelMessageCommand=function(self) self:playcommand("TweenOff") end;
+    TweenOffCommand=function(self) self:stoptweening():accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end;
     };
 
 };

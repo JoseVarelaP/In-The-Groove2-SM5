@@ -1,4 +1,4 @@
 local t = Def.ActorFrame{
-    StartTransitioningCommand=function(s) s:sleep(1) end;
+    StartTransitioningCommand=function(self) self:sleep(1) end
 }
-return t;
+return t

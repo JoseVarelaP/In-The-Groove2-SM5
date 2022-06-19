@@ -1,3 +1,1 @@
-local t=Def.ActorFrame{}
-
-return t;
+return Def.ActorFrame{}
