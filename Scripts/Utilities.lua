@@ -37,7 +37,7 @@ end
 
 function MenuTimerSet(self)
 	self:draworder(101):zoom(1.1)
-	:visible( (PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG") and true or false )
+	:visible( (PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG") )
 	if ThemePrefs.Get("ITG1") then
 		self:addx(-200):decelerate(0.3):addx(200)
 	else
@@ -52,7 +52,7 @@ function TimerWarning(s)
 		:stoptweening():zoom( v+0.4 ):linear(0.2):zoom( v ):diffuseblink():effectperiod(0.1666):effectcolor1(1,0,0,1):effectcolor2(1,1,1,1)
 	end
 	return s
-end;
+end
 
 function SetFrameDifficulty( pn, ResultsScreen )
 	local data = {

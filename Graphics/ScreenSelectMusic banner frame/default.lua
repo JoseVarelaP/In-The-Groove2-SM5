@@ -1,4 +1,11 @@
 local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+
+local function IsValidUSBProfileFolder( Player )
+	if GAMESTATE:GetCurrentSong() == nil then return false end
+	if type(PROFILEMAN:GetProfile(Player):GetDisplayName()) ~= "string" then return false end
+	return GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(Player):GetDisplayName()
+end
+
 return Def.ActorFrame{
 
 	Def.ActorFrame{
@@ -21,14 +28,15 @@ return Def.ActorFrame{
 			};
 			Def.ActorProxy{
 				BeginCommand=function(s) s:SetTarget( SCREENMAN:GetTopScreen():GetChild('Banner') ); end,
-				InitCommand=function(s)
-				if IsUsingWideScreen() then
-					s:x(61):y(-3):setsize(418,164):zoomx(2.2):zoomy(1.6)
-				else
-					s:x(10):y(-3):setsize(418,164):zoomx(1.8):zoomy(1.6)
+				InitCommand=function(self)
+					if IsUsingWideScreen() then
+						self:x(61):zoomx(2.2)
+					else
+						self:x(10):zoomx(1.8)
+					end
+					self:y(-3):setsize(418,164):zoomy(1.6)
 				end
-				end;
-			};
+			},
 
 			Def.Sprite{
 				Texture=THEME:GetPathG("Banner","Custom"),
@@ -44,7 +52,7 @@ return Def.ActorFrame{
 					s:stoptweening():linear(0.3):diffusealpha(0)
 					if GAMESTATE:GetCurrentSong() then
 						for pn in ivalues(PlayerNumber) do
-							if GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(pn):GetDisplayName() then
+							if IsValidUSBProfileFolder(pn) then
 								s:diffusealpha(1)
 							end
 						end
@@ -116,50 +124,57 @@ return Def.ActorFrame{
 
 
 		Def.ActorFrame{
-		Condition=ThemePrefs.Get("MarathonLabel") == "OITG";
+		Condition=ThemePrefs.Get("MarathonLabel") == "OITG" and not GAMESTATE:IsCourseMode(),
+		OnCommand=function(self) self:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(self) self:playcommand("Set") end,
+		SetCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if not song then return end
+			local cost = song:GetStageCost()
+			self:visible( song ~= nil and cost > 1 )
+			if cost < 2 then return end
+
+			local state = cost == 2 and "Long" or "Marathon"
+
+			local colset = { color("0.8,0.8,0.8,1"), color("0.5,0.5,0.5,1")  }
+
+			if song:IsMarathon() then
+				colset = { color("1,0.3,0.3,1"), color("0.7,0.1,0.1,1") }
+			end
+
+			self:GetChild("Ballon"):effectcolor1(colset[1]):effectcolor2(colset[2])
+
+			self:GetChild("Desc"):settext( THEME:GetString("Balloons","OITG"..state) )
+		end,
 			-- Long/Marathon labels - OITG style
-			Def.Sprite{ Texture="OITG Balloon",
-				OnCommand=function(s) s:shadowlength(2):zoom(1):zoomx(1.22):xy(-200,45):halign(0):effectclock("bgm")
-					:diffuseshift():effectoffset(0.2):playcommand("Set") end;
-				CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
-				SetCommand=function(s) s:diffusealpha(0)
-				if GAMESTATE:GetCurrentSong() then
-					local colors = {
-						{ GAMESTATE:GetCurrentSong():IsLong(), color("0.8,0.8,0.8,1"), color("0.5,0.5,0.5,1") },
-						{ GAMESTATE:GetCurrentSong():IsMarathon(), color("1,0.3,0.3,1"), color("0.7,0.1,0.1,1") },
-					}
-					for v in ivalues(colors) do
-						if v[1] then s:diffusealpha(1):effectcolor1(v[2]):effectcolor2(v[3]) end
-					end
-				end
-				end,
+			Def.Sprite{
+				Name="Ballon",
+				Texture="OITG Balloon",
+				InitCommand=function(s)
+					s:shadowlength(2):zoom(1):zoomx(1.22):xy(-200,45):halign(0):effectclock("bgm")
+					:diffuseshift():effectoffset(0.2)
+				end;
 			},
 
 			Def.BitmapText{
-			Font="_eurostile normal",
-			OnCommand=function(s)
-				s:shadowlength(1):zoom(0.5):zoomx(0.55):xy(-180,45):halign(0):playcommand("Set")
-			end;
-			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end;
-			SetCommand=function(s) s:diffusealpha(0)
-				if GAMESTATE:GetCurrentSong() then
-					local ti = {
-						{ GAMESTATE:GetCurrentSong():IsLong(), THEME:GetString("Balloons","OITGLong") },
-						{ GAMESTATE:GetCurrentSong():IsMarathon(), THEME:GetString("Balloons","OITGMarathon") },
-					}
-					for v in ivalues(ti) do if v[1] then s:diffusealpha(1):settext(v[2]) end end
+				Name="Desc",
+				Font="_eurostile normal",
+				InitCommand=function(self)
+					self:shadowlength(1):zoom(0.5):zoomx(0.55):xy(-180,45):halign(0)
 				end
-			end,
 			},
 
-			Def.BitmapText{ Text="MODS", Font="_eurostile normal",
-			OnCommand=function(s)
-				s:shadowlength(2):zoom(1.3):xy(-130,35):diffuseshift():effectcolor1(color("0.4,0.4,0.4,1")):visible(false)
-				s:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) and true or false )
-			end;
-			CurrentCourseChangedMessageCommand=function(s)
-				s:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) and true or false )
-			end;
+			Def.BitmapText{
+				Text="MODS",
+				Font="_eurostile normal",
+				Condition=GAMESTATE:IsCourseMode(),
+				InitCommand=function(self)
+					self:shadowlength(2):zoom(1.3):xy(-130,35):diffuseshift():effectcolor1(color("0.4,0.4,0.4,1"))
+					:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) )
+				end,
+				CurrentCourseChangedMessageCommand=function(self)
+					self:visible( (GAMESTATE:GetCurrentCourse() and GAMESTATE:GetCurrentCourse():HasMods()) )
+				end
 			},
 
 		},
