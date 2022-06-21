@@ -63,7 +63,7 @@ end
 t[#t+1] = Def.ActorFrame {
 	Def.Quad {
 		InitCommand=function(self)
-			self:zoomtowidth(SCREEN_WIDTH):zoomtoheight(309¡):align(0,0):diffuse(color("0,0,0,0"))
+			self:zoomtowidth(SCREEN_WIDTH):zoomtoheight(309):align(0,0):diffuse(color("0,0,0,0"))
 		end,
 		OnCommand=function(self)
 			self:finishtweening():diffusealpha(0.85)
@@ -79,7 +79,7 @@ t[#t+1] = Def.ActorFrame {
 			self:maxwidth(750):align(0,0):xy(10,10):shadowlength(1):diffusealpha(0)
 		end,
 		OnCommand=function(self)
-			self:finishtweening():diffusealpha(1);zoom(0.5)
+			self:finishtweening():diffusealpha(1):zoom(0.5)
 		end,
 		OffCommand=function(self)
 			self:sleep(3):linear(0.5):diffusealpha(0)
