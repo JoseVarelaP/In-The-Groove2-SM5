@@ -147,7 +147,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			:addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH )
 			:decelerate(0.5):addx( pn == PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH )
 		end,
-		OffCommand=function(self) self:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end
+		OffCommand=function(self) self:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end,
 		
 		Def.Sprite{ Texture=THEME:GetPathG("NameEntry","Items/BGA score frame") },
 
@@ -155,11 +155,11 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			Font="_futurist metal",
 			OnCommand=function(self)
 				self:diffuse(PlayerColor(pn))
-				if STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
+				if STATSMAN:GetPlayedStageStats( ni ) and STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
 					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 				end
 			end,
-			ChangeDisplayedFeatMessageCommand=function(s,param)
+			ChangeDisplayedFeatMessageCommand=function(self,param)
 				if STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
 					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 				end
@@ -241,7 +241,7 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.Quad{
 	OnCommand=function(self)
 		self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse(color("0,0,0,0"))
-	end
+	end,
 	OffCommand=function(self)
 		self:linear(0.5):diffuse(Color.Black)
 	end

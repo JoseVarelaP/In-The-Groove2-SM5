@@ -76,7 +76,7 @@ t[#t+1] = Def.ActorFrame{
 			Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()),
 			Condition=not GAMESTATE:IsCourseMode() and not ThemePrefs.Get("ITG1"),
 			OnCommand=function(self)
-				self:x(40,34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
+				self:xy(40,34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 			end,
 			OffCommand=function(self) self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end,
 			CancelMessageCommand=function(self) if GAMESTATE:Env()["WorkoutMode"] then self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0) end end
