@@ -142,19 +142,24 @@ t[#t+1] = Def.ActorFrame{
 	},
 
 	Def.Sprite{
-		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
-			if GAMESTATE:IsCourseMode() then
-				self:Load( GAMESTATE:GetCurrentCourse():GetBannerPath() )
-			else
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
+			local bannerPath = THEME:GetPathG( (ThemePrefs.Get("ITG1") and "ITG1/" or "ITG2") .." Common fallback", "banner")
+			if GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetBannerPath() ~= nil then
+				bannerPath = GAMESTATE:GetCurrentCourse():GetBannerPath()
+			end
+			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
 				if GAMESTATE:GetCurrentSong():GetBannerPath() ~= nil then 
-					self:Load( GAMESTATE:GetCurrentSong():GetBannerPath() )
+					bannerPath = GAMESTATE:GetCurrentSong():GetBannerPath()
 				end
 				for pn in ivalues(PlayerNumber) do
 					if GAMESTATE:GetCurrentSong():GetGroupName() == PROFILEMAN:GetProfile(pn):GetDisplayName() then
-						self:Load( THEME:GetPathG("Banner","custom") )
+						bannerPath = THEME:GetPathG("Banner","custom")
 					end
 				end
 			end
+
+			self:Load( bannerPath )
 		end,
 		OnCommand=function(self)
 			self:scaletoclipped( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
