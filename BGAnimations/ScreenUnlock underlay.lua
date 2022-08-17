@@ -215,6 +215,12 @@ t[#t+1] = Def.ActorFrame{
     };
 }
 
+-- These button options will be used instead as a shortcut to the advanced options menu.
+local buttonOptions = {
+    {"Go to Advanced Options", "ScreenOptionsAdvanced"},
+    {"Go Back", "ScreenRecordsMenu"}
+}
+
 -- Controller Logic
 local function CheckValueOffsets()
     if UnlocksEnabled then
@@ -222,6 +228,10 @@ local function CheckValueOffsets()
         if MenuIndex < 1 then MenuIndex = 1 end
         SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
         MESSAGEMAN:Broadcast("MenuUpAllVal")
+    else
+        if MenuIndex > #buttonOptions then MenuIndex = 1 end
+        if MenuIndex < 1 then MenuIndex = #buttonOptions end
+        MESSAGEMAN:Broadcast("ChoiceUpVal")
     end
     return
 end
@@ -238,9 +248,22 @@ local BTInput = {
         MESSAGEMAN:Broadcast("MenuLeft".. ToEnumShortString(event) )
         CheckValueOffsets()
     end,
+    ["MenuDown"] = function(event)
+        if UnlocksEnabled then return end
+        MenuIndex = MenuIndex + 1
+        MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
+        CheckValueOffsets()
+    end,
+    ["MenuUp"] = function(event)
+        if UnlocksEnabled then return end
+        MenuIndex = MenuIndex - 1
+        MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
+        CheckValueOffsets()
+    end,
     ["Start"] = function(event)
         SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
-        SCREENMAN:GetTopScreen():SetNextScreenName( "ScreenRecordsMenu" ):StartTransitioningScreen("SM_GoToNextScreen")
+        local screenToGo = UnlocksEnabled and "ScreenRecordsMenu" or buttonOptions[MenuIndex][2]
+        SCREENMAN:GetTopScreen():SetNextScreenName( screenToGo ):StartTransitioningScreen("SM_GoToNextScreen")
     end,
     ["Back"] = function(event)
         SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenRecordsMenu"):Cancel()
@@ -272,13 +295,51 @@ t[#t+1] = Def.ActorFrame{
     Condition=not UnlocksEnabled,
     OnCommand=function(self) self:diffusealpha(0):linear(0.5):diffusealpha(1) end,
     OffCommand=function(self) self:linear(0.5):diffusealpha(0) end,
+    CancelCommand=function(self) self:linear(0.5):diffusealpha(0) end,
     Def.Quad{ OnCommand=function(self) self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
     Def.BitmapText{
         Font="_eurostile normal",
         Text=THEME:GetString("ScreenUnlock","NotEnabled"),
-        OnCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y):zoom(0.5) end
+        OnCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y - 60):zoom(0.5) end
     };
 }
+
+if not UnlocksEnabled then
+    local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
+    for i,v in ipairs( buttonOptions ) do
+        t[#t+1] = Def.ActorFrame{
+            InitCommand=function(self)
+                self:xy( SCREEN_CENTER_X , SCREEN_CENTER_Y + 10 + ( 32 * (i-1) ) )
+                self:playcommand((MenuIndex == i and "Gain" or "Lose") .. "Focus")
+            end,
+            OffCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+            CancelCommand=function(self) self:linear(0.3):diffusealpha(0) end,
+            ChoiceUpValMessageCommand=function(self)
+                self:playcommand( (MenuIndex == i and "Gain" or "Lose") .. "Focus" )
+            end,
+            LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320}),
+            LoadActor( THEME:GetPathB("","_frame 3x1") , {"small green",312})..{
+                GainFocusMessageCommand=function(self) self:visible(true) end,
+                LoseFocusMessageCommand=function(self) self:visible(false) end
+            },
+            LoadActor( THEME:GetPathB("","_frame 3x1") , {"small glow",292})..{
+                GainFocusMessageCommand=function(self) self:visible(true):diffuseshift():effectcolor1( color("1,1,1,0") ) end,
+                LoseFocusMessageCommand=function(self) self:visible(false) end
+            },
+            Def.BitmapText{
+                Font="Common Normal",
+                OnCommand=function(s)
+                    s:zoom(0.6)
+                    :settext( THEME:GetString(Var "LoadingScreen",v[1]) )
+                    -- local optrow = s:GetParent():GetParent():GetParent()
+                    -- s:settext( THEME:GetString("OptionTitles",optrow:GetName()) )
+                end,
+                GainFocusMessageCommand=function(s) s:diffuse( color("1,1,1,1") ) end,
+                LoseFocusMessageCommand=function(s) s:diffuse( color("0.5,0.5,0.5,1") ) end
+            }
+        }
+    end
+end
 
 t[#t+1] = Def.HelpDisplay {
     File="_eurostile normal",
