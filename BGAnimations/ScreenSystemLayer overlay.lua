@@ -63,7 +63,7 @@ end
 t[#t+1] = Def.ActorFrame {
 	Def.Quad {
 		InitCommand=function(self)
-			self:zoomtowidth(SCREEN_WIDTH):zoomtoheight(309):align(0,0):diffuse(color("0,0,0,0"))
+			self:zoomtowidth(SCREEN_WIDTH):zoomtoheight(30):align(0,0):diffuse(color("0,0,0,0"))
 		end,
 		OnCommand=function(self)
 			self:finishtweening():diffusealpha(0.85)

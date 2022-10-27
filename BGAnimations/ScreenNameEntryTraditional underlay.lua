@@ -160,7 +160,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				end
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
-				if STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
+				if STATSMAN:GetPlayedStageStats( ni ) and STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
 					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 				end
 			end

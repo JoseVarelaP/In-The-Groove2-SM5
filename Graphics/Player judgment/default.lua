@@ -21,12 +21,12 @@ local TNSFrames = {
 
 local RotTween = {
 	-- Even, Odd
-	TapNoteScore_W1 = {0,0},
-	TapNoteScore_W2 = {0,0},
-	TapNoteScore_W3 = {-3,3},	
-	TapNoteScore_W4 = {-5,5},
-	TapNoteScore_W5 = {-10,10},
-	TapNoteScore_Miss = {-30,30},
+	TapNoteScore_W1 = 0,
+	TapNoteScore_W2 = 0,
+	TapNoteScore_W3 = 3,
+	TapNoteScore_W4 = 5,
+	TapNoteScore_W5 = 10,
+	TapNoteScore_Miss = 30,
 };
 
 local t = Def.ActorFrame {};
@@ -44,6 +44,7 @@ t[#t+1] = Def.ActorFrame {
 	
 	InitCommand = function(self)
 		c = self:GetChildren();
+		self.JudgmentCount = 0
 	end;
 
 	JudgmentMessageCommand=function(self, param)
@@ -62,12 +63,19 @@ t[#t+1] = Def.ActorFrame {
 				iFrame = iFrame + 1;
 			end
 		end
+
+		if param.TapNoteScore < "TapNoteScore_W3" then
+			self.JudgmentCount = 0
+		else
+			self.JudgmentCount = self.JudgmentCount + 1
+		end
 		
 		self:playcommand("Reset");
 
 		c.Judgment:visible( true );
 		c.Judgment:setstate( iFrame );
-		c.Judgment:rotationz( RotTween[param.TapNoteScore][math.random(1,2)] );
+		local angle = RotTween[param.TapNoteScore] * (math.mod(self.JudgmentCount,2) == 0 and -1 or 1)
+		c.Judgment:rotationz( angle );
 		JudgeCmds[param.TapNoteScore](c.Judgment);
 		
 	end;
