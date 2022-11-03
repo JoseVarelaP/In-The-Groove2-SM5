@@ -42,6 +42,13 @@ local modes = { "single", "versus", "double" }
 local MenuChoices = { 1,2,3 }
 local padloc = {"Single","Versus","Double"}
 
+-- In Battle mode, double is not available.
+if GAMESTATE:GetPlayMode() == "PlayMode_Rave" then
+    table.remove(modes, 3)
+    table.remove(MenuChoices, 3)
+    table.remove(padloc, 3)
+end
+
 local function CheckValueOffsets()
     print( "CheckValueOffsets ".. MenuIndex )
     if MenuIndex > #padloc  then MenuIndex = 1 end
@@ -86,7 +93,7 @@ local BTInput = {
             SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
 			or THEME:GetPathS("_ITGCommon","start") )
             if not GAMESTATE:Env()["WorkoutMode"] then
-                SOUND:DimMusic(0,3)
+                SOUND:StopMusic()
             end
             GAMESTATE:SetCurrentStyle( modes[MenuIndex] )
             SCREENMAN:GetTopScreen():SetNextScreenName( GAMESTATE:Env()["WorkoutMode"] and "ScreenWorkoutMenu" or SelectMusicOrCourse() ):StartTransitioningScreen("SM_GoToNextScreen")
@@ -111,7 +118,7 @@ local function MainMenuChoices()
     local t=Def.ActorFrame{}
 
     -- This will be out choices 
-    for index,mch in ipairs( MenuChoices ) do
+    for index in ipairs( MenuChoices ) do
         -- add the choice actorframes
         t[#t+1] = loadfile( THEME:GetPathG("ScreenSelectStyle","scroll/"..padloc[index]) )()..{
             Name="pad"..index,
@@ -154,6 +161,7 @@ local Controller = Def.ActorFrame{
 }
 
 t[#t+1] = Def.Quad{
+    Condition = not ThemePrefs.Get("ITG1"),
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
         if GAMESTATE:Env()["WorkoutMode"] then
@@ -187,23 +195,24 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = loadfile( THEME:GetPathB("ScreenWithMenuElements","underlay/fore.lua"))()
 
 t[#t+1] = Def.ActorScroller{
-	NumItemsToDraw=3,
+	NumItemsToDraw = 15,
+    Subdivisions = 4,
+    -- LoopScroller = true,
+    -- WrapScroller = true,
 	OnCommand=function(self)
-		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+12):z(-200):fov(45)
-		self:SetFastCatchup(true):SetSecondsPerItem(0.2):SetDrawByZPosition(true):SetWrap(true)
+		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+12):z(-200):fov(50)
+		self:SetFastCatchup(true):SetSecondsPerItem(0.3):SetDrawByZPosition(true)
 	end,
     children = MainMenuChoices(),
 	TransformFunction=function(self, offset, itemIndex, numItems)
-        local theta=offset*math.pi*1.5/numItems
+        local theta=offset*math.pi*2/numItems
         local focus=scale(self:GetZ(),-100,400,0,1)
         focus = clamp(focus,0,1)
-        local bright=scale(focus,0,1,0.15,1)
         local zoomv=scale(focus,0,1,0.7,1)
-        self:finishtweening():decelerate(0.2)
-        :x( math.sin( theta )*200 )
-        :z( math.cos( theta )*330 )
-        :y( (MenuIndex-1) == itemIndex and 30 or -70 )
-        :diffuse( (MenuIndex-1) == itemIndex and Color.White or color("0.2,0.2,0.2,1") )
+        self:x( math.sin( theta )*200 )
+        :z( math.cos( theta )*200 )
+        :y( self:GetZ()/2.2-20 )
+        :diffuse( offset == 0 and Color.White or color("0.5,0.5,0.5,1") )
         :zoom(zoomv)
 	end,
     MenuUpAllValMessageCommand=function(self)

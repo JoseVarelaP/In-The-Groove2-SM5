@@ -41,7 +41,7 @@ local BTInput = {
     end,
     ["Back"] = function(event)
         SCREENMAN:PlayCancelSound()
-        SCREENMAN:GetTopScreen():SetPrevScreenName("SM_TitleMenu"):Cancel()
+        SCREENMAN:GetTopScreen():SetPrevScreenName(Branch.TitleMenu()):Cancel()
     end,
 }
 
@@ -89,11 +89,13 @@ end
 
 local Controller = Def.ActorFrame{
     OnCommand=function(self)
-    MESSAGEMAN:Broadcast("MenuUpAllVal")
-    SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end
+        MESSAGEMAN:Broadcast("MenuUpAllVal")
+        SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
+    end
 }
 
 t[#t+1] = Def.Quad{
+    Condition = not ThemePrefs.Get("ITG1"),
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
     end
@@ -116,10 +118,11 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore")
 
 t[#t+1] = Def.ActorScroller{
-	NumItemsToDraw=4,
+	NumItemsToDraw=8,
+    Subdivisions = 3,
 	OnCommand=function(self)
 		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+12):z(-200):fov(90)
-		self:SetFastCatchup(true):SetSecondsPerItem(0.2):SetDrawByZPosition(true):SetWrap(true)
+		self:SetFastCatchup(true):SetSecondsPerItem(0.2):SetDrawByZPosition(true)
 	end,
     children = MainMenuChoices(),
 	TransformFunction=function(self, offset, itemIndex, numItems)
@@ -128,11 +131,11 @@ t[#t+1] = Def.ActorScroller{
         focus = clamp(focus,0,1)
         local bright=scale(focus,0,1,0.15,1)
         local zoomv=scale(focus,0,1,0.7,1)
-        self:finishtweening():decelerate(0.2)
+        -- self:finishtweening():decelerate(0.2)
         self:x( math.sin( theta )*200 )
-        self:z( math.cos( theta )*260 )
-        self:y( (MenuIndex-1) == itemIndex and 30 or -20 )
-        self:diffuse( (MenuIndex-1) == itemIndex and Color.White or color("0.2,0.2,0.2,1") )
+        self:z( math.cos( theta )*200 )
+        :y( self:GetZ()/2.8-20 )
+        self:diffuse( offset == 0 and Color.White or color("0.5,0.5,0.5,1") )
         self:zoom(zoomv)
 	end,
     MenuUpAllValMessageCommand=function(self)
@@ -141,6 +144,7 @@ t[#t+1] = Def.ActorScroller{
         self:PositionItems()
     end
 }
+local isITG1 = ThemePrefs.Get("ITG1")
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(self)
@@ -150,11 +154,16 @@ t[#t+1] = Def.ActorFrame{
 		self:linear(0.5):diffusealpha(0)
     end,
     
-    LoadActor("ScreenSelectStyle underlay/explanation frame"),
+    LoadActor("ScreenSelectStyle underlay/explanation frame")..{
+        InitCommand=function(self)
+            self:diffuse( isITG1 and color("#000000") or Color.White )
+        end
+    },
     Def.BitmapText{
         Font="_eurostile normal",
         OnCommand=function(self)
-            self:zoomtowidth(300):halign(0):zoom(0.8):x(-160):shadowlength(3)
+            self:zoomtowidth(300):halign(0):zoom(isITG1 and 1 or 0.8):x(-160):shadowlength(3)
+            :zoomx( isITG1 and 1.1 or 1 )
             :skewx(-0.21)
         end,
         MenuUpAllValMessageCommand=function(self)

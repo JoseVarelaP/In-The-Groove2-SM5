@@ -10,7 +10,7 @@ return Def.ActorFrame{
 	
 	Def.BitmapText{
 	Font="_eurostile normal", InitCommand=function(self)
-		self:zoom(1):x(-30):strokecolor(0.2,0.2,0.2,1):maxwidth(220)
+		self:zoom(0.9):x(-30):strokecolor(0.2,0.2,0.2,1):maxwidth(220)
 	end;
 	SetMessageCommand=function(self,params)
 	self:shadowlength(1)

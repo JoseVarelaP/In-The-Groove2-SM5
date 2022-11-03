@@ -23,6 +23,10 @@ return Def.ActorFrame{
 	OnCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_BOTTOM-86):shadowlength(2):diffuseblink():effectperiod(0.5):effectcolor1(1,1,1,0):effectcolor2(1,1,1,1)
 	end;
+	OffCommand=function(self)
+		SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+			or THEME:GetPathS("_ITGCommon","start") )
+	end
 	},
 
 	LoadActor("../_join overlay")..{ Condition=not GAMESTATE:GetCoinMode()=="CoinMode_Free" },

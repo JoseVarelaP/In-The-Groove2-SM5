@@ -10,13 +10,13 @@ return Def.ActorFrame{
 	
 	Def.BitmapText{
 	Font="_eurostile normal", InitCommand=function(self)
-		self:zoom(1):x(-30):strokecolor(0.2,0.2,0.2,1):maxwidth(220)
+		self:zoom(0.9):x(-30):strokecolor(0.2,0.2,0.2,1):maxwidth(220)
 	end;
 	SetMessageCommand=function(self,params)
 	self:shadowlength(1)
 	local Group = params.Text;
 		if Group then
-			self:settext(Group):diffuse(Color.White)
+			self:settext(Group):diffuse(params.Color)
 			for pn in ivalues(PlayerNumber) do
 				if Group == PROFILEMAN:GetProfile(pn):GetDisplayName() then
 					self:settext(Group.."'s Songs")

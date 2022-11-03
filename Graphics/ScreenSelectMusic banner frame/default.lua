@@ -99,7 +99,7 @@ return Def.ActorFrame{
 				end;
 			};
 
-			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{ OnCommand=function(s) s:ztest(0):y(126):zoomx(1):zoomy(0.94) end };
+			LoadActor( THEME:GetPathG('ScreenSelectMusic','StepsDisplayList') )..{ OnCommand=function(s) s:ztest(0):y(128):zoomx(1):zoomy(0.94) end };
 			LoadActor( THEME:GetPathG('ScreenSelectMusic','CourseDisplayList') )..{ OnCommand=function(s) s:ztest(0):y(126):zoomx(1):zoomy(0.94) end };
 
 		Def.ActorFrame{
