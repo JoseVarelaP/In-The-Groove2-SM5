@@ -170,6 +170,21 @@ function NoteSkinList()
 	return t
 end
 
+function DetermineTitleMenu()
+	local choices = "GameStart,"
+
+	if not ThemePrefs.Get("TitleMenuType") then
+		choices = "Dance,Battle,Nonstop,"
+	end
+	-- "Dance".. (not ThemePrefs.Get("TitleMenuType") and "Battle,Nonstop" or "") ..",Fitness,Records,Jukebox,EditMenu,Options,Exit"
+	if not ThemePrefs.Get("TitleMenuType") then
+		choices = choices .. "Fitness,EditMenu,Records,Options,Exit"
+	else
+		choices = choices .. "Fitness,Records,Jukebox,EditMenu,Options,Exit"
+	end
+	return choices
+end
+
 function StageIndexBySegment(toggleless)
 	local CurrentStage = {
 		S = GAMESTATE:GetCurrentStage(),

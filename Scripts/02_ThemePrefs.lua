@@ -84,6 +84,12 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
+	TitleMenuType = 
+	{
+		Default = false,
+		Choices = { "ITGPC", "OpenITG" },
+		Values = { true, false }
+	},
 	Legacy = 
 	{
 		Default = false,
