@@ -144,7 +144,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
 		InitCommand=function(self)
 			self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
-			local bannerPath = THEME:GetPathG( (ThemePrefs.Get("ITG1") and "ITG1/" or "ITG2") .." Common fallback", "banner")
+			local bannerPath = THEME:GetPathG( (ThemePrefs.Get("ITG1") and "ITG1/" or "ITG2 ") .."Common fallback", "banner")
 			if GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetBannerPath() ~= nil then
 				bannerPath = GAMESTATE:GetCurrentCourse():GetBannerPath()
 			end

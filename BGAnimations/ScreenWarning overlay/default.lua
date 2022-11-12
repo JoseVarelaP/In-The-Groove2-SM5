@@ -25,7 +25,7 @@ return Def.ActorFrame{
 
 	LoadActor( THEME:GetPathB('','_ScreenWarning overlay common') )..{
 		OnCommand=function(self)
-			self:addx(56)
+			-- self:addx(56)
 		end;
 	},
 }

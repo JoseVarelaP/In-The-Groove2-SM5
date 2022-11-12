@@ -119,7 +119,7 @@ t[#t+1] = LoadActor("ScreenWithMenuElements underlay/fore")
 
 t[#t+1] = Def.ActorScroller{
 	NumItemsToDraw=8,
-    Subdivisions = 3,
+    Subdivisions = 4,
 	OnCommand=function(self)
 		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+12):z(-200):fov(90)
 		self:SetFastCatchup(true):SetSecondsPerItem(0.2):SetDrawByZPosition(true)

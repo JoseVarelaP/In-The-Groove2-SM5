@@ -267,7 +267,10 @@ Branch.StartGame = function()
 		if IsNetConnected() then
 			return "ITG_StyleSelect"
 		else
-			if (THEME:GetMetric("Common","AutoSetStyle") == false or GAMESTATE:GetCoinMode() == "CoinMode_Pay") and not GAMESTATE:GetPlayMode() and not GAMESTATE:Env()["WorkoutMode"] then
+			if (THEME:GetMetric("Common","AutoSetStyle") == false or GAMESTATE:GetCoinMode() == "CoinMode_Pay")
+				and not GAMESTATE:GetPlayMode()
+				and not GAMESTATE:Env()["WorkoutMode"]
+				or GAMESTATE:Env()["FullSelection"] then
 				return "ITG_PlayModeSelect"
 			else
 				return "ITG_StyleSelect"
