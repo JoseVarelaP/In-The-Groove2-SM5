@@ -41,6 +41,12 @@ t[#t+1] = Def.ActorFrame{
 			:hibernate(11.5)
 		end
 	},
+	LoadActor("modifers")..{
+		OnCommand=function(self)
+			self:xy( SCREEN_CENTER_X+180, SCREEN_CENTER_Y )
+			:hibernate(16)
+		end
+	},
 	LoadActor("overlay")..{
 		OnCommand=function(self)
 			self:xy( SCREEN_CENTER_X, SCREEN_CENTER_Y )
