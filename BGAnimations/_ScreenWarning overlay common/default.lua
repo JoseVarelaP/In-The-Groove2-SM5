@@ -29,7 +29,7 @@ return Def.ActorFrame{
 
 	LoadActor(style.."exclamation normal")..{
 		OnCommand=function(self)
-			self:glow(1,1,1,1):x(SCREEN_CENTER_X+400):y(SCREEN_CENTER_Y-80):sleep(1.0):decelerate(0.5):x(SCREEN_CENTER_X+(80-320)):glowshift():effectclock("bgm"):effectoffset(1):effectperiod(2):sleep(7.5):accelerate(0.5):addx(-SCREEN_WIDTH)
+			self:glow(1,1,1,1):x(SCREEN_WIDTH + 100):y(SCREEN_CENTER_Y-80):sleep(1.0):decelerate(0.5):x(SCREEN_CENTER_X+(80-320)):glowshift():effectclock("bgm"):effectoffset(1):effectperiod(2):sleep(7.5):accelerate(0.5):addx(-SCREEN_WIDTH)
 		end;
 		OffCommand=function(self)
 			self:stoptweening():accelerate(0.5):addx(-SCREEN_WIDTH*1.5)

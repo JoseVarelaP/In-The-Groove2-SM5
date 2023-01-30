@@ -290,7 +290,8 @@ end
 
 function SelectMusicOrCourse()
 	if IsNetSMOnline() then
-		return "ScreenNetSelectMusic"
+		-- Need to make the player login to the service if it's SMO.	
+		return "ScreenSMOnlineLogin"
 	elseif GAMESTATE:IsCourseMode() then
 		return ThemePrefs.Get("ITG1") and "ScreenSelectCourseITG1" or "ScreenSelectCourse"
 	else
