@@ -211,9 +211,7 @@ end
 function CalPerNum(pn)
 	if GAMESTATE:IsPlayerEnabled(pn) then
         local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-        local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
-
-        return ScoreToCalculate
+        return GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
 	end
 	return 0
 end
@@ -245,9 +243,9 @@ Branch.TitleMenu = function()
 		-- this as the initial screen, but that means we'd be stuck in a
 		-- loop with ScreenInit. No good.
 		return "ScreenCompany"
-	else
-		return "ScreenTitleJoin"
 	end
+
+	return "ScreenTitleJoin"
 end
 
 Branch.AfterTitleMenu = function() return Branch.AfterProfileLoad() end
@@ -283,20 +281,21 @@ Branch.AfterSelectProfile = function()
 	if ( THEME:GetMetric("Common","AutoSetStyle") == true ) then
 		-- use SelectStyle in online...
 		return IsNetConnected() and "ITG_StyleSelect" or "ScreenSelectPlayMode"
-	else
-		return "ITG_StyleSelect"
 	end
+
+	return "ITG_StyleSelect"
 end
 
 function SelectMusicOrCourse()
-	if IsNetSMOnline() then
-		-- Need to make the player login to the service if it's SMO.	
-		return "ScreenSMOnlineLogin"
-	elseif GAMESTATE:IsCourseMode() then
-		return ThemePrefs.Get("ITG1") and "ScreenSelectCourseITG1" or "ScreenSelectCourse"
-	else
-		return ThemePrefs.Get("ITG1") and "ScreenSelectMusicITG1" or "ScreenSelectMusic"
+	if IsNetSMOnline() then return "ScreenNetSelectMusic" end
+
+	local ScreenToGo = GAMESTATE:IsCourseMode() and "ScreenSelectCourse" or "ScreenSelectMusic"
+
+	if ThemePrefs.Get("ITG1") then
+		ScreenToGo = ScreenToGo .. "ITG1"
 	end
+
+	return ScreenToGo
 end
 
 Branch.AfterEvaluation = function()
@@ -310,17 +309,9 @@ Branch.AfterEvaluation = function()
 
 		if GAMESTATE:IsEventMode() or stagesLeft >= 1 then
 			return "ScreenProfileSave"
-		elseif song:IsLong() and maxStages <= 2 and stagesLeft < 1 and allFailed then
-			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
-		elseif song:IsMarathon() and maxStages <= 3 and stagesLeft < 1 and allFailed then
-			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
-		elseif maxStages >= 2 and stagesLeft < 1 and allFailed then
-			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
-		elseif allFailed then
-			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
-		else
-			return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
 		end
+
+		return GAMESTATE:AnyPlayerHasRankingFeats() and "ScreenNameEntryTraditional" or "ScreenGameOver"
 	end
 end
 
