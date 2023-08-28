@@ -37,6 +37,7 @@ end
 -- Begin by the actorframe
 local t = Def.ActorFrame{}
 local MenuIndex = 1
+local scroller
 
 local modes = { "single", "versus", "double" }
 local MenuChoices = { 1,2,3 }
@@ -49,8 +50,8 @@ if GAMESTATE:GetPlayMode() == "PlayMode_Rave" then
     table.remove(padloc, 3)
 end
 
-local function CheckValueOffsets()
-    print( "CheckValueOffsets ".. MenuIndex )
+local function CheckValueOffsets(offset)
+    MenuIndex = MenuIndex + offset
     if MenuIndex > #padloc  then MenuIndex = 1 end
     if MenuIndex < 1            then MenuIndex = #padloc end
     if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
@@ -60,6 +61,9 @@ local function CheckValueOffsets()
             end
         end
     end
+
+    scroller:playcommand("Move",{Dir = offset})
+
     SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
     MESSAGEMAN:Broadcast("MenuUpAllVal")
     return
@@ -68,14 +72,16 @@ end
 local BTInput = {
     -- This will control the menu
     ["MenuRight"] = function(event)
-        MenuIndex = MenuIndex + 1
-        MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        -- MenuIndex = MenuIndex + 1
+        -- MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
+        -- WrapperVisualItem = WrapperVisualItem + 1
+        CheckValueOffsets(1)
     end,
     ["MenuLeft"] = function(event)
-        MenuIndex = MenuIndex - 1
-        MESSAGEMAN:Broadcast("MenuLeft".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        -- MenuIndex = MenuIndex - 1
+        -- MESSAGEMAN:Broadcast("MenuLeft".. ToEnumShortString(event) )
+        -- WrapperVisualItem = WrapperVisualItem - 1
+        CheckValueOffsets(-1)
     end,
     ["Start"] = function(event)
         if GAMESTATE:IsSideJoined(event) then
@@ -195,29 +201,47 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = loadfile( THEME:GetPathB("ScreenWithMenuElements","underlay/fore.lua"))()
 
 t[#t+1] = Def.ActorScroller{
-	NumItemsToDraw = 15,
+	NumItemsToDraw = 6,
     Subdivisions = 4,
-    -- LoopScroller = true,
-    -- WrapScroller = true,
+    SecondsPerItem = 0.3,
+    LoopScroller = true,
+    WrapScroller = true,
+    InitCommand=function(self)
+        scroller = self
+    end,
 	OnCommand=function(self)
 		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y+12):z(-200):fov(50)
-		self:SetFastCatchup(true):SetSecondsPerItem(0.3):SetDrawByZPosition(true)
+		self:SetFastCatchup(true):SetDrawByZPosition(true)
 	end,
     children = MainMenuChoices(),
 	TransformFunction=function(self, offset, itemIndex, numItems)
         local theta=offset*math.pi*2/numItems
-        local focus=scale(self:GetZ(),-100,400,0,1)
-        focus = clamp(focus,0,1)
-        local zoomv=scale(focus,0,1,0.7,1)
+        -- local theta = offset * 1
         self:x( math.sin( theta )*200 )
         :z( math.cos( theta )*200 )
         :y( self:GetZ()/2.2-20 )
         :diffuse( offset == 0 and Color.White or color("0.5,0.5,0.5,1") )
-        :zoom(zoomv)
+        
+        local focus=scale(self:GetZ(),-100,400,0,1)
+        focus = clamp(focus,0,1)
+        local zoomv=scale(focus,0,1,0.7,1)
+        self:zoom(zoomv)
 	end,
-    MenuUpAllValMessageCommand=function(self)
-        print( self:GetCurrentItem() )
-		self:SetDestinationItem(MenuIndex-1)
+    MoveCommand=function(self, params)
+        local oldChoice = self:GetCurrentItem()
+        local newChoice = MenuIndex
+        -- HACK: We can't tell from the option orders whether or not we wrapped.
+		-- For now, assume that the order is increasing left to right.
+		local PressedDir = params.Dir
+        local ActualDir = (oldChoice < newChoice) and 1 or -1
+
+        if PressedDir ~= ActualDir then
+            local item = self:GetCurrentItem()
+            local currentChoices = #MenuChoices
+            item = item + (ActualDir * currentChoices) 
+            self:SetCurrentAndDestinationItem(item)
+        end
+		self:SetDestinationItem(newChoice-1)
         :PositionItems()
     end
 }

@@ -4,7 +4,15 @@ t[#t+1] = Def.Sprite{
 	--Condition=not GAMESTATE:GetCurrentSong():HasBGChanges(),
 	Texture=ThemePrefs.Get("ITG1") and THEME:GetPathG("ITG1/Common fallback","background") or THEME:GetPathG("ITG2 Common fallback","background"),
 	OnCommand=function(self)
+		self:playcommand("Check")
+	end,
+	CheckCommand=function(self)
 		self:scale_or_crop_background()
+		self:visible( not GAMESTATE:GetCurrentSong():HasBGChanges() and not GAMESTATE:GetCurrentSong():HasBackground() )
+	end,
+	CurrentSongChangedMessageCommand=function(self)
+		lua.ReportScriptError("time")
+		self:playcommand("Check")
 	end
 }
 

@@ -34,12 +34,25 @@ end
 
 t[#t+1] = Def.Sprite{
 	Texture=THEME:GetPathG("Evaluation","banner frame mask"),
+	Condition=not ThemePrefs.Get("ITG1"),
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 	OnCommand=function(self)
 		self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):decelerate(0.5):y(SCREEN_CENTER_Y-138):zoom(1.02)
 	end,
 	OffCommand=function(self)
 		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
+	end
+}
+
+t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
+	Condition=ThemePrefs.Get("ITG1"),
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-38) end,
+	OnCommand=function(self)
+		-- self:zwrite(1):z(1):blend("BlendMode_NoEffect")
+		self:addy(-200):decelerate(0.5):addy(200)
+	end,
+	OffCommand=function(self)
+		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 	end
 }
 
@@ -66,12 +79,24 @@ t[#t+1] = Def.Banner{
 
 t[#t+1] = Def.Sprite{
 	Texture=THEME:GetPathG("ScreenEvaluation banner","frame"),
+	Condition=not ThemePrefs.Get("ITG1"),
 	OnCommand=function(self)
 		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-138)
 		:addy(-200):decelerate(0.5):addy(200)
 	end,
 	OffCommand=function(self)
 		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
+	end
+}
+
+t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
+	Condition=ThemePrefs.Get("ITG1"),
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-138) end,
+	OnCommand=function(self)
+		self:addy(-200):decelerate(0.5):addy(200)
+	end,
+	OffCommand=function(self)
+		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
 	end
 }
 

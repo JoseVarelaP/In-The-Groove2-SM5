@@ -2,7 +2,7 @@ return Def.ActorFrame{
 	
 	LoadActor("_frame 3x1",{"explanation metal",SCREEN_WIDTH/1.15})..{
 		OnCommand=function(self)
-			self:CenterX():y(SCREEN_BOTTOM-60)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-60)
 		end
 	},
 
@@ -10,7 +10,7 @@ return Def.ActorFrame{
 		Font="Common Normal",
 		Text="&START; OK\n&BACK; Salir",
 		OnCommand=function(self)
-			self:x(SCREEN_RIGHT-180):y(SCREEN_BOTTOM-60):halign(0)
+			self:xy(SCREEN_RIGHT-180,SCREEN_BOTTOM-60):halign(0)
 			:diffuseblink():shadowlength(2):zoom(0.9)
 		end
 	},
@@ -38,23 +38,23 @@ return Def.ActorFrame{
 				self:settext("")
 				for i=1,PROFILEMAN:GetNumLocalProfiles() do
 					local current = PROFILEMAN:GetLocalProfileFromIndex(i-1)
-					-- SCREENMAN:SystemMessage( "total: "..Profiles.. " now:".. tostring(current) .. " Sent: "..Sent)
-					if current and params.Name == current:GetDisplayName() then
-						local Complete = ""
-						local Items = {
-							{ {"ScreenOptionsManageProfiles","Total Songs Played"}, current:GetNumTotalSongsPlayed() },
-							{ {"ScreenEvaluation","Calories Burned"}, current:GetTotalCaloriesBurned() },
-							{ {"ScreenEvaluation","Total Play Time"}, SecondsToMMSS(current:GetTotalGameplaySeconds()) },
-							{ {"ScreenWorkoutMenu","Weight"}, current:GetWeightPounds() .. " Lb" },
-							{ "GUID", current:GetGUID() },
-						}
-						for v in ivalues(Items) do
-							Complete = Complete .. string.format( (type(v[2]) == "string" and v[2].." - " or "%i - ")..
-							(type(v[1]) == "table" and THEME:GetString(v[1][1],v[1][2]) or v[1])
-							, v[2] ) .. "\n"
-						end
-						self:settext(Complete)
+					if not current then return end
+					if params.Name ~= current:GetDisplayName() then return end
+
+					local Complete = ""
+					local Items = {
+						{ {"ScreenOptionsManageProfiles","Total Songs Played"}, current:GetNumTotalSongsPlayed() },
+						{ {"ScreenEvaluation","Calories Burned"}, current:GetTotalCaloriesBurned() },
+						{ {"ScreenEvaluation","Total Play Time"}, SecondsToMMSS(current:GetTotalGameplaySeconds()) },
+						{ {"ScreenWorkoutMenu","Weight"}, current:GetWeightPounds() .. " Lb" },
+						{ "GUID", current:GetGUID() },
+					}
+					for v in ivalues(Items) do
+						Complete = Complete .. string.format( (type(v[2]) == "string" and v[2].." - " or "%i - ")..
+						(type(v[1]) == "table" and THEME:GetString(v[1][1],v[1][2]) or v[1])
+						, v[2] ) .. "\n"
 					end
+					self:settext(Complete)
 				end
 			end
 		}
