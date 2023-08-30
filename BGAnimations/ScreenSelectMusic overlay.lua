@@ -232,7 +232,7 @@ t[#t+1] = Def.ActorFrame{
 			self:diffusealpha(1):faderight(.3):fadeleft(.3):cropleft(-0.3):cropright(1.3):linear(0.3):cropright(-0.3):sleep(1.2):linear(0.3):cropleft(1.3)
 		end,
 		ShowEnteringOptionsCommand=function(self)
-			self:stoptweening():setstate(1):sleep(0.6):linear(0.3):cropleft(1.3)
+			self:stoptweening():setstate(1):cropleft(0):cropright(0):sleep(0.6):linear(0.3):cropleft(1.3)
 		end,
 		HidePressStartForOptionsCommandCommand=function(self)
 			self:linear(0.3):cropleft(1.3)

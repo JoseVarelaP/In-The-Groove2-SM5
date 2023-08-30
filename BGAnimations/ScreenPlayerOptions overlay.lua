@@ -8,7 +8,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.BitmapText{
 			Font=_eurostileColorPick(),
-			Text=THEME:GetString("ScreenPlayerOptions","HeaderText"),
+			Text=ToUpper(THEME:GetString(Var "LoadingScreen","HeaderText")),
 			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
