@@ -182,14 +182,20 @@ t[#t+1] = Def.ActorFrame{
         end
     },
     Def.ActorScroller{
-        NumItemsToDraw=99;
+        NumItemsToDraw=14,
+        SecondsPerItem=0.2,
         OnCommand=function(self)
             self:y(30):zoom(0.8):SetFastCatchup(true):SetWrap(false)
         end;
         children = MainMenuChoices();
         TransformFunction=function(self, offset, itemIndex, numItems)
-            self:finishtweening():decelerate(0.2)
-            :x( (-34*8)+38*itemIndex )
+            self:finishtweening():decelerate(0.1)
+            -- :x( (-34*8)+38*itemIndex )
+
+            self:x( (38*offset) )
+            self:diffusealpha( (offset > 6 or offset < -6) and 0 or 1 )
+            -- if self:GetCurrentItem() > 8 then
+            -- end
         end;
         MenuUpAllValMessageCommand=function(self)
             self:SetDestinationItem(MenuIndex-1)
@@ -209,7 +215,7 @@ t[#t+1] = Def.ActorFrame{
                 end
             end
     
-            self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
+            self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, UNLOCKMAN:GetNumUnlocks() ) )
             :y(-30):zoom(0.6):diffuseshift():effectcolor1(color("#777777"))
         end;
     };
