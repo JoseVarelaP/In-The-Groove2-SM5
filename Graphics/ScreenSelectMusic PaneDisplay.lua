@@ -129,8 +129,11 @@ if GAMESTATE:IsPlayerEnabled(args) then
 						s:settext( val[2]() )
 						if val[3] then
 							for aqs,v in ipairs( ObtainData[ind][vind][3] ) do
-								if val[2]() > v then
-									s:diffuse( levelcolors[aqs] )
+								local meterValue = val[2]()
+								if meterValue ~= "???" then
+									if meterValue > v then
+										s:diffuse( levelcolors[aqs] )
+									end
 								end
 							end
 						end

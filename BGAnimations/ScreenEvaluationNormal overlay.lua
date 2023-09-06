@@ -8,7 +8,7 @@ local function side(pn)
 end
 
 local function Gradeside(pn)
-	local s = -230+(itgstylemargin*1.2)
+	local s = -240+(itgstylemargin*1.2)
 	if pn == PLAYER_2 then s = 56+(itgstylemargin*-1.3) end
 	return s
 end
@@ -60,7 +60,7 @@ for player in ivalues(PlayerNumber) do
 				self:xy( DoublesIsOn and SCREEN_CENTER_X or (SCREEN_CENTER_X+(-145*side(player)) ),SCREEN_CENTER_Y-60)
 				:zoom(2):addx( (-SCREEN_WIDTH)*side(player) ):decelerate(0.5)
 				:addx( SCREEN_WIDTH*side(player) ):sleep(2.2):decelerate(0.5):zoom(0.9)
-				self:xy( DoublesIsOn and SCREEN_CENTER_X-80 or (SCREEN_CENTER_X+Gradeside(player) ) ,SCREEN_CENTER_Y-38+(itgstylemargin*2))
+				self:xy( DoublesIsOn and SCREEN_CENTER_X-96 or (SCREEN_CENTER_X+Gradeside(player) ) ,SCREEN_CENTER_Y-38+(itgstylemargin*2))
 			end,
 			OffCommand=function(self)
 				self:accelerate(0.3):addx((DoublesIsOn and -SCREEN_WIDTH/1.2 or -SCREEN_WIDTH/2)*side(player))

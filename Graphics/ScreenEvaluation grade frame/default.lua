@@ -66,7 +66,10 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.ActorFrame{
 	OnCommand=function(self)
-		self:xy( ((DoublesIsOn and -170 or ( GAMESTATE:GetPlayMode() == "PlayMode_Rave" and -75 or -95))+(itgstylemargin*-1)*3)*side(player), (DoublesIsOn and -190 or -149)+itgstylemargin*6 )
+		self:xy(
+			((DoublesIsOn and -250 or ( GAMESTATE:GetPlayMode() == "PlayMode_Rave" and -75 or -95))+(itgstylemargin*-1)*3)*side(player),
+			(DoublesIsOn and -150 or -149)+itgstylemargin*6
+		)
 	end,
 		Def.Sprite{
 			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),

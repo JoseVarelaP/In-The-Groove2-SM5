@@ -7,11 +7,13 @@ t[#t+1] = Def.Sprite{
 		self:playcommand("Check")
 	end,
 	CheckCommand=function(self)
-		self:scale_or_crop_background()
-		self:visible( not GAMESTATE:GetCurrentSong():HasBGChanges() and not GAMESTATE:GetCurrentSong():HasBackground() )
+		self:visible(false):scale_or_crop_background()
+		local song = GAMESTATE:GetCurrentSong()
+		if song then
+			self:visible( not song:HasBGChanges() and not song:HasBackground() )
+		end
 	end,
 	CurrentSongChangedMessageCommand=function(self)
-		lua.ReportScriptError("time")
 		self:playcommand("Check")
 	end
 }
