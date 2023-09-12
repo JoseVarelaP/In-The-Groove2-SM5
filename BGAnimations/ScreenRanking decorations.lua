@@ -15,25 +15,37 @@ for i=1,2 do
     }
 end
 
+local isITG1 = ThemePrefs.Get("ITG1")
+local diffIconGraphic = isITG1 and THEME:GetPathG('_evaluation difficulty','icons') or THEME:GetPathG('_difficulty','icons');
 for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
     local coldiff = THEME:GetMetric(Var "LoadingScreen","ColumnDifficulty"..i)
-    t[#t+1] = Def.BitmapText{
-        Font="Common Normal",
-        Text=THEME:GetString("Difficulty", ToEnumShortString(coldiff)),
-        OnCommand=function(s)
-            s:zoom(0.6):xy( THEME:GetMetric(Var "LoadingScreen", "DifficultyStartX")-6+( 100*i ), 36 )
-            :diffusealpha(0):sleep(0.3+0.05*i):linear(0.2):diffusealpha(1)
-        end,
-        OffCommand=function(s) s:sleep(0.05*i):linear(0.15):diffusealpha(0) end
-    }
-    t[#t+1] = Def.Sprite{
-        Texture=THEME:GetPathG("_difficulty","icons"),
+    t[#t+1] = Def.ActorFrame{
         OnCommand=function(self)
-            self:animate(0):setstate( THEME:GetMetric(Var "LoadingScreen","ColumnDifficulty1") == "Difficulty_Easy" and i or i+1 )
-            :xy( THEME:GetMetric(Var "LoadingScreen", "DifficultyStartX")-6+( 100*i ), 36 )
-            :diffusealpha(0):sleep(0.3+0.05*i):linear(0.2):diffusealpha(1)
+            self:SortByDrawOrder()
         end,
-        OffCommand=function(s) s:sleep(0.05*i):linear(0.15):diffusealpha(0) end
+        Def.Sprite{
+            Texture=diffIconGraphic,
+            InitCommand=function(self) self:draworder(1) end,
+            OnCommand=function(self)
+                self:draworder(1):animate(0):setstate( THEME:GetMetric(Var "LoadingScreen","ColumnDifficulty1") == "Difficulty_Easy" and i or i+1 )
+                :xy( THEME:GetMetric(Var "LoadingScreen", "DifficultyStartX")-6+( 100*i ), 36 )
+                :diffusealpha(0):sleep(0.3+0.05*i):linear(0.2):diffusealpha(1)
+            end,
+            OffCommand=function(s) s:sleep(0.05*i):linear(0.15):diffusealpha(0) end
+        },
+        Def.BitmapText{
+            Font="Common Normal",
+            Text=THEME:GetString("Difficulty", ToEnumShortString(coldiff)),
+            InitCommand=function(self) self:draworder( isITG1 and 2 or -1 ) end,
+            OnCommand=function(self)
+                if isITG1 then
+                    self:diffuse(Color.Black):shadowlength(1)
+                end
+                self:draworder(-1):zoom(0.6):xy( THEME:GetMetric(Var "LoadingScreen", "DifficultyStartX")-6+( 100*i ), 36 )
+                :diffusealpha(0):sleep(0.3+0.05*i):linear(0.2):diffusealpha(1)
+            end,
+            OffCommand=function(s) s:sleep(0.05*i):linear(0.15):diffusealpha(0) end
+        }
     }
 end
 
