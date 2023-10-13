@@ -75,7 +75,7 @@ for difIndx,diff in ipairs(diffs) do
             OnCommand=function(self)
                 self:zoom(0.6)
             end
-        }
+        },
         Def.Sprite{
             Texture=diffIconGraphic,
             OnCommand=function(self)
@@ -110,7 +110,7 @@ for difIndx,diff in ipairs(trails) do
             OnCommand=function(self)
                 self:zoom(0.6)
             end
-        }
+        },
         Def.Sprite{
             Texture=diffIconGraphic,
             OnCommand=function(self)

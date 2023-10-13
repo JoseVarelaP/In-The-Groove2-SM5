@@ -2,7 +2,8 @@
 local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
 local MenuIndex = 1
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
-local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem")
+local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem") and UNLOCKMAN:GetNumUnlocks() > 0
+local needsRestartForUnlocks = PREFSMAN:GetPreference("UseUnlockSystem") and UNLOCKMAN:GetNumUnlocks() == 0
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
@@ -258,6 +259,10 @@ local buttonOptions = {
     {"Go Back", "ScreenRecordsMenu"}
 }
 
+if needsRestartForUnlocks then
+    table.remove(buttonOptions,1)
+end
+
 -- Controller Logic
 local function CheckValueOffsets(ofval)
     if UnlocksEnabled then
@@ -336,10 +341,12 @@ t[#t+1] = Def.ActorFrame{
     Def.Quad{ OnCommand=function(self) self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
     Def.BitmapText{
         Font="_eurostile normal",
-        Text=THEME:GetString("ScreenUnlock","NotEnabled"),
+        Text=THEME:GetString("ScreenUnlock",needsRestartForUnlocks and "RestartNeeded" or "NotEnabled"),
         OnCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y - 60):zoom(0.5) end
     };
 }
+
+local moveSound
 
 if not UnlocksEnabled then
     local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
@@ -353,6 +360,9 @@ if not UnlocksEnabled then
             CancelCommand=function(self) self:linear(0.3):diffusealpha(0) end,
             ChoiceUpValMessageCommand=function(self)
                 self:playcommand( (MenuIndex == i and "Gain" or "Lose") .. "Focus" )
+                if MenuIndex == i then
+                    moveSound:play()
+                end
             end,
             LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320}),
             LoadActor( THEME:GetPathB("","_frame 3x1") , {"small green",312})..{
@@ -373,10 +383,19 @@ if not UnlocksEnabled then
                 end,
                 GainFocusMessageCommand=function(s) s:diffuse( color("1,1,1,1") ) end,
                 LoseFocusMessageCommand=function(s) s:diffuse( color("0.5,0.5,0.5,1") ) end
-            }
+            },
         }
     end
 end
+
+t[#t+1] = Def.Sound{
+    Name="Move",
+    IsAction=true,
+    File=THEME:GetPathS("_change","value"),
+    InitCommand=function(self)
+        moveSound = self
+    end
+}
 
 t[#t+1] = Def.HelpDisplay {
     File="_eurostile normal",
