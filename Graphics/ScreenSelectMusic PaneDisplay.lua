@@ -101,7 +101,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 				InitCommand=function(self)
 					self:zoom(0.5):xy(
 						ObtainData[ind].xpos[1] + (args == PLAYER_2 and 55 or 0)
-						,-24+14*(vind-1)):halign(0)
+						,-24+14*(vind-1)):halign(0):maxwidth(80)
 				end;
 				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
 					if GAMESTATE:GetCurrentSteps(args) then
@@ -163,7 +163,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 	end
 	t[#t+1] = Def.BitmapText{
 		Font="_futurist normal",
-		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13) end;
+		InitCommand=function(self) self:x(ObtainData.DiffPlacement):y(-24+13):maxwidth(60) end;
 		CurrentSongChangedMessageCommand=function(s) s:settext("") end;
 		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
 			if GAMESTATE:GetCurrentSong() and not GAMESTATE:IsCourseMode() then
