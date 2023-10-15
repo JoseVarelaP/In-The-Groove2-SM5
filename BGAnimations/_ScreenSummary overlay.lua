@@ -121,7 +121,7 @@ for difIndx,diff in ipairs(diffs) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=("%.2f"):format(PROFILEMAN:GetMachineProfile():GetSongsActual(StepsType,diff)),
+        Text=("%5.2f"):format(PROFILEMAN:GetMachineProfile():GetSongsActual(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[1] + 30, SCREEN_CENTER_Y - 146 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -129,7 +129,7 @@ for difIndx,diff in ipairs(diffs) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=("%.2f"):format(PROFILEMAN:GetMachineProfile():GetSongsPossible(StepsType,diff)),
+        Text=("%5.2f"):format(PROFILEMAN:GetMachineProfile():GetSongsPossible(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[2] + 30, SCREEN_CENTER_Y - 146 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -137,7 +137,7 @@ for difIndx,diff in ipairs(diffs) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=FormatPercentScore(PROFILEMAN:GetMachineProfile():GetSongsPercentComplete(StepsType,diff)),
+        Text=FormatPercentScore(GetSongsPercentComplete(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[3] + 30, SCREEN_CENTER_Y - 146 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -180,7 +180,7 @@ for difIndx,diff in ipairs(trails) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=("%.2f"):format(PROFILEMAN:GetMachineProfile():GetCoursesActual(StepsType,diff)),
+        Text=("%5.2f"):format(PROFILEMAN:GetMachineProfile():GetCoursesActual(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[1] + 30,SCREEN_CENTER_Y - 22 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -188,7 +188,7 @@ for difIndx,diff in ipairs(trails) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=("%.2f"):format(PROFILEMAN:GetMachineProfile():GetCoursesPossible(StepsType,diff)),
+        Text=("%5.2f"):format(PROFILEMAN:GetMachineProfile():GetCoursesPossible(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[2] + 30,SCREEN_CENTER_Y - 22 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -196,7 +196,7 @@ for difIndx,diff in ipairs(trails) do
 
     t[#t+1] = Def.BitmapText{
         Font="Common Normal",
-        Text=FormatPercentScore(PROFILEMAN:GetMachineProfile():GetCoursesPercentComplete(StepsType,diff)),
+        Text=FormatPercentScore(GetCoursesPercentComplete(StepsType,diff)),
         InitCommand=function(self)
             self:xy( PositionColumns[3] + 30,SCREEN_CENTER_Y - 22 + (30 * difIndx) ):zoom(0.6):halign(1)
         end
@@ -289,4 +289,9 @@ t[#t+1] = Def.HelpDisplay {
     end
 }
 
+t[#t+1] = LoadActor( THEME:GetPathG('', ('_grade models/%s.lua'):format(GetGradeFromPercent(GetTotalPercentComplete(StepsType))) ) ) .. {
+    InitCommand=function(self)
+        self:xy( PositionColumns[3], SCREEN_CENTER_Y + 90 )
+    end
+}
 return t
