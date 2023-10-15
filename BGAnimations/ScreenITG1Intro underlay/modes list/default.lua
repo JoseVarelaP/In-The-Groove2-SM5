@@ -20,6 +20,7 @@ local scroll = Def.ActorScroller {
 
 -- Generate each song entry
 local names = {
+	"Tutorial",
 	"Dance",
 	"Battle",
 	"Marathon",
@@ -32,7 +33,7 @@ for i,v in ipairs(names) do
 			Font="_eurostile normal",
 			Text=THEME:GetString("ScreenIntro",v),
 			OnCommand=function(self)
-				self:zoom(0.5)
+				self:zoom(0.5):shadowlength(2)
 			end
 		},
 	}

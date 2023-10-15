@@ -21,7 +21,7 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadActor("song list")..{
 		OnCommand=function(self)
-			self:x(SCREEN_CENTER_X+180):CenterY():rotationy(30)
+			self:hibernate(0.3):x(SCREEN_CENTER_X+180):CenterY():rotationy(30)
 		end
 	},
 	LoadActor("modes list")..{
@@ -38,13 +38,19 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor("course list")..{
 		OnCommand=function(self)
 			self:xy( SCREEN_CENTER_X+180, SCREEN_CENTER_Y )
-			:hibernate(11.5)
+			:hibernate(12.5)
 		end
 	},
 	LoadActor("modifers")..{
 		OnCommand=function(self)
 			self:xy( SCREEN_CENTER_X+180, SCREEN_CENTER_Y )
-			:hibernate(16)
+			:hibernate(16.5)
+		end
+	},
+	LoadActor("more list")..{
+		OnCommand=function(self)
+			self:xy( SCREEN_CENTER_X, SCREEN_CENTER_Y )
+			:hibernate(22)
 		end
 	},
 	LoadActor("overlay")..{

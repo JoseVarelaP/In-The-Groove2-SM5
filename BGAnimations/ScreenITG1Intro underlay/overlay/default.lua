@@ -4,9 +4,9 @@ local featureNames = {
 	{70, THEME:GetString("ScreenIntro","New Songs"), -270, -120, "down", 3, "right", 0.5, halign = 0},
 	{550, THEME:GetString("ScreenIntro","New Dances"), 270, -120, "left", 3.5, "down", 4.5, halign = 1},
 	{5, THEME:GetString("ScreenIntro","Game Modes"), 270, 120, "up", 2.5, "left", 8.8, halign = 1},
-	{15, THEME:GetString("ScreenIntro","New Courses"), -270, 120, "right", 3, "left", 12.3, halign = 0},
-	{50, THEME:GetString("ScreenIntro","Modifiers"), -270, -120, "down", 3.5, "right", 16.5, halign = 0},
-	{THEME:GetString("ScreenIntro","New"), THEME:GetString("ScreenIntro","Features"), 270, -120, "left", 3.5, "right", 21.5, halign = 1},
+	{15, THEME:GetString("ScreenIntro","New Courses"), -270, 120, "right", 3, "left", 12.5, halign = 0},
+	{50, THEME:GetString("ScreenIntro","Modifiers"), -270, -120, "down", 3.5, "right", 17, halign = 0},
+	{THEME:GetString("ScreenIntro","New"), THEME:GetString("ScreenIntro","Features"), 270, -120, "left", 3.5, "right", 22, halign = 1},
 }
 
 for i,v in ipairs(featureNames) do
