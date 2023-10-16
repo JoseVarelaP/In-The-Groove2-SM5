@@ -9,7 +9,7 @@ t[#t+1] = Def.ActorFrame{ OnCommand=function(s) s:fov(70) end;
 };
 
 t[#t+1] = Def.Sprite{
-    Texture="../_red streak",
+    Texture=ThemePrefs.Get("ITG1") and "../_ITG streak" or "../_red streak",
     OnCommand=function(s)
         s:zoom(0.5):xy( SCREEN_CENTER_X, SCREEN_CENTER_Y-80 ):fadeleft(0.3):faderight(0.3):cropleft(1.3):cropright(-0.3)
         :linear(1):cropleft(-0.3):zoom(2.5):linear(9):zoom(1.2)

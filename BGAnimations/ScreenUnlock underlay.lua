@@ -2,7 +2,8 @@
 local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
 local MenuIndex = 1
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
-local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem")
+local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem") and UNLOCKMAN:GetNumUnlocks() > 0
+local needsRestartForUnlocks = PREFSMAN:GetPreference("UseUnlockSystem") and UNLOCKMAN:GetNumUnlocks() == 0
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
@@ -11,15 +12,24 @@ t[#t+1] = Def.ActorFrame{
     CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
     TweenOffCommand=function(self) self:stoptweening():accelerate(0.5):addx(SCREEN_WIDTH) end,
 
-    Def.Banner{
+    Def.Sprite{
+        Texture=THEME:GetPathG("ITG2 Common fallback","Banner"),
+        InitCommand=function(self)
+            self:scaletoclipped(234,78)
+        end
+    },
+
+    Def.FadingBanner{
         MenuUpAllValMessageCommand=function(self)
             local entry = UNLOCKMAN:GetUnlockEntry(MenuIndex-1)
             if entry and not entry:IsLocked() then
-                self:LoadBannerFromUnlockEntry( entry )
+                --self:LoadBannerFromUnlockEntry( entry )
+                self:LoadFromSong( entry:GetSong() )
             else
-                self:Load( THEME:GetPathG("ITG2 Common fallback","Banner") )
+                --self:Load( THEME:GetPathG("ITG2 Common fallback","Banner") )
+                self:LoadFallback()
             end
-            self:setsize(234,78)
+            self:scaletoclipped(234,78)
         end
     },
 
@@ -182,20 +192,48 @@ t[#t+1] = Def.ActorFrame{
         end
     },
     Def.ActorScroller{
-        NumItemsToDraw=99;
+        NumItemsToDraw=14,
+        SecondsPerItem=0.1,
         OnCommand=function(self)
             self:y(30):zoom(0.8):SetFastCatchup(true):SetWrap(false)
         end;
         children = MainMenuChoices();
         TransformFunction=function(self, offset, itemIndex, numItems)
-            self:finishtweening():decelerate(0.2)
-            :x( (-34*8)+38*itemIndex )
+            self:finishtweening():decelerate(0.1)
+            -- :x( (-34*8)+38*itemIndex )
+
+            self:x( (38*offset) )
+            self:diffusealpha( (offset > 6 or offset < -6) and 0 or 1 )
+            -- if self:GetCurrentItem() > 8 then
+            -- end
         end;
         MenuUpAllValMessageCommand=function(self)
             self:SetDestinationItem(MenuIndex-1)
             :PositionItems()
         end;
     };
+
+    Def.Sprite{
+        Texture=THEME:GetPathB("_shared underlay","arrows/arrow"),
+        InitCommand=function(self)
+            self:zoom(0.3):xy(-225,30)
+        end,
+        MenuUpAllValMessageCommand=function(self,params)
+            if params and params.OffsetVal ~= -1 then return end
+            self:finishtweening():zoom(0.5):glow(1,1,1,1):linear(0.2):glow(1,1,1,0):zoom(0.3)
+        end
+    },
+
+    Def.Sprite{
+        Texture=THEME:GetPathB("_shared underlay","arrows/arrow"),
+        InitCommand=function(self)
+            self:zoom(0.3):xy(225,30):rotationy(180)
+        end,
+        MenuUpAllValMessageCommand=function(self,params)
+            if params and params.OffsetVal ~= 1 then return end
+            self:finishtweening():zoom(0.5):glow(1,1,1,1):linear(0.2):glow(1,1,1,0):zoom(0.3)
+        end
+    },
 
     Def.BitmapText{
         Condition=PREFSMAN:GetPreference("UseUnlockSystem"),
@@ -209,7 +247,7 @@ t[#t+1] = Def.ActorFrame{
                 end
             end
     
-            self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
+            self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, UNLOCKMAN:GetNumUnlocks() ) )
             :y(-30):zoom(0.6):diffuseshift():effectcolor1(color("#777777"))
         end;
     };
@@ -221,13 +259,17 @@ local buttonOptions = {
     {"Go Back", "ScreenRecordsMenu"}
 }
 
+if needsRestartForUnlocks then
+    table.remove(buttonOptions,1)
+end
+
 -- Controller Logic
-local function CheckValueOffsets()
+local function CheckValueOffsets(ofval)
     if UnlocksEnabled then
         if MenuIndex > UNLOCKMAN:GetNumUnlocks() then MenuIndex = UNLOCKMAN:GetNumUnlocks() end
         if MenuIndex < 1 then MenuIndex = 1 end
         SOUND:PlayOnce( THEME:GetPathS("ScreenSelectMaster","change") )
-        MESSAGEMAN:Broadcast("MenuUpAllVal")
+        MESSAGEMAN:Broadcast("MenuUpAllVal",{OffsetVal = ofval})
     else
         if MenuIndex > #buttonOptions then MenuIndex = 1 end
         if MenuIndex < 1 then MenuIndex = #buttonOptions end
@@ -241,24 +283,24 @@ local BTInput = {
     ["MenuRight"] = function(event)
         MenuIndex = MenuIndex + 1
         MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        CheckValueOffsets(1)
     end,
     ["MenuLeft"] = function(event)
         MenuIndex = MenuIndex - 1
         MESSAGEMAN:Broadcast("MenuLeft".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        CheckValueOffsets(-1)
     end,
     ["MenuDown"] = function(event)
         if UnlocksEnabled then return end
         MenuIndex = MenuIndex + 1
         MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        CheckValueOffsets(1)
     end,
     ["MenuUp"] = function(event)
         if UnlocksEnabled then return end
         MenuIndex = MenuIndex - 1
         MESSAGEMAN:Broadcast("MenuRight".. ToEnumShortString(event) )
-        CheckValueOffsets()
+        CheckValueOffsets(-1)
     end,
     ["Start"] = function(event)
         SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
@@ -299,10 +341,12 @@ t[#t+1] = Def.ActorFrame{
     Def.Quad{ OnCommand=function(self) self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT):diffuse( Alpha(Color.Black,0.8) ) end };
     Def.BitmapText{
         Font="_eurostile normal",
-        Text=THEME:GetString("ScreenUnlock","NotEnabled"),
+        Text=THEME:GetString("ScreenUnlock",needsRestartForUnlocks and "RestartNeeded" or "NotEnabled"),
         OnCommand=function(self) self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y - 60):zoom(0.5) end
     };
 }
+
+local moveSound
 
 if not UnlocksEnabled then
     local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
@@ -316,6 +360,9 @@ if not UnlocksEnabled then
             CancelCommand=function(self) self:linear(0.3):diffusealpha(0) end,
             ChoiceUpValMessageCommand=function(self)
                 self:playcommand( (MenuIndex == i and "Gain" or "Lose") .. "Focus" )
+                if MenuIndex == i then
+                    moveSound:play()
+                end
             end,
             LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320}),
             LoadActor( THEME:GetPathB("","_frame 3x1") , {"small green",312})..{
@@ -336,10 +383,19 @@ if not UnlocksEnabled then
                 end,
                 GainFocusMessageCommand=function(s) s:diffuse( color("1,1,1,1") ) end,
                 LoseFocusMessageCommand=function(s) s:diffuse( color("0.5,0.5,0.5,1") ) end
-            }
+            },
         }
     end
 end
+
+t[#t+1] = Def.Sound{
+    Name="Move",
+    IsAction=true,
+    File=THEME:GetPathS("_change","value"),
+    InitCommand=function(self)
+        moveSound = self
+    end
+}
 
 t[#t+1] = Def.HelpDisplay {
     File="_eurostile normal",

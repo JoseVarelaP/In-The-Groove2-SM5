@@ -1,3 +1,45 @@
+local function Unlock(name)
+	local codenumber = tonumber(string.sub(name, 6))
+	local Series = string.sub(name, 0,-3)
+	local codes = {
+		["ITG1_"] = {
+			"Disconnected -Hyper-", -- Left,Right,Up,Down,Left,Left,Right,Right
+			"Disconnected -Mobius-", -- Left,Down,Right,Down,Up,Right,Down,Left
+			"Infection", -- Up,Down,Up,Down,Up,Down,Right,Right,Up
+			"Xuxa", -- Right,Up,Down,Down,Right,Down,Up,Left,Down
+			"Tell", -- Down,Left,Up,Up,Right,Right,Down,Left,Down
+			"Bubble Dancer", -- Right,Left,Left,Right,Up,Down,Down,Left,Left
+			"Don't Promise Me ~Happiness~", -- Up,Right,Up,Left,Down,Left,Right,Left,Right
+			"Anubis", -- Left,Down,Up,Left,Down,Down,Right,Right,Up
+			"DJ Party", -- Left,Right,Right,Left,Up,Down,Right,Left,Down
+			"Pandemonium", -- Left,Up,Left,Down,Up,Down,Right,Down,Left
+		},
+		["ITG2_"] = {
+			"Disconnected Disco", -- Up,Down,Down,Up,Left,Left,Down,Right,Down,Up,Right
+			"VerTex^2", -- Left,Down,Right,Right,Right,Down,Left,Up,Up,Down,Right
+			"Wanna Do", -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
+			"Know Your Enemy", -- Right,Left,Down,Down,Down,Up,Left,Down,Left,Left,Right
+			"Hardcore Symphony", -- Down,Up,Up,Left,Down,Right,Down,Right,Right,Down,Up
+            {"!"}
+		}
+    }
+    local unlockid = Series == "ITG1_" and codenumber or codenumber+#codes["ITG1_"]
+    if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
+        -- if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
+            local isChartUnlock = UNLOCKMAN:GetUnlockEntry(unlockid-1):GetUnlockRewardType() == 1
+            lua.ReportScriptError(isChartUnlock)
+            local SongToFind = isChartUnlock and codes[Series][codenumber][1] or codes[Series][codenumber]
+            UNLOCKMAN:UnlockEntryIndex( unlockid-1 )
+            if not isChartUnlock then
+                SOUND:DimMusic( 0.2, 3 )
+                SOUND:PlayOnce( THEME:GetPathS("Unlocked",SongToFind) )
+            end
+            GAMESTATE:SetPreferredSong( SONGMAN:FindSong( SongToFind ) )
+            MESSAGEMAN:Broadcast("UnlockMade",{ Name=SongToFind })
+        -- end
+    end
+end
+
 -- Begin by the actorframe
 local t = Def.ActorFrame{}
 local MenuIndex = 1
@@ -97,6 +139,12 @@ t[#t+1] = Def.Quad{
     Condition = not ThemePrefs.Get("ITG1"),
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
+    end
+}
+
+t[#t+1] = Def.Actor{
+    CodeMessageCommand=function(s,param)
+        Unlock( param.Name )
     end
 }
 
@@ -222,6 +270,12 @@ t[#t+1] = Def.HelpDisplay {
     end,
     OffCommand=function(self)
         self:linear(0.5):zoomy(0)
+    end,
+    UnlockMadeMessageCommand=function(self,param)
+        self:SetTipsColonSeparated( string.format( THEME:GetString("ScreenUnlock", "Unlocked %s:"), param.Name ) ):sleep(5):queuecommand("ResetText")
+    end,
+    ResetTextCommand=function(self)
+        self:SetTipsColonSeparated( THEME:GetString("ScreenSelectStyle2","HelpText") )
     end
 }
 

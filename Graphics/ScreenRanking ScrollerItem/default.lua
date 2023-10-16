@@ -1,11 +1,15 @@
+local texType = ThemePrefs.Get("ITG1") and "list" or "song"
 local t = Def.ActorFrame{
 	InitCommand=function(s) s:MaskDest() end;
-	Def.Sprite{ Texture="ScreenRanking song frame" };
+	Def.Sprite{ Texture="ScreenRanking ".. texType .." frame" };
 
 	LoadFont("_eurostile normal")..{
 		--maxwidth,264
-		InitCommand=function(s)
-			s:x(-292):halign(0):zoom(0.8):shadowlength(1):wrapwidthpixels(224):maxheight(48):maxwidth(210)
+		InitCommand=function(self)
+			self:x(-292):halign(0):zoom(0.8):shadowlength(1):wrapwidthpixels(224):maxheight(48):maxwidth(210)
+			if ThemePrefs.Get("ITG1") then
+				self:diffuse(Color.Black):wrapwidthpixels(200)
+			end
 		end;
 		SetCommand=function(self, params)
 			if params.Song then
@@ -25,8 +29,10 @@ local Scores = Def.ActorFrame{
 
 for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Name"..i; Text="Name"..i;
-		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-WideScale(230,330),240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
-	};
+		InitCommand=function(self)
+			self:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-WideScale(230,330),240) ):y(-8):zoom(0.7):diffuse( color("0.8,0.8,1,1") )
+		end
+	}
 	Scores[#Scores+1] = LoadFont("_eurostile normal")..{ Name="Score"..i; Text="Score"..i;
 		InitCommand=function(s) s:x( scale(i,1,THEME:GetMetric(Var "LoadingScreen","NumColumns"),THEME:GetMetric(Var "LoadingScreen","DifficultyStartX")-WideScale(230,330),240) ):y(10):zoom(0.7):diffuse( color("0.8,0.8,1,1") ) end;
 	};

@@ -29,7 +29,7 @@ return Def.ActorFrame{
 	Def.BitmapText{
 		Condition=PREFSMAN:GetPreference("UseUnlockSystem"),
 		Font="Common Normal",
-		OnCommand=function(s)
+		OnCommand=function(self)
 			local unlocked = 0
 			for i=1,UNLOCKMAN:GetNumUnlocks() do
 				local Code = UNLOCKMAN:GetUnlockEntry( i-1 )
@@ -38,8 +38,16 @@ return Def.ActorFrame{
 				end
 			end
 
-			s:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, 15 ) )
+			self:settext( string.format( THEME:GetString("ScreenUnlock","%d/%d unlocked"), unlocked, UNLOCKMAN:GetNumUnlocks() ) )
 			:halign(1):xy(SCREEN_RIGHT-30,SCREEN_CENTER_Y+100):zoom(0.6):diffusealpha(0.5)
+
+			-- There can be a special case where a user changes to the theme, while the unlock preference is on.
+			-- Because of how UNLOCKMAN is initialized only on startup, it can only perform the locks if the theme is
+			-- part of the loading process at startup. For this, we need to inform the user that they need to restart.
+			if UNLOCKMAN:GetNumUnlocks() == 0 then
+				self:settext("Please restart your game for unlocks to work!")
+				:wrapwidthpixels(400)
+			end
 		end;
 	};
 
