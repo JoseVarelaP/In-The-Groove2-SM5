@@ -37,13 +37,13 @@ t[#t+1] = Def.ActorFrame{
 	},
 	LoadActor("course list")..{
 		OnCommand=function(self)
-			self:xy( SCREEN_CENTER_X+180, SCREEN_CENTER_Y )
+			self:xy( SCREEN_CENTER_X+150, SCREEN_CENTER_Y )
 			:hibernate(12.5)
 		end
 	},
 	LoadActor("modifers")..{
 		OnCommand=function(self)
-			self:xy( SCREEN_CENTER_X+180, SCREEN_CENTER_Y )
+			self:xy( SCREEN_CENTER_X+120, SCREEN_CENTER_Y )
 			:hibernate(16.5)
 		end
 	},
@@ -122,4 +122,9 @@ t[#t+1] = Def.ActorFrame{
 	}
 }
 
+t[#t+1] = Def.Quad{
+	InitCommand=function(self)
+		self:FullScreen():diffusealpha(0):sleep(36.5):linear(0.5):diffusealpha(1)
+	end
+}
 return t
