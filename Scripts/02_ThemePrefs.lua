@@ -102,6 +102,12 @@ local Prefs =
 		Choices = { "ITG1", "ITG2" },
 		Values = { true, false }
 	},
+	ShowOctaneIntro =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	}	
 }
 
 ThemePrefs.InitAll(Prefs)

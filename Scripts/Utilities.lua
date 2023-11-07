@@ -250,7 +250,11 @@ end
 
 Branch.AfterTitleMenu = function() return Branch.AfterProfileLoad() end
 
-Branch.ITGDecideIntro = function()
+Branch.ITGDecideIntro = function(checkPartner)
+	if checkPartner and ThemePrefs.Get("ShowOctaneIntro") then
+		return "ScreenPublisher"
+	end
+
 	if ThemePrefs.Get("ITG1") then
 		return "ScreenITG1Intro"
 	end
