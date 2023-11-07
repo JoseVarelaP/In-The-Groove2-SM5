@@ -1,27 +1,33 @@
 function PlayerColor( pn )
-	if pn == PLAYER_1 then return color("#FBBE03") end	-- orange
-	if pn == PLAYER_2 then return color("#56FF48") end	-- green
-	return color("1,1,1,1")
+	local colors = {
+		[PLAYER_1] = color("#FBBE03"), -- orange
+		[PLAYER_2] = color("#FBBE03"), -- green
+	}
+	return colors[pn] or color("1,1,1,1")
 end
 
 function DifficultyColor( dc )
-	if dc == "Difficulty_Beginner"	then return color("#D05CF6") end
-	if dc == "Difficulty_Easy"		then return color("#09FF10") end
-	if dc == "Difficulty_Medium"	then return color("#F3F312") end
-	if dc == "Difficulty_Hard"		then return color("#EA3548") end
-	if dc == "Difficulty_Challenge"	then return color("#16AFF3") end
-	if dc == "Difficulty_Edit"		then return color("#F7F7F7") end
-	return color("1,1,1,1")
+	local colors = {
+		["Difficulty_Beginner"] = color("#D05CF6"),
+		["Difficulty_Easy"] = color("#09FF10"),
+		["Difficulty_Medium"] = color("#F3F312"),
+		["Difficulty_Hard"] = color("#EA3548"),
+		["Difficulty_Challenge"] = color("#16AFF3"),
+		["Difficulty_Edit"] = color("#F7F7F7"),
+	}
+	return colors[dc] or color("1,1,1,1")
 end
 
 -- Get a color to show text on top of difficulty frames.
 function ContrastingDifficultyColor( dc )
-	if dc == "Difficulty_Beginner"	then return color("#E2ABF5") end
-	if dc == "Difficulty_Easy"		then return color("#B2FFB5") end
-	if dc == "Difficulty_Medium"		then return color("#F2F2AA") end
-	if dc == "Difficulty_Hard"		then return color("#EBA4AB") end
-	if dc == "Difficulty_Challenge"	then return color("#AADCF2") end
-	if dc == "Difficulty_Edit"		then return color("#F7F7F7") end
-	return color("1,1,1,1")
+	local colors = {
+		["Difficulty_Beginner"] = color("#E2ABF5"),
+		["Difficulty_Easy"] = color("#B2FFB5"),
+		["Difficulty_Medium"] = color("#F2F2AA"),
+		["Difficulty_Hard"] = color("#EBA4AB"),
+		["Difficulty_Challenge"] = color("#AADCF2"),
+		["Difficulty_Edit"] = color("#F7F7F7"),
+	}
+	return colors[dc] or color("1,1,1,1")
 end
 
