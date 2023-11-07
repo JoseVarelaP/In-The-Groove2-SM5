@@ -250,6 +250,13 @@ end
 
 Branch.AfterTitleMenu = function() return Branch.AfterProfileLoad() end
 
+Branch.ITGDecideIntro = function()
+	if ThemePrefs.Get("ITG1") then
+		return "ScreenITG1Intro"
+	end
+	return "ScreenIntro"
+end
+
 -- Branch Overrides
 Branch.StartGame = function()
 	-- Check to see if there are 0 songs installed. Also make sure to check
