@@ -107,7 +107,13 @@ local Prefs =
 		Default = false,
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
-	}	
+	},
+	ToggleSurvival =
+	{
+		Default = true,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	}
 }
 
 ThemePrefs.InitAll(Prefs)

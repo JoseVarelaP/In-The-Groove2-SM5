@@ -45,14 +45,17 @@ local t = Def.ActorFrame{}
 local MenuIndex = 1
 local scroller
 
-local modes = { "dance", "rave", "nonstop", "oni" }
+local modes = { "dance", "rave", "nonstop" }
+local stringmodes = { "Dance", "Battle", "Marathon", "Oni" }
+local PadChoices = {}
 
-local PadChoices = {
-    LoadActor( THEME:GetPathG("PlayMode","choices/dance") ),
-    LoadActor( THEME:GetPathG("PlayMode","choices/rave") ),
-    LoadActor( THEME:GetPathG("PlayMode","choices/nonstop") ),
-    LoadActor( THEME:GetPathG("PlayMode","choices/oni") ),
-}
+if ThemePrefs.Get("ToggleSurvival") then
+    modes[#modes+1] = "oni"
+end
+
+for i,v in ipairs(modes) do
+    PadChoices[#PadChoices+1] = LoadActor( THEME:GetPathG("PlayMode","choices/"..v) )
+end
 
 local function CheckValueOffsets(offset)
     MenuIndex = MenuIndex + offset
@@ -227,12 +230,12 @@ t[#t+1] = Def.ActorFrame{
         Font="_eurostile normal",
         OnCommand=function(self)
             self:zoomtowidth(300):halign(0):zoom(isITG1 and 1 or 0.8):x(-160):shadowlength(3)
-            :zoomx( isITG1 and 1.1 or 1 )
+            :zoomx( isITG1 and 1.1 or 1 ):maxwidth( isITG1 and 300 or 330 )
             :skewx(-0.21)
         end,
         MenuUpAllValMessageCommand=function(self)
             self:finishtweening():cropright(1)
-            :settext( THEME:GetString("ScreenSelectPlayMode","Explanation"..modes[MenuIndex] ) )
+            :settext( THEME:GetString("ScreenSelectPlayMode","Explanation"..stringmodes[MenuIndex] ) )
             :linear(0.5):cropright(0)
         end
     }
