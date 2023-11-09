@@ -10,7 +10,6 @@ local Settings = {
 		["Miss"] = "-4.0",
 	}
 }
-
 for player in ivalues(PlayerNumber) do
 	local pn = ToEnumShortString(player)
 	local CurColor = function()
@@ -72,7 +71,7 @@ for player in ivalues(PlayerNumber) do
 		Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetPlayMode() == "PlayMode_Oni";
 		Font="Common Normal";
 		OnCommand=function(s)
-			s:xy( player == PLAYER_1 and SCREEN_CENTER_X-100 or SCREEN_CENTER_X+100, SCREEN_TOP+54 )
+			s:xy( player == PLAYER_1 and SCREEN_CENTER_X-40 or SCREEN_CENTER_X+40, SCREEN_TOP+54 )
 			:diffusealpha(0)
 		end;
 		JudgmentMessageCommand=function(s,params)
@@ -333,17 +332,18 @@ t[#t+1] = Def.ActorFrame{
 
 if GAMESTATE:IsCourseMode() then
 	t[#t+1] = Def.ActorFrame{
-			OnCommand=function(s)
-				s:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40)
-				if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then
-					s:sleep(0.2):linear(0.4):diffusealpha(0)
-				end
-			end;
-			OffCommand=function(s) s:accelerate(0.8):addy(150) end;
-			BeforeLoadingNextCourseSongMessageCommand=function(s)
-				s:finishtweening():linear(0.3):Center():zoom(1):sleep(0.5):zoom(0.25):y(SCREEN_BOTTOM-40)
-			end,
-			Def.Sprite{
+		Condition=not ThemePrefs.Get("ITG1"),
+		OnCommand=function(s)
+			s:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40)
+			if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then
+				s:sleep(0.2):linear(0.4):diffusealpha(0)
+			end
+		end;
+		OffCommand=function(s) s:accelerate(0.8):addy(150) end;
+		BeforeLoadingNextCourseSongMessageCommand=function(s)
+			s:finishtweening():linear(0.3):Center():zoom(1):sleep(0.5):zoom(0.25):y(SCREEN_BOTTOM-40)
+		end,
+		Def.Sprite{
 			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..Settings.StageNum),
 			OnCommand=function(s) s:animate(0) end;
 			BeforeLoadingNextCourseSongMessageCommand=function(s)
@@ -352,8 +352,31 @@ if GAMESTATE:IsCourseMode() then
 					s:Load( THEME:GetPathG("StageAndCourses/ScreenGameplay course","song "..Settings.StageNum) )
 				end
 			end,
-			},
-	};
+		},
+	}
+
+	t[#t+1] = Def.ActorFrame{
+		Condition=ThemePrefs.Get("ITG1"),
+		BeforeLoadingNextCourseSongMessageCommand=function(self)
+			Settings.StageNum = Settings.StageNum + 1
+			self:GetChild("StageCount"):GetChild("Number"):Load( THEME:GetPathG("","StageAndCourses/ITG1/_stage " .. Settings.StageNum) )
+		end,
+
+		LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",100} )..{
+			Condition=ThemePrefs.Get("ITG1") and not GAMESTATE:IsDemonstration();
+			OnCommand=function(self)
+				self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-40):addy(300):sleep(1.2):decelerate(0.3):addy(-300)
+			end
+		},
+
+		LoadActor( THEME:GetPathG( "","StageAndCourses/ITG1" ) )..{
+			Name="StageCount",
+			Condition=ThemePrefs.Get("ITG1") and not GAMESTATE:IsDemonstration(),
+			OnCommand=function(self)
+				self:Center():draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.22):y(SCREEN_BOTTOM-40)
+			end
+		},
+	}
 end
 
 return t;

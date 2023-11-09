@@ -264,6 +264,14 @@ t[#t+1] = Def.ActorFrame{
 	}
 }
 
+t[#t+1] = Def.Actor{
+	OffCommand=function(self)
+		if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
+			SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+		end
+	end
+}
+
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = LoadActor( THEME:GetPathG('ScreenSelectMusic','PaneDisplay'), player )..{
 		Condition=GAMESTATE:IsHumanPlayer(player),

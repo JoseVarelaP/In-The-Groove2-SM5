@@ -7,7 +7,7 @@ if not GAMESTATE:IsEventMode() then
 			s:x(0):Load( THEME:GetPathG("StageAndCourses/ITG1/_stage","final" ) )
 		end
 	end; };
-	t[#t+1] = Def.Sprite{ Texture="_stage "..StageIndexBySegment(), OnCommand=function(s)
+	t[#t+1] = Def.Sprite{ Name="Number", Texture="_stage "..StageIndexBySegment(), OnCommand=function(s)
 		s:x(184)
 		if GAMESTATE:GetCurrentStage() == "Stage_Final" then s:visible(false) end
 	end; };
