@@ -1,5 +1,34 @@
 local t = Def.ActorFrame{}
 
+if GAMESTATE:IsCourseMode() then
+	t = Def.ActorFrame{
+		Def.Sprite{ Texture=THEME:GetPathG("StageAndCourses/ITG1/_stage","all"),
+			OnCommand=function(self)
+				self:x(-44):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):linear(0.6):cropleft(0):cropright(0)
+			end
+		},
+		Def.Sprite{ Texture=THEME:GetPathG("StageAndCourses/ITG1/_stage","1"),
+			OnCommand=function(s) s:x(184):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):sleep(0.35):linear(0.3):cropleft(0):cropright(0) end; 
+		},
+
+		Def.Sprite{
+			Texture="_stage all",
+			OnCommand=function(self)
+				self:x(-44):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):linear(0.6):cropleft(1):cropright(-0.3)
+			end
+		},
+
+		Def.Sprite{
+			Texture="_stage 1",
+			OnCommand=function(self)
+				self:x(184):diffusealpha(0):sleep(0.6):diffusealpha(1):linear(0.25):zoom(1.6):diffusealpha(0)
+			end
+		}
+	}
+
+	return t
+end
+
 if not GAMESTATE:IsEventMode() then
 	if GAMESTATE:GetCurrentStage() == "Stage_Final" then
 		t[#t+1] = Def.Sprite{ Texture=THEME:GetPathG("StageAndCourses/ITG1/_stage","final"),
@@ -31,8 +60,8 @@ t[#t+1] = Def.Sprite{
 	Texture="_stage ".. StageIndexBySegment(),
 	OnCommand=function(s)
 		s:x(186):cropleft(-0.3):cropright(1):faderight(.1):fadeleft(.1):sleep(0.7):linear(0.5):cropleft(1):cropright(-0.3)
-	end;
-};
+	end
+}
 
 t[#t+1] = Def.Sprite{
 	Condition=not GAMESTATE:IsEventMode() and not GAMESTATE:GetCurrentStage() == "Stage_Final",
