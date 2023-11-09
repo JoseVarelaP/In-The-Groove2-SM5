@@ -32,72 +32,54 @@ for i,v in ipairs( STATSMAN:GetAccumPlayedStageStats():GetPlayedSongs() ) do
 	stages[#stages+1] = v
 end
 
-t[#t+1] = Def.Sprite{
-	Texture=THEME:GetPathG("Evaluation","banner frame mask"),
-	Condition=not ThemePrefs.Get("ITG1"),
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
-	OnCommand=function(self)
-		self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):decelerate(0.5):y(SCREEN_CENTER_Y-138):zoom(1.02)
-	end,
-	OffCommand=function(self)
-		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
-	end
-}
+local ni=0
 
-t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
-	Condition=ThemePrefs.Get("ITG1"),
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-38) end,
+t[#t+1] = Def.ActorFrame{
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126):zoom( ThemePrefs.Get("ITG1") and 0.9 or 1 ) end,
 	OnCommand=function(self)
-		-- self:zwrite(1):z(1):blend("BlendMode_NoEffect")
-		self:addy(-200):decelerate(0.5):addy(200)
-	end,
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end
-}
-
-local ni=0 
-t[#t+1] = Def.Banner{
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
-		self:LoadFromSong( stages[stgindex] )
-	end,
-	OnCommand=function(self)
-		self:setsize(418/2,164/2):ztest(1):y(-100):decelerate(0.5):y(SCREEN_CENTER_Y-138)
+		self:y(SCREEN_TOP-100):decelerate(0.5):y(SCREEN_CENTER_Y-( ThemePrefs.Get("ITG1") and 160 or 138))
 	end,
 	OffCommand=function(self)
 		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
 	end,
-	ChangeDisplayedFeatMessageCommand=function(self,param)
-		stgindex = param.CurrentIndex
-		ni = param.NewIndex
-		self:linear(0.1):diffusealpha(0):queuecommand("UpdateImage")
-	end,
-	UpdateImageCommand=function(self)
-		self:LoadFromSong( stages[ni] ):setsize(438/2,164/2):linear(0.5):diffusealpha(1)
-	end
-}
 
-t[#t+1] = Def.Sprite{
-	Texture=THEME:GetPathG("ScreenEvaluation banner","frame"),
-	Condition=not ThemePrefs.Get("ITG1"),
-	OnCommand=function(self)
-		self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-138)
-		:addy(-200):decelerate(0.5):addy(200)
-	end,
-	OffCommand=function(self)
-		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
-	end
-}
+	Def.Sprite{
+		Texture=THEME:GetPathG("Evaluation","banner frame mask"),
+		Condition=not ThemePrefs.Get("ITG1"),
+		OnCommand=function(self)
+			self:zwrite(1):z(1):blend("BlendMode_NoEffect"):zoom(1.02)
+		end
+	},
 
-t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
-	Condition=ThemePrefs.Get("ITG1"),
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-138) end,
-	OnCommand=function(self)
-		self:addy(-200):decelerate(0.5):addy(200)
-	end,
-	OffCommand=function(self)
-		self:accelerate(0.3):addy(-SCREEN_CENTER_X)
-	end
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
+		Condition=ThemePrefs.Get("ITG1"),
+	},
+
+	Def.Banner{
+		InitCommand=function(self)
+			self:LoadFromSong( stages[stgindex] )
+		end,
+		OnCommand=function(self)
+			self:scaletoclipped(ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1)
+		end,
+		ChangeDisplayedFeatMessageCommand=function(self,param)
+			stgindex = param.CurrentIndex
+			ni = param.NewIndex
+			self:linear(0.1):diffusealpha(0):queuecommand("UpdateImage")
+		end,
+		UpdateImageCommand=function(self)
+			self:LoadFromSong( stages[ni] ):scaletoclipped(ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):linear(0.5):diffusealpha(1)
+		end
+	},
+
+	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenEvaluation banner","frame"),
+		Condition=not ThemePrefs.Get("ITG1")
+	},
+
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
+		Condition=ThemePrefs.Get("ITG1"),
+	}
 }
 
 local function side(pn)
@@ -174,7 +156,17 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		end,
 		OffCommand=function(self) self:accelerate(0.5):addx( pn == PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH ) end,
 		
-		Def.Sprite{ Texture=THEME:GetPathG("NameEntry","Items/BGA score frame") },
+		Def.Sprite{
+			Texture=THEME:GetPathG("NameEntry","Items/BGA score frame"),
+			Condition=not ThemePrefs.Get("ITG1")
+		},
+
+		LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",182} )..{
+			Condition=ThemePrefs.Get("ITG1"),
+			InitCommand=function(self)
+				self:zoom(0.8)
+			end
+		},
 
 		Def.BitmapText{
 			Font="_futurist metal",
@@ -204,7 +196,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		self:stoptweening():linear(0.2):diffusealpha(0.4):linear(0.2):diffusealpha(1)
 	end,
 		Def.Sprite{
-			Texture=THEME:GetPathG('','_difficulty icons'),
+			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end,
@@ -213,24 +205,34 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=function(self)
+				if ThemePrefs.Get("ITG1") then
+					self:diffuse(Color.Black)
+				end
 				self:zoom(0.5):x( -38*side(pn) )
 				:halign( pnum(pn)-1 ):playcommand("Update")
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
 				local stats = STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( THEME:GetString("Difficulty",ToEnumShortString(stats[1]:GetDifficulty()) ) )
-				:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
+				if not ThemePrefs.Get("ITG1") then
+					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
+				end
 			end
 		},	
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=function(self)
+				if ThemePrefs.Get("ITG1") then
+					self:diffuse(Color.Black)
+				end
 				self:zoom(0.5):x(36*side(pn)):horizalign(pn == PLAYER_1 and right or left):playcommand("Update")
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
 				local stats = STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( stats[1]:GetMeter() )
-				:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
+				if not ThemePrefs.Get("ITG1") then
+					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
+				end
 			end
 		}
 	}

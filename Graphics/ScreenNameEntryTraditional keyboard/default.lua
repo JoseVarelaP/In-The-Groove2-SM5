@@ -112,10 +112,13 @@ local t = Def.ActorFrame{
 	end,
 
 	LoadActor("name frame")..{
-		OnCommand=function(s)
-			s:y( -18 )
-		end;
-	};
+		Condition=not ThemePrefs.Get("ITG1"),
+		OnCommand=function(self) self:y( -18 ) end
+	},
+
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",194} )..{
+		Condition=ThemePrefs.Get("ITG1")
+	},
 
 	-- scroller
 	Def.ActorScroller{

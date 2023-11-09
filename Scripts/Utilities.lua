@@ -225,6 +225,10 @@ Branch.AfterProfileLoad = function()
 end
 
 Branch.GameOverOrContinue = function()
+	if STATSMAN:GetBestFinalGrade() == "Grade_Failed" then
+		return "ScreenEnding"	
+	end
+
 	if GAMESTATE:Env()["ForceGoodEnding"] == "1" or tonumber( string.sub(ToEnumShortString(STATSMAN:GetBestFinalGrade() ), 5) ) <= 4 then return "ScreenEndingGood" end
 	return "ScreenEnding"
 end
@@ -316,7 +320,6 @@ Branch.AfterEvaluation = function()
 		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
 		local stagesLeft = GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer()
 		local allFailed = STATSMAN:GetCurStageStats():AllFailed()
-		local song = GAMESTATE:GetCurrentSong()
 
 		if GAMESTATE:IsEventMode() or stagesLeft >= 1 then
 			return "ScreenProfileSave"

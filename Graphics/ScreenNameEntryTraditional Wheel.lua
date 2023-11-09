@@ -97,10 +97,9 @@ local curFeatNumber = {
 return Def.ActorFrame{
 	InitCommand=cmd(fov,45),
 
-	Def.Sprite{
-		Texture=THEME:GetPathG("NameEntry","Items/BGA list frame"),
-		OnCommand=function(s)
-			s:y(20):queuecommand("DoChange")
+	Def.Actor{
+		OnCommand=function(self)
+			self:queuecommand("DoChange")
 		end;
 		-- only run the feat update in non-course modes
 		RunFeatCommand=function(self)
@@ -121,7 +120,22 @@ return Def.ActorFrame{
 			MESSAGEMAN:Broadcast("SongIndexChanged")
 			self:queuecommand("RunFeat")
 		end,
-	};
+	},
+
+	Def.Sprite{
+		Condition=not ThemePrefs.Get("ITG1"),
+		Texture=THEME:GetPathG("NameEntry","Items/BGA list frame"),
+		OnCommand=function(self)
+			self:y(20)
+		end
+	},
+
+	LoadActor( THEME:GetPathB("","_frame 3x3"), {"scores",246,74} )..{
+		Condition=ThemePrefs.Get("ITG1"),
+		InitCommand=function(self)
+			self:y(10)
+		end
+	},
 
 	Def.ActorScroller{
 		SecondsPerItem=0.2,

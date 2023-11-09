@@ -38,7 +38,7 @@ for i,v in ipairs(items) do
 		};
 
 		Def.Sprite{
-			Texture="streak",
+			Texture=ThemePrefs.Get("ITG1") and THEME:GetPathG("ITG1/_ending good","streak") or "streak",
 			OnCommand=function(s)
 				s:zoomtowidth(SCREEN_WIDTH):zoomy(0.5):cropleft(1):linear(1):cropleft(0):zoomy(2.5):linear(3):zoomy(2.2):linear(0.7):cropright(1):zoomy(1.5)
 			end;
