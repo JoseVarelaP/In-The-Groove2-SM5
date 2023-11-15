@@ -83,6 +83,15 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.BitmapText{
 		Font="_eurostile normal",
+		Condition=PREFSMAN:GetPreference("CustomSongsEnable") and not isDedicab,
+		Text="Custom Songs Enabled",
+		OnCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-35):zoom(0.5):shadowlength(2):diffusealpha(0.8)
+		end;
+	},
+
+	Def.BitmapText{
+		Font="_eurostile normal",
 		Text="&xa9; 2005 Roxor Games, Inc.",
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):diffusealpha(0.8)
@@ -93,7 +102,7 @@ t[#t+1] = Def.ActorFrame{
 		Font="_eurostile normal",
 		Text=("r%d"):format(ThemePrefs.Get("BuildVersionVisual") or 5),
 		OnCommand=function(self)
-			self:xy(SCREEN_CENTER_X+94,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):horizalign(left):diffusealpha(0.8)
+			self:xy(SCREEN_CENTER_X+90,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):horizalign(left):diffusealpha(0.8)
 		end;
 	},
 
