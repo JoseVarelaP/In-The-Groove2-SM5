@@ -20,6 +20,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 
 	Def.Sprite{
+		Condition=isDedicab,
 		Texture="andamiro",
 		OnCommand=function(self)
 			self:xy(SCREEN_LEFT+230,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
