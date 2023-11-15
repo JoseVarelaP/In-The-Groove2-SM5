@@ -2,8 +2,13 @@ local style = ThemePrefs.Get("ITG1") and "_flare" or "flare"
 local num = ThemePrefs.Get("ITG1") and "" or " 2"
 local isDedicab = ThemePrefs.Get("DedicabToggle") or false
 return Def.ActorFrame{
+	CodeMessageCommand=function(self,param)
+		if param.Name == "GoodEnding" and not GAMESTATE:Env()['ForceGoodEnding'] then
+			GAMESTATE:Env()['ForceGoodEnding'] = "1"
+			SOUND:PlayOnce( THEME:GetPathS("ScreenTitleMenu","ForceGoodEnding") )
+		end
+	end,
 	LoadActor("../ScreenLogo background"),
-
 
 	Def.Sprite{
 		Texture="frame",

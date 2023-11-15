@@ -226,7 +226,7 @@ end
 
 Branch.GameOverOrContinue = function()
 	if STATSMAN:GetBestFinalGrade() == "Grade_Failed" then
-		return "ScreenEnding"	
+		return "ScreenEnding"
 	end
 
 	if GAMESTATE:Env()["ForceGoodEnding"] == "1" or tonumber( string.sub(ToEnumShortString(STATSMAN:GetBestFinalGrade() ), 5) ) <= 4 then return "ScreenEndingGood" end
