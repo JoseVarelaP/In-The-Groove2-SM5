@@ -113,7 +113,19 @@ local Prefs =
 		Default = true,
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
-	}
+	},
+	DedicabToggle =
+	{
+		Default = false,
+		Choices = { OptionNameString("On"), OptionNameString("Off") },
+		Values = { true, false }
+	},
+	BuildVersionVisual =
+	{
+		Default = 5,
+		Choices = { "2","5","8","16","21","23" },
+		Values = { 2,5,8,16,21,23 }
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

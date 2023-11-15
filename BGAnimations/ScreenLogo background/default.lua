@@ -1,5 +1,7 @@
 local t = Def.ActorFrame{}
 
+local isDedicab = ThemePrefs.Get("DedicabToggle") or false
+
 t[#t+1] = Def.ActorFrame{
 	Condition=not ThemePrefs.Get("ITG1"),
 	Def.Sprite{
@@ -14,6 +16,13 @@ t[#t+1] = Def.ActorFrame{
 		Texture="roxor",
 		OnCommand=function(self)
 			self:xy(SCREEN_LEFT+90,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
+		end;
+	},
+
+	Def.Sprite{
+		Texture="andamiro",
+		OnCommand=function(self)
+			self:xy(SCREEN_LEFT+230,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
 		end;
 	},
 
@@ -52,33 +61,39 @@ t[#t+1] = Def.ActorFrame{
 						self:xy(176,-24):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1):diffuse(color("#000000"))
 					end;
 				},
+
+				Def.Sprite{
+					Texture="pump",
+					Condition=isDedicab,
+					OnCommand=function(self)
+						self:xy(146,-110):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
+					end;
+				},
 		},
 
 	Def.BitmapText{
-	Font="_eurostile normal",
-	Condition="SelectButtonAvailable()",
-	Text="&xa9; 2005 Andamiro Co., Ltd.",
-	OnCommand=function(self)
-		self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-31):zoom(0.5):shadowlength(2):diffusealpha(0.8)
-	end;
+		Font="_eurostile normal",
+		Condition=isDedicab,
+		Text="&xa9; 2005 Andamiro Co., Ltd.",
+		OnCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-31):zoom(0.5):shadowlength(2):diffusealpha(0.8)
+		end;
 	},
 
 	Def.BitmapText{
-	Font="_eurostile normal",
-	Condition="SelectButtonAvailable()",
-	Text="&xa9; 2005 Roxor Games, Inc.",
-	OnCommand=function(self)
-		self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):diffusealpha(0.8)
-	end;
+		Font="_eurostile normal",
+		Text="&xa9; 2005 Roxor Games, Inc.",
+		OnCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):diffusealpha(0.8)
+		end;
 	},
 
 	Def.BitmapText{
-	Font="_eurostile normal",
-	Condition="SelectButtonAvailable()",
-	Text="r5",
-	OnCommand=function(self)
-		self:xy(SCREEN_CENTER_X+94,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):horizalign(left):diffusealpha(0.8)
-	end;
+		Font="_eurostile normal",
+		Text=("r%d"):format(ThemePrefs.Get("BuildVersionVisual") or 5),
+		OnCommand=function(self)
+			self:xy(SCREEN_CENTER_X+94,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):horizalign(left):diffusealpha(0.8)
+		end;
 	},
 
 	Def.Quad{

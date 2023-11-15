@@ -27,6 +27,7 @@ local ITGThemeCredits = {
 	{0},
 	{2,THEME:GetString("Credits","SpecialThanks")},
 	{3,"UKSRT Discord"},
+	{3,"Assimileafy"},
 	{0},
 }
 

@@ -1,5 +1,6 @@
 local style = ThemePrefs.Get("ITG1") and "_flare" or "flare"
 local num = ThemePrefs.Get("ITG1") and "" or " 2"
+local isDedicab = ThemePrefs.Get("DedicabToggle") or false
 return Def.ActorFrame{
 	LoadActor("../ScreenLogo background"),
 
@@ -103,9 +104,17 @@ return Def.ActorFrame{
 	};
 
 	Def.Sprite{
-		Texture="../ScreenLogo background/roxor",
+		Texture=THEME:GetPathB("ScreenLogo","background/roxor"),
 		OnCommand=function(self)
 			self:xy(SCREEN_LEFT+90,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
 		end;
 	};
+
+	Def.Sprite{
+		Condition=isDedicab,
+		Texture=THEME:GetPathB("ScreenLogo","background/andamiro"),
+		OnCommand=function(self)
+			self:xy(SCREEN_LEFT+230,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
+		end;
+	},
 }

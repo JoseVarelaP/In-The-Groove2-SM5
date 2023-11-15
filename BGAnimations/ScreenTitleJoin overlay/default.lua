@@ -1,7 +1,7 @@
 return Def.ActorFrame{
 	Def.BitmapText{
 	Font="_tutorial",
-	Condition=GAMESTATE:GetCoinMode()~="CoinMode_Free" and GAMESTATE:GetPremium()==PREMIUM_JOINT;
+	Condition=GAMESTATE:GetCoinMode()~="CoinMode_Free" and GAMESTATE:GetPremium()=="Premium_2PlayersFor1Credit";
 	Text="Play 2 PLAYER style for 1 Credit!",
 	OnCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-140):zoom(0.6):diffusetopedge(0.5,0.5,0.5,1):shadowlength(4):glowshift()
@@ -9,7 +9,7 @@ return Def.ActorFrame{
 	},
 
 	Def.BitmapText{
-	Condition=GAMESTATE:GetCoinMode()~="CoinMode_Free" and GAMESTATE:GetPremium()==PREMIUM_DOUBLE;
+	Condition=GAMESTATE:GetCoinMode()~="CoinMode_Free" and GAMESTATE:GetPremium()=="Premium_DoubleFor1Credit";
 	Font="_tutorial",
 	Text="Play DOUBLE pad style for 1 Credit!",
 	OnCommand=function(self)
