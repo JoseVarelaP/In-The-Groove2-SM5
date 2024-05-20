@@ -36,9 +36,12 @@ local ITGCredits_Table = {
 	-- 1 is Header.
 	-- 2 is Subheader.
 	-- 3 is Normal text.
+	-- 4 is an Image
 	{0},
 	{0},
 	{0},
+	{0},
+	{4,THEME:GetPathB("ScreenLogo","background/roxor.png")},
 	{0},
 	{1,"IN THE GROOVE TEAM"},
 	{0},
@@ -101,6 +104,11 @@ local ITGCredits_Table = {
 	{3,"Koley Porter"},
 	{3,"Audrey Maker"},
 	{3,"Andrew Locko"},
+	{0},
+	{0},
+	{0},
+	{4,THEME:GetPathB("ScreenPublisher","overlay/redoctane.png"),0.5},
+	{0},
 	{0},
 	{1,"RED OCTANE SOFTWARE"},
 	{3,"John Tam"},
@@ -175,14 +183,31 @@ if ThemePrefs.Get("ShowThemeCredits") then
 	end
 end
 for i=1,table.getn(ITGCredits_Table) do
-	af[#af+1] = Def.ActorFrame{  Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile outline",
-	InitCommand=function(self)
-		self:zoom(0.7):ztest(1)
-			if ITGCredits_Table[i][1] == 1 then self:diffuse( color("#D57676") ) end
-			if ITGCredits_Table[i][1] == 2 then self:diffuse( color("#76B1D5") ):zoom(0.6) end
-		end
-	},
-}
+	if ITGCredits_Table[i][1] ~= 4 then
+		af[#af+1] = Def.ActorFrame{
+			Def.BitmapText{ Text=ITGCredits_Table[i][2] or "", Font="_eurostile outline",
+			InitCommand=function(self)
+				self:zoom(0.7):ztest(1)
+					if ITGCredits_Table[i][1] == 1 then self:diffuse( color("#D57676") ) end
+					if ITGCredits_Table[i][1] == 2 then self:diffuse( color("#76B1D5") ):zoom(0.6) end
+				end
+			}
+		}
+	end
+
+	if ITGCredits_Table[i][1] == 4 then
+		af[#af+1] = Def.ActorFrame{
+			OnCommand=function (self)
+				self:zoom(0)
+			end,
+			Def.Sprite{
+				Texture=ITGCredits_Table[i][2],
+				OnCommand=function (self)
+					self:ztest(1):zoom( ITGCredits_Table[i][3] or 1 )
+				end
+			}
+		}
+	end
 end
 
 return af

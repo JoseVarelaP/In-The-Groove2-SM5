@@ -1,4 +1,9 @@
 local t = Def.ActorFrame{}
+
+if not GAMESTATE:GetCurrentStyle(GAMESTATE:GetMasterPlayerNumber()) then
+	return t
+end
+
 local reverseindex = ...
 if not GAMESTATE:IsEventMode() then
 	if GAMESTATE:GetCurrentStage() == "Stage_Final" then

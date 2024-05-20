@@ -3,7 +3,7 @@ local LegalText = LoadModule("Legal.lua")()
 return Def.ActorFrame{
 	LoadActor("_scrolling ITG credits",false)..{
 		OnCommand=function(self)
-			self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH):sleep( ThemePrefs.Get("ShowThemeCredits") and 42 or 35 )
+			self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH):sleep( ThemePrefs.Get("ShowThemeCredits") and 44 or 37 )
 			:accelerate(0.3):addx(SCREEN_WIDTH)
 		end,
 		OffCommand=function(self)
@@ -31,7 +31,7 @@ return Def.ActorFrame{
 					end
 				end
 			)
-			self:hibernate( ThemePrefs.Get("ShowThemeCredits") and 37 or 31)
+			self:hibernate( ThemePrefs.Get("ShowThemeCredits") and 39 or 32)
 		end,
 		OnCommand=function(self)
 			self:scrollwithpadding(6,9)

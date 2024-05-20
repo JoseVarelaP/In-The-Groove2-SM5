@@ -15,7 +15,10 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
 		Texture="vol3-14-ntsc.mpg",
 		InitCommand=function(self)
-			self:scale_or_crop_background()
+			--self:scale_or_crop_background()
+			local xscale= SCREEN_WIDTH / self:GetWidth()
+			local yscale= SCREEN_HEIGHT / self:GetHeight()
+			self:zoom(math.max(xscale, yscale)):Center()
 		end
 	},
 
