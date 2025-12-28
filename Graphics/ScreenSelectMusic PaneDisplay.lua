@@ -72,6 +72,8 @@ local t = Def.ActorFrame{
 
 local levelcolors = { color("#FFFFFF"), color("#00FF00"), color("#FFDD23"), color("#DB6073") }
 
+local scoreCache = {}
+
 if GAMESTATE:IsPlayerEnabled(args) then
 	local StepsOrCourse = function() return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(args) or GAMESTATE:GetCurrentSteps(args) end
 	local ObtainData = {
@@ -93,10 +95,57 @@ if GAMESTATE:IsPlayerEnabled(args) then
 		},
 		DiffPlacement = args == PLAYER_1 and 102 or -102
 	}
+
+	t[#t+1] = Def.Actor{
+		["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(self)
+			if GAMESTATE:GetCurrentSteps(args) then
+				if NETMAN and NETMAN:IsConnectionEstablished() then
+					-- Invalidate the card info to leave way for the online score,
+					-- If that's not available, then we can restore back to the local high score.
+					local key = GAMESTATE:GetCurrentSteps(args):GetChartKey()
+					if scoreCache[key] then
+						SCREENMAN:SystemMessage("Using cache for ".. key)
+						if scoreCache[key].username then
+							SCREENMAN:SystemMessage("Using cache for ".. key .. " - " .. scoreCache[key].username)
+							self:GetParent():GetChild("Card"):settext( scoreCache[key].username )
+							self:GetParent():GetChild("CardValue"):settext( FormatPercentScore(scoreCache[key].score) )
+						end
+						return
+					end
+
+					NETMAN:FuncHighScoresForChart({
+						ChartKey = key,
+						Timing = "original",
+						Rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(),
+						PlayerNumber = args,
+						OnResponse = function (data)
+							-- scoresActorFrame:GetChild("LoadIcon"):visible(false)
+							local scoredata = data.response.scores
+							if not scoredata or #scoredata == 0 then
+								scoreCache[key] = {}
+								self:GetParent():GetChild("Card"):settext( "N/A" )
+								self:GetParent():GetChild("CardValue"):settext( PercentScore(args,true)[1] )
+								return
+							end
+
+							if key == data.response.metadata.chart_key then
+								scoreCache[key] = scoredata[1]
+							end
+
+							self:GetParent():GetChild("Card"):settext( scoredata[1].username )
+							self:GetParent():GetChild("CardValue"):settext( FormatPercentScore(scoredata[1].score) )
+						end
+					})
+				end
+			end
+		end;
+	}
+
 	for ind,content in ipairs(ObtainData) do
 		for vind,val in ipairs( ObtainData[ind] ) do
 			t[#t+1] = Def.BitmapText{
 				Font="_eurostile normal",
+				Name=type(val[1]) == "function" and "Local" or val[1],
 				Text=val[1],
 				InitCommand=function(self)
 					self:zoom(0.5):xy(
@@ -105,7 +154,11 @@ if GAMESTATE:IsPlayerEnabled(args) then
 				end;
 				["CurrentSteps"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
 					if GAMESTATE:GetCurrentSteps(args) then
-						if val[1] and type(val[1]) == "function" then s:settext( val[1]() ) else s:settext(THEME:GetString("PaneDisplay",val[1])) end
+						if val[1] and type(val[1]) == "function" then
+							s:settext( val[1]() )
+						else
+							s:settext(THEME:GetString("PaneDisplay",val[1]))
+						end
 					end
 				end;
 				["CurrentTrail"..ToEnumShortString(args).."ChangedMessageCommand"]=function(s)
@@ -116,6 +169,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 			};
 			t[#t+1] = Def.BitmapText{
 				Font="_eurostile normal",
+				Name=(type(val[1]) == "function" and "Local" or val[1]).."Value",
 				Text=val[2],
 				InitCommand=function(self)
 					self:zoom(0.5):xy(
@@ -157,7 +211,7 @@ if GAMESTATE:IsPlayerEnabled(args) then
 							end
 						end
 					end
-				end;
+				end,
 			};
 		end
 	end

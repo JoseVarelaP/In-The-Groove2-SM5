@@ -35,6 +35,7 @@ return Def.ActorFrame{
 	Def.BitmapText{
 		Condition=PREFSMAN:GetPreference("UseUnlockSystem"),
 		Font="Common Normal",
+		Name="UnlockSystem",
 		OnCommand=function(self)
 			local unlocked = 0
 			for i=1,UNLOCKMAN:GetNumUnlocks() do
@@ -56,6 +57,44 @@ return Def.ActorFrame{
 			end
 		end;
 	};
+
+	Def.ActorFrame{
+		Condition=NETMAN,
+		InitCommand=function (self)
+			self:xy(SCREEN_RIGHT-30,SCREEN_CENTER_Y-130)
+		end,
+		OnCommand=function (self)
+			if self:GetParent():GetChild("UnlockSystem") then
+				-- self:y( self:GetParent():GetChild("UnlockSystem"):GetY() - 30 )
+			end
+
+			local state = NETMAN:IsConnectionEstablished()
+			self:GetChild("Text"):settext( state and "OutFox.online OK" or "Not Connected" )
+
+			local textWidth = self:GetChild("Text"):GetZoomedWidth()
+			self:GetChild("Frame"):GetChild("")[3]:x(0)
+			self:GetChild("Frame"):GetChild("")[2]:x(-textWidth*.5)
+			:zoomtowidth( textWidth )
+			self:GetChild("Frame"):GetChild("")[1]:x(-textWidth)
+
+			self:addx(SCREEN_WIDTH):decelerate(0.5):addx(-SCREEN_WIDTH)
+		end,
+
+		LoadActor("../_frame 3x1", {"product bar",120})..{
+			Name="Frame",
+			OnCommand=function(s)
+				s:diffuse(color("#3DA1FF"))
+			end
+		},
+
+		Def.BitmapText{
+			Font="Common Normal",
+			Name="Text",
+			InitCommand=function (self)
+				self:halign(1):zoom(0.6)
+			end,
+		}
+	},
 
 	Def.HelpDisplay {
 		File="_eurostile normal",
