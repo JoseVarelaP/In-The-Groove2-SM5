@@ -200,7 +200,11 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end,
-			UpdateCommand=function(self,parent) self:setstate( SetFrameDifficulty(pn,true) ) end,
+			ChangeDisplayedFeatMessageCommand=function(self,param)
+				local stats = STATSMAN:GetPlayedStageStats( param.CurrentIndex ):GetPlayerStageStats(pn):GetPlayedSteps()
+
+				self:setstate( SetFrameDifficulty(pn,true,stats[1]:GetDifficulty()) )
+			end,
 		},	
 		Def.BitmapText{
 			Font="Common Normal",
@@ -212,7 +216,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				:halign( pnum(pn)-1 ):playcommand("Update")
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
-				local stats = STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPlayedSteps()
+				local stats = STATSMAN:GetPlayedStageStats( param.CurrentIndex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( THEME:GetString("Difficulty",ToEnumShortString(stats[1]:GetDifficulty()) ) )
 				if not ThemePrefs.Get("ITG1") then
 					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
@@ -228,7 +232,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 				self:zoom(0.5):x(36*side(pn)):horizalign(pn == PLAYER_1 and right or left):playcommand("Update")
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
-				local stats = STATSMAN:GetPlayedStageStats( stgindex ):GetPlayerStageStats(pn):GetPlayedSteps()
+				local stats = STATSMAN:GetPlayedStageStats( param.CurrentIndex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( stats[1]:GetMeter() )
 				if not ThemePrefs.Get("ITG1") then
 					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
