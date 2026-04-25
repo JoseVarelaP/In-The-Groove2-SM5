@@ -172,13 +172,11 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			Font="_futurist metal",
 			OnCommand=function(self)
 				self:diffuse(PlayerColor(pn))
-				if STATSMAN:GetPlayedStageStats( ni ) and STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
-					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
-				end
 			end,
 			ChangeDisplayedFeatMessageCommand=function(self,param)
-				if STATSMAN:GetPlayedStageStats( ni ) and STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn) then
-					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( ni ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
+				local stagesAgo = (STATSMAN:GetStagesPlayed() - (param.NewIndex-1))
+				if STATSMAN:GetPlayedStageStats( stagesAgo ) and STATSMAN:GetPlayedStageStats( stagesAgo ):GetPlayerStageStats(pn) then
+					self:settext( string.format( "%.2f%%", STATSMAN:GetPlayedStageStats( stagesAgo ):GetPlayerStageStats(pn):GetPercentDancePoints()*100 ) )
 				end
 			end
 		}

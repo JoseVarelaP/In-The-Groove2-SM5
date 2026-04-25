@@ -27,7 +27,6 @@ local function Unlock(name)
     if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
         -- if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
             local isChartUnlock = UNLOCKMAN:GetUnlockEntry(unlockid-1):GetUnlockRewardType() == 1
-            lua.ReportScriptError(isChartUnlock)
             local SongToFind = isChartUnlock and codes[Series][codenumber][1] or codes[Series][codenumber]
             UNLOCKMAN:UnlockEntryIndex( unlockid-1 )
             if not isChartUnlock then
