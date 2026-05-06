@@ -21,7 +21,7 @@ local function Unlock(name)
 			{{12,"Vertex^2"}, 20, 21}, -- Left,Down,Right,Right,Right,Down,Left,Up,Up,Down,Right
             
             -- Wanna Do, Robotix / Expert
-			{{13,"Wanna Do", 22}}, -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
+			{{13,"Wanna Do"}, 22}, -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
             
             -- ! / Expert, Know Your Enemy, Why Me / Expert
 			{16, 14, 17}, -- Right,Left,Down,Down,Down,Up,Left,Down,Left,Left,Right
