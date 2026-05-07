@@ -12,9 +12,6 @@ local Settings = {
 }
 for player in ivalues(PlayerNumber) do
 	local pn = ToEnumShortString(player)
-	local CurColor = function()
-		return player == PLAYER_1 and color("#FBBE03") or color("#56FF48")
-	end
 	t[#t+1] = Def.Actor{
 		OnCommand=function()
 			if SCREENMAN:GetTopScreen() then
@@ -44,7 +41,7 @@ for player in ivalues(PlayerNumber) do
 		OnCommand=function(self)
 			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-150 or SCREEN_CENTER_X+150, SCREEN_TOP+56 )
 			:visible( Settings.CurrentScreen ~= "ScreenGameplaySyncMachine" )
-			:diffuse( CurColor() ):addy(-100):sleep(0.5)
+			:diffuse( PlayerColor(player) ):addy(-100):sleep(0.5)
 			:decelerate(0.8):addy(100)
 			if ThemePrefs.Get("CompareScores") and GAMESTATE:GetNumPlayersEnabled() == 2 then
 				self:pulse():effectclock("bgm"):effectmagnitude(1.05,0.95,0):effectperiod(1)
@@ -96,7 +93,7 @@ for player in ivalues(PlayerNumber) do
 			InitCommand=function(s)
 				s:Load("RollingNumbersWorkout"):targetnumber(STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player):GetCaloriesBurned())
 			end;
-			OnCommand=function(s) s:diffuse( CurColor() ) end;
+			OnCommand=function(s) s:diffuse( PlayerColor(player) ) end;
 			StepMessageCommand=function(s) s:queuecommand("Set") end;
 			SetCommand = function (s)
 				local stats = {STATSMAN:GetAccumPlayedStageStats(player), STATSMAN:GetCurStageStats(player)}
@@ -116,7 +113,7 @@ for player in ivalues(PlayerNumber) do
 		OffCommand=function(s) s:sleep(1):accelerate(0.8):addy(100) end;
 		Def.BitmapText{
 			Font="_futurist metalic",
-			OnCommand=function(s) s:diffuse( CurColor() ):queuecommand("UpdateTime") end;
+			OnCommand=function(s) s:diffuse( PlayerColor(player) ):queuecommand("UpdateTime") end;
 			UpdateTimeCommand=function(s)
 				local stats = {
 					STATSMAN:GetAccumPlayedStageStats(player):GetPlayerStageStats(player),
