@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "_" or ""
+local style = IsITG1Mode() and "_" or ""
 local t = Def.ActorFrame{}
 t[#t+1] = Def.Sprite{ Texture=style.."shared-frame" };
 t[#t+1] = Def.BitmapText{

@@ -18,7 +18,7 @@ if not GAMESTATE:IsCourseMode() then
 		end;
 	};
 	t[#t+1] = Def.ActorFrame{
-			Condition=not ThemePrefs.Get("ITG1"),
+			Condition=not IsITG1Mode(),
 			Def.Sprite{
 				Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay","stage ".. ToEnumShortString(GAMESTATE:GetCurrentStage())),
 				OnCommand=function(self)
@@ -37,7 +37,7 @@ end
 
 if GAMESTATE:IsCourseMode() then
 	t[#t+1] = Def.ActorFrame{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		Def.Sprite{
 			Texture=THEME:GetPathG("StageAndCourses/ScreenGameplay course song","1" ),
 			OnCommand=function(self)
@@ -55,7 +55,7 @@ if GAMESTATE:IsCourseMode() then
 end
 
 t[#t+1] = LoadActor( "ITG1" )..{
-	Condition=ThemePrefs.Get("ITG1"),
+	Condition=IsITG1Mode(),
 	OnCommand=function(self)
 		self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y)
 	end;

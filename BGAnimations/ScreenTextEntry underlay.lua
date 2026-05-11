@@ -11,7 +11,7 @@ return Def.ActorFrame{
 	LoadActor("_frame 3x1",{"text entry question",SCREEN_WIDTH})..{
 		OnCommand=function(self)
 			self:CenterX():y(SCREEN_CENTER_Y-100)
-			:diffuse( ThemePrefs.Get("ITG1") and color("#0099FF") or color("#EE3333"))
+			:diffuse( IsITG1Mode() and color("#0099FF") or color("#EE3333"))
 		end
 	}
 }

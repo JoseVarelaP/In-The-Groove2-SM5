@@ -5,7 +5,7 @@ return Def.ActorFrame{
         end,
         OffCommand=function(self)
             self:linear(1.5):diffusealpha(1)
-            SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+            SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 			or THEME:GetPathS("_ITGCommon","start") )
         end
     },

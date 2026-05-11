@@ -112,12 +112,12 @@ local t = Def.ActorFrame{
 	end,
 
 	LoadActor("name frame")..{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		OnCommand=function(self) self:y( -18 ) end
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",194} )..{
-		Condition=ThemePrefs.Get("ITG1")
+		Condition=IsITG1Mode()
 	},
 
 	-- scroller

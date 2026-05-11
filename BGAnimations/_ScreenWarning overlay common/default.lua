@@ -1,6 +1,6 @@
-local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local style = IsITG1Mode() and "ITG1/" or ""
 return Def.ActorFrame{
-	LoadActor(ThemePrefs.Get("ITG1") and "ITG1/streak" or "../_red streak")..{
+	LoadActor(IsITG1Mode() and "ITG1/streak" or "../_red streak")..{
 		OnCommand=function(self)
 			self:zoom(0.5):x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y-80):fadeleft(0.3):faderight(0.3):cropleft(1.3):cropright(-0.3):linear(1):cropleft(-0.3):zoom(2.5):linear(9):zoom(1.2)
 		end;

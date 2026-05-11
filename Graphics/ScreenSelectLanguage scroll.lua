@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
+local style = IsITG1Mode() and "small blue" or "small red"
 local LangName = Var("GameCommand"):GetName()
 return Def.ActorFrame{
     LoadActor( THEME:GetPathB("","_frame 3x1") , {style,320}),

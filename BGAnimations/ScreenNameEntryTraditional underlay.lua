@@ -35,9 +35,9 @@ end
 local ni=0
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126):zoom( ThemePrefs.Get("ITG1") and 0.9 or 1 ) end,
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126):zoom( IsITG1Mode() and 0.9 or 1 ) end,
 	OnCommand=function(self)
-		self:y(SCREEN_TOP-100):decelerate(0.5):y(SCREEN_CENTER_Y-( ThemePrefs.Get("ITG1") and 160 or 138))
+		self:y(SCREEN_TOP-100):decelerate(0.5):y(SCREEN_CENTER_Y-( IsITG1Mode() and 160 or 138))
 	end,
 	OffCommand=function(self)
 		self:accelerate(0.5):addy(-SCREEN_CENTER_X)
@@ -45,14 +45,14 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.Sprite{
 		Texture=THEME:GetPathG("Evaluation","banner frame mask"),
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		OnCommand=function(self)
 			self:zwrite(1):z(1):blend("BlendMode_NoEffect"):zoom(1.02)
 		end
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 	},
 
 	Def.Banner{
@@ -60,7 +60,7 @@ t[#t+1] = Def.ActorFrame{
 			self:LoadFromSong( stages[stgindex] )
 		end,
 		OnCommand=function(self)
-			self:scaletoclipped(ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1)
+			self:scaletoclipped(IsITG1Mode() and 418/1.6 or 418/2,164/2):ztest(1)
 		end,
 		ChangeDisplayedFeatMessageCommand=function(self,param)
 			stgindex = param.CurrentIndex
@@ -68,17 +68,17 @@ t[#t+1] = Def.ActorFrame{
 			self:linear(0.1):diffusealpha(0):queuecommand("UpdateImage")
 		end,
 		UpdateImageCommand=function(self)
-			self:LoadFromSong( stages[ni] ):scaletoclipped(ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):linear(0.5):diffusealpha(1)
+			self:LoadFromSong( stages[ni] ):scaletoclipped(IsITG1Mode() and 418/1.6 or 418/2,164/2):linear(0.5):diffusealpha(1)
 		end
 	},
 
 	Def.Sprite{
 		Texture=THEME:GetPathG("ScreenEvaluation banner","frame"),
-		Condition=not ThemePrefs.Get("ITG1")
+		Condition=not IsITG1Mode()
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 	}
 }
 
@@ -158,11 +158,11 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		
 		Def.Sprite{
 			Texture=THEME:GetPathG("NameEntry","Items/BGA score frame"),
-			Condition=not ThemePrefs.Get("ITG1")
+			Condition=not IsITG1Mode()
 		},
 
 		LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",182} )..{
-			Condition=ThemePrefs.Get("ITG1"),
+			Condition=IsITG1Mode(),
 			InitCommand=function(self)
 				self:zoom(0.8)
 			end
@@ -194,7 +194,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		self:stoptweening():linear(0.2):diffusealpha(0.4):linear(0.2):diffusealpha(1)
 	end,
 		Def.Sprite{
-			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),
+			Texture=THEME:GetPathG('',IsITG1Mode() and '_evaluation difficulty icons' or '_difficulty icons'),
 			OnCommand=function(self)
 				self:xy(0,0):animate(0):playcommand("Update")
 			end,
@@ -207,7 +207,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=function(self)
-				if ThemePrefs.Get("ITG1") then
+				if IsITG1Mode() then
 					self:diffuse(Color.Black)
 				end
 				self:zoom(0.5):x( -38*side(pn) )
@@ -216,7 +216,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			ChangeDisplayedFeatMessageCommand=function(self,param)
 				local stats = STATSMAN:GetPlayedStageStats( param.CurrentIndex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( THEME:GetString("Difficulty",ToEnumShortString(stats[1]:GetDifficulty()) ) )
-				if not ThemePrefs.Get("ITG1") then
+				if not IsITG1Mode() then
 					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
 				end
 			end
@@ -224,7 +224,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		Def.BitmapText{
 			Font="Common Normal",
 			OnCommand=function(self)
-				if ThemePrefs.Get("ITG1") then
+				if IsITG1Mode() then
 					self:diffuse(Color.Black)
 				end
 				self:zoom(0.5):x(36*side(pn)):horizalign(pn == PLAYER_1 and right or left):playcommand("Update")
@@ -232,7 +232,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			ChangeDisplayedFeatMessageCommand=function(self,param)
 				local stats = STATSMAN:GetPlayedStageStats( param.CurrentIndex ):GetPlayerStageStats(pn):GetPlayedSteps()
 				self:settext( stats[1]:GetMeter() )
-				if not ThemePrefs.Get("ITG1") then
+				if not IsITG1Mode() then
 					self:diffuse( ContrastingDifficultyColor( stats[1]:GetDifficulty() ) )
 				end
 			end
@@ -257,7 +257,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.BitmapText{
 		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenNameEntryTraditional","HeaderText")),
-		InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+		InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( IsITG1Mode() and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end,

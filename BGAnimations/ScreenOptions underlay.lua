@@ -1,4 +1,4 @@
-local frame = ThemePrefs.Get("ITG1") and "_options" or "options"
+local frame = IsITG1Mode() and "_options" or "options"
 return Def.ActorFrame{
 	LoadActor( "ScreenWithMenuElements underlay" ),
 

@@ -81,7 +81,7 @@ local function xScaleItem(indx)
 end
 
 -- Draw the diff labels.
-local isITG1 = ThemePrefs.Get("ITG1")
+local isITG1 = IsITG1Mode()
 local diffIconGraphic = isITG1 and THEME:GetPathG('_evaluation difficulty','icons') or THEME:GetPathG('_difficulty','icons');
 local labelX = SCREEN_CENTER_X - 240
 for difIndx,diff in ipairs(diffs) do

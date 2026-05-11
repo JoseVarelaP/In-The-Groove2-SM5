@@ -1,5 +1,5 @@
 -- Unlock Display
-local glowcolor = ThemePrefs.Get("ITG1") and "_big blue glow" or "_big red glow"
+local glowcolor = IsITG1Mode() and "_big blue glow" or "_big red glow"
 local MenuIndex = 1
 local itemnames = {THEME:GetString("EditMenuRow","Song"),THEME:GetString("EditMenuRow","Steps"),THEME:GetString("EditMenuRow","StepsType"),THEME:GetString("OptionNames","Courses"),"Modifier"}
 local UnlocksEnabled = PREFSMAN:GetPreference("UseUnlockSystem") and UNLOCKMAN:GetNumUnlocks() > 0
@@ -188,7 +188,7 @@ t[#t+1] = Def.ActorFrame{
 
     LoadActor("_frame 3x3", {"keyboard",460,60,1.80})..{
         OnCommand=function(self)
-            self:diffuse( ThemePrefs.Get("ITG1") and color("#0099FF") or color("#EE3333"))
+            self:diffuse( IsITG1Mode() and color("#0099FF") or color("#EE3333"))
         end
     },
     Def.ActorScroller{
@@ -303,7 +303,7 @@ local BTInput = {
         CheckValueOffsets(-1)
     end,
     ["Start"] = function(event)
-        SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+        SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
         local screenToGo = UnlocksEnabled and "ScreenRecordsMenu" or buttonOptions[MenuIndex][2]
         SCREENMAN:GetTopScreen():SetNextScreenName( screenToGo ):StartTransitioningScreen("SM_GoToNextScreen")
     end,
@@ -349,7 +349,7 @@ t[#t+1] = Def.ActorFrame{
 local moveSound
 
 if not UnlocksEnabled then
-    local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
+    local style = IsITG1Mode() and "small blue" or "small red"
     for i,v in ipairs( buttonOptions ) do
         t[#t+1] = Def.ActorFrame{
             InitCommand=function(self)
@@ -420,7 +420,7 @@ t[#t+1] = Def.ActorFrame{
     Def.BitmapText{
     Font=_eurostileColorPick(),
     Text=THEME:GetString("ScreenUnlockBrowse","HeaderText"),
-    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+    InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( IsITG1Mode() and 0 or -0.16) end,
     OnCommand=function(self)
         self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
     end;

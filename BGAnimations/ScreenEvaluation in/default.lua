@@ -21,7 +21,7 @@ elseif (GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:IsHumanPlayer(PLAYER_2) 
 	
 end
 
-local stylepick = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local stylepick = IsITG1Mode() and "ITG1/" or ""
 return Def.ActorFrame{
 	LoadActor("../_fade in normal"),
 	Def.ActorFrame{

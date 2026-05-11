@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local style = IsITG1Mode() and "ITG1/" or ""
 local ExitSelect = {false,false}
 local t = Def.ActorFrame{
 	BeginCommand=function(s)

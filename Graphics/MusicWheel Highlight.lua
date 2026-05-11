@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local style = IsITG1Mode() and "ITG1/" or ""
 return Def.ActorFrame{
 	InitCommand=function(self)
 		self:fov(58):ztest(1):addx(-500):sleep(0.4):linear(0.45):addx(500)

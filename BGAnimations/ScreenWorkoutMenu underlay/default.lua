@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "_" or ""
+local style = IsITG1Mode() and "_" or ""
 local t = Def.ActorFrame{}
 
 t[#t+1] = LoadActor("../ScreenWithMenuElements underlay");
@@ -48,7 +48,7 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = LoadActor("../_menu out")..{
 	OnCommand=function(s)
-		if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+		if IsITG1Mode() then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
 		s:diffusealpha(0)
 	end;
 	OffCommand=function(s) s:sleep(0.3):linear(0.3):diffusealpha(1) end;

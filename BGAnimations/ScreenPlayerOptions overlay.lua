@@ -9,14 +9,14 @@ t[#t+1] = Def.ActorFrame{
 		Def.BitmapText{
 			Font=_eurostileColorPick(),
 			Text=ToUpper(THEME:GetString(Var "LoadingScreen","HeaderText")),
-			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( IsITG1Mode() and 0 or -0.16) end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 			end,
 			CancelMessageCommand=function(self) self:playcommand("TweenOff") end,
 			OffCommand=function(self)
 				self:playcommand("TweenOff")
-				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+				SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 				or THEME:GetPathS("_ITGCommon","start") )
 			end,
 			TweenOffCommand=function(self)
@@ -26,7 +26,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.Sprite{
 			Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()),
-			Condition=not GAMESTATE:IsCourseMode() and not ThemePrefs.Get("ITG1"),
+			Condition=not GAMESTATE:IsCourseMode() and not IsITG1Mode(),
 			OnCommand=function(self)
 				self:xy(40,34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 			end,
@@ -35,7 +35,7 @@ t[#t+1] = Def.ActorFrame{
 		},
 	
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1") )..{
-			Condition=not GAMESTATE:IsCourseMode() and ThemePrefs.Get("ITG1"),
+			Condition=not GAMESTATE:IsCourseMode() and IsITG1Mode(),
 			OnCommand=function(self)
 				self:x(SCREEN_RIGHT-140):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
 			end,
@@ -61,7 +61,7 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadActor("_menu out")..{
 		OnCommand=function(self)
-			if ThemePrefs.Get("ITG1") then self:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+			if IsITG1Mode() then self:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
 			self:diffusealpha(0)
 		end,
 		CancelMessageCommand=function(self) self:sleep(0.3):linear(0.3):diffusealpha(1) end

@@ -54,8 +54,8 @@ end
 local t = Def.ActorFrame{};
 
 local DoublesIsOn = GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides"
-local pathtogo = ThemePrefs.Get("ITG1") and "ITG1/" or ""
-local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
+local pathtogo = IsITG1Mode() and "ITG1/" or ""
+local itgstylemargin = IsITG1Mode() and -10 or 0
 t[#t+1] = Def.ActorFrame{
 	Def.Sprite{ Texture=GAMESTATE:Env()["WorkoutMode"] and pathtogo.."workout frame" or ( GAMESTATE:GetPlayMode() == "PlayMode_Rave" and "battle/".. pathtogo.."base frame battle" or pathtogo.."base frame") }..{
 		OnCommand=function(s)
@@ -72,7 +72,7 @@ t[#t+1] = Def.ActorFrame{
 		)
 	end,
 		Def.Sprite{
-			Texture=THEME:GetPathG('',ThemePrefs.Get("ITG1") and '_evaluation difficulty icons' or '_difficulty icons'),
+			Texture=THEME:GetPathG('',IsITG1Mode() and '_evaluation difficulty icons' or '_difficulty icons'),
 			OnCommand=function(self)
 				self:animate(0):playcommand("Update")
 			end,
@@ -80,7 +80,7 @@ t[#t+1] = Def.ActorFrame{
 		},
 
 		LoadActor( THEME:GetPathG("_name","frame"), player )..{
-			Condition=ThemePrefs.Get("ITG1"),
+			Condition=IsITG1Mode(),
 			OnCommand=function(self) self:y(30) end
 		},
 
@@ -97,8 +97,8 @@ t[#t+1] = Def.ActorFrame{
 				else
 					self:settext( DifficultyName("Steps", player) )
 				end
-				self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
-				:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
+				self:diffuse( IsITG1Mode() and Color.Black or ContrastingDifficultyColor( steps ) )
+				:shadowlength( IsITG1Mode() and 1 or 0 )
 			end
 		},
 
@@ -109,8 +109,8 @@ t[#t+1] = Def.ActorFrame{
 			end;
 			UpdateCommand=function(self)
 				self:settext( TrailOrSteps(player):GetMeter() )
-				self:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
-				:shadowlength( ThemePrefs.Get("ITG1") and 1 or 0 )
+				self:diffuse( IsITG1Mode() and Color.Black or ContrastingDifficultyColor( TrailOrSteps(player):GetDifficulty() ) )
+				:shadowlength( IsITG1Mode() and 1 or 0 )
 			end
 		}
 	};

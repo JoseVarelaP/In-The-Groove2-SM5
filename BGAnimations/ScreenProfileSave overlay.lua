@@ -7,12 +7,12 @@ local function IsAnyPlayerUsingMemoryCard()
 	return false
 end
 
-local style = ThemePrefs.Get("ITG1") and "_ITG1moveon" or "_moveon"
+local style = IsITG1Mode() and "_ITG1moveon" or "_moveon"
 local t = Def.ActorFrame{
 	Def.Sprite{
 	Texture=style,
 	OnCommand=function(s)
-		if ThemePrefs.Get("ITG1") then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+		if IsITG1Mode() then s:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
 	end;
 	},
 	Def.Actor{

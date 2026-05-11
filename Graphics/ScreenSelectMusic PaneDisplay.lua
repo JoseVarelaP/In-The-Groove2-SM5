@@ -63,10 +63,10 @@ local function PercentScore(pn,scoremethod)
 	return {text,Rname}
 end
 
-local style = ThemePrefs.Get("ITG1") and LoadActor( THEME:GetPathB("","_frame 3x1") , {"pane",250}) or LoadActor( THEME:GetPathG('PaneDisplay','Frame') )
+local style = IsITG1Mode() and LoadActor( THEME:GetPathB("","_frame 3x1") , {"pane",250}) or LoadActor( THEME:GetPathG('PaneDisplay','Frame') )
 local t = Def.ActorFrame{
 	style..{
-		OnCommand=function(s) s:y( ThemePrefs.Get("ITG1") and -2 or 0 ) end;
+		OnCommand=function(s) s:y( IsITG1Mode() and -2 or 0 ) end;
 	}
 }
 

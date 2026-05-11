@@ -123,7 +123,7 @@ return Def.ActorFrame{
 	},
 
 	Def.Sprite{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		Texture=THEME:GetPathG("NameEntry","Items/BGA list frame"),
 		OnCommand=function(self)
 			self:y(20)
@@ -131,7 +131,7 @@ return Def.ActorFrame{
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x3"), {"scores",246,74} )..{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 		InitCommand=function(self)
 			self:y(10)
 		end

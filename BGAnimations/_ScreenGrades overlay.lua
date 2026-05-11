@@ -55,7 +55,7 @@ for i = 1,numGrades do
 end
 
 -- Draw the diff labels.
-local isITG1 = ThemePrefs.Get("ITG1")
+local isITG1 = IsITG1Mode()
 local diffIconGraphic = isITG1 and THEME:GetPathG('_evaluation difficulty','icons') or THEME:GetPathG('_difficulty','icons');
 for difIndx,diff in ipairs(diffs) do
     t[#t+1] = Def.ActorFrame{

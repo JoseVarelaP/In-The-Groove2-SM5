@@ -1,5 +1,5 @@
-local style = ThemePrefs.Get("ITG1") and "_flare" or "flare"
-local num = ThemePrefs.Get("ITG1") and "" or " 2"
+local style = IsITG1Mode() and "_flare" or "flare"
+local num = IsITG1Mode() and "" or " 2"
 local isDedicab = ThemePrefs.Get("DedicabToggle") or false
 return Def.ActorFrame{
 	CodeMessageCommand=function(self,param)
@@ -76,7 +76,7 @@ return Def.ActorFrame{
 		end;
 		OffCommand=function(self)
 			self:linear(0.5):zoomy(0)
-			SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+			SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 			or THEME:GetPathS("_ITGCommon","start") )
 		end;
 	},

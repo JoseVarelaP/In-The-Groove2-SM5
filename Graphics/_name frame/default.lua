@@ -1,9 +1,9 @@
 local player = ...
-local itgmarginspace = ThemePrefs.Get("ITG1") and 2 or 0
+local itgmarginspace = IsITG1Mode() and 2 or 0
 assert(player)
 return Def.ActorFrame{
-	LoadActor( "_name frame" )..{ Condition=not ThemePrefs.Get("ITG1"); };
-	LoadActor( THEME:GetPathB("","_frame 3x1"), {"small name",98} )..{ Condition=ThemePrefs.Get("ITG1"); };
+	LoadActor( "_name frame" )..{ Condition=not IsITG1Mode(); };
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"small name",98} )..{ Condition=IsITG1Mode(); };
 	
 	Def.BitmapText{
 	Font="_eurostile normal",

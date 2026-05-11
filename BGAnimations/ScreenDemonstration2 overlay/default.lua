@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local style = IsITG1Mode() and "ITG1/" or ""
 return Def.ActorFrame{
 	LoadActor("../ScreenGameplay overlay/demonstration gradient")..{
 		OnCommand=function(self)

@@ -23,6 +23,14 @@ if not LoadModule then
 	end
 end
 
+function IsITG1Mode()
+	return ThemePrefs.Get("CurITGTheme") == 1
+end
+
+function IsITG2PS2Mode()
+	return ThemePrefs.Get("CurITGTheme") == 3
+end
+
 function DifficultyName( name, pn )
 	local ToGet = {
 	["Steps"] = GAMESTATE:GetCurrentSteps(pn),
@@ -38,7 +46,7 @@ end
 function MenuTimerSet(self)
 	self:draworder(101):zoom(1.1)
 	:visible( (PREFSMAN:GetPreference("MenuTimer") or ThemePrefs.Get("TimerLabel") == "ITG") )
-	if ThemePrefs.Get("ITG1") then
+	if IsITG1Mode() then
 		self:addx(-200):decelerate(0.3):addx(200)
 	else
 		self:addx(200):decelerate(0.3):addx(-200)
@@ -248,7 +256,7 @@ Branch.TitleMenu = function()
 		if GAMESTATE:Env()["WorkoutMode"] then
 			return "ScreenWorkoutMenu"
 		else
-			return "ScreenTitleMenu"
+			return IsITG2PS2Mode() and "ScreenTitleMenuPS2" or "ScreenTitleMenu"
 		end
 	end
 	-- arcade junk:
@@ -269,7 +277,7 @@ Branch.ITGDecideIntro = function(checkPartner)
 		return "ScreenPublisher"
 	end
 
-	if ThemePrefs.Get("ITG1") then
+	if IsITG1Mode() then
 		return "ScreenITG1Intro"
 	end
 	return "ScreenIntro"
@@ -316,7 +324,7 @@ function SelectMusicOrCourse()
 
 	local ScreenToGo = GAMESTATE:IsCourseMode() and "ScreenSelectCourse" or "ScreenSelectMusic"
 
-	if ThemePrefs.Get("ITG1") then
+	if IsITG1Mode() then
 		ScreenToGo = ScreenToGo .. "ITG1"
 	end
 
@@ -348,7 +356,7 @@ function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 end
 
 function _eurostileColorPick()
-	return ThemePrefs.Get("ITG1") and "_eurostile blue glow" or "_eurostile red glow"
+	return IsITG1Mode() and "_eurostile blue glow" or "_eurostile red glow"
 end
 
 function Actor:LyricCommand(side)

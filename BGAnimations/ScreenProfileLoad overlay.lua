@@ -1,7 +1,7 @@
 local t = Def.ActorFrame{
 	LoadActor("_menu out")..{
 		OnCommand=function(self)
-			if ThemePrefs.Get("ITG1") then
+			if IsITG1Mode() then
 				self:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8))
 			else
 				self:Center()

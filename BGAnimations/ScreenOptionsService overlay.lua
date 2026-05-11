@@ -13,7 +13,7 @@ return Def.ActorFrame{
 		end,
 		OffCommand=function(self)
 			self:accelerate(.2):zoomx(2):zoomy(0):diffusealpha(0)
-			SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+			SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 			or THEME:GetPathS("_ITGCommon","start") )
 		end,
 		CancelMessageCommand=function(self)

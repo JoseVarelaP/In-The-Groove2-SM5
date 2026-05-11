@@ -1,4 +1,4 @@
-local isITG1 = ThemePrefs.Get("ITG1")
+local isITG1 = IsITG1Mode()
 local style = isITG1 and "ITG1/" or ""
 local marathonLabelType = ThemePrefs.Get("MarathonLabel")
 

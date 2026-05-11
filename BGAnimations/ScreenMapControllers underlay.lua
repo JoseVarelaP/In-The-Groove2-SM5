@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "_" or ""
+local style = IsITG1Mode() and "_" or ""
 return Def.ActorFrame{
 
 	LoadActor( "ScreenWithMenuElements underlay" ),
@@ -26,7 +26,7 @@ return Def.ActorFrame{
 	Def.BitmapText{
 		Font=_eurostileColorPick(),
 		Text="Player 1 Controls",
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( IsITG1Mode() and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X-160,SCREEN_CENTER_Y-160):zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;
@@ -38,7 +38,7 @@ return Def.ActorFrame{
 	Def.BitmapText{
 		Font=_eurostileColorPick(),
 		Text="Player 2 Controls",
-		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+		InitCommand=function(self) self:shadowlength(4); self:x(self:GetWidth()/2) self:skewx( IsITG1Mode() and 0 or -0.16) end,
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X+160,SCREEN_CENTER_Y-160):zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
 		end;

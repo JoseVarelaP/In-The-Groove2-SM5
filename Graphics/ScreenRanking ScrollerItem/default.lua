@@ -1,4 +1,4 @@
-local texType = ThemePrefs.Get("ITG1") and "list" or "song"
+local texType = IsITG1Mode() and "list" or "song"
 local t = Def.ActorFrame{
 	InitCommand=function(s) s:MaskDest() end;
 	Def.Sprite{ Texture="ScreenRanking ".. texType .." frame" };
@@ -7,7 +7,7 @@ local t = Def.ActorFrame{
 		--maxwidth,264
 		InitCommand=function(self)
 			self:x(-292):halign(0):zoom(0.8):shadowlength(1):wrapwidthpixels(224):maxheight(48):maxwidth(210)
-			if ThemePrefs.Get("ITG1") then
+			if IsITG1Mode() then
 				self:diffuse(Color.Black):wrapwidthpixels(200)
 			end
 		end;

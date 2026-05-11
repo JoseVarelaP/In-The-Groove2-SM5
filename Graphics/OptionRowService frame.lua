@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "small blue" or "small red"
+local style = IsITG1Mode() and "small blue" or "small red"
 local t = Def.ActorFrame{
     BeginCommand=function(self)
         self.index = self:GetParent():GetParent().iIndex

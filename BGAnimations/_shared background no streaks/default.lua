@@ -1,5 +1,5 @@
-local BGOVERLAY = ThemePrefs.Get("ITG1") and "ITG1/bglegacy" or "bgoverlay"
-local streakcolor = ThemePrefs.Get("ITG1") and color("#999983") or color("#832626")
+local BGOVERLAY = IsITG1Mode() and "ITG1/bglegacy" or "bgoverlay"
+local streakcolor = IsITG1Mode() and color("#999983") or color("#832626")
 local oldcol
 return Def.ActorFrame{
 	Def.ActorFrame{
@@ -14,17 +14,17 @@ return Def.ActorFrame{
 			
 			LoadActor(BGOVERLAY)..{
 				 InitCommand=function(self)
-					oldcol = ThemePrefs.Get("ITG1")
+					oldcol = IsITG1Mode()
 					self:vertalign(bottom):zoomtowidth(SCREEN_WIDTH*1.1):zoomy(1.1):rotationy(180)
 				end;
 				UpdateColoringMessageCommand=function(s)
-					if ThemePrefs.Get("ITG1") ~= oldcol then
+					if IsITG1Mode() ~= oldcol then
 						s:linear(0.25):diffuse(Color.Black):queuecommand("LoadNewBG")
 					end
 				end;
 				LoadNewBGCommand=function(s)
 					s:Load( THEME:GetPathB("_shared background no","streaks/"..BGOVERLAY) ):linear(0.25):diffuse(Color.White)
-					oldcol = ThemePrefs.Get("ITG1")
+					oldcol = IsITG1Mode()
 				end;
 			},
 			
@@ -33,13 +33,13 @@ return Def.ActorFrame{
 					self:vertalign(bottom):zoomtowidth(SCREEN_WIDTH*1.1):zoomy(-1.1)
 				end;
 				UpdateColoringMessageCommand=function(s)
-					if ThemePrefs.Get("ITG1") ~= oldcol then
+					if IsITG1Mode() ~= oldcol then
 						s:linear(0.25):diffuse(Color.Black):queuecommand("LoadNewBG")
 					end
 				end;
 				LoadNewBGCommand=function(s)
 					s:Load( THEME:GetPathB("_shared background no","streaks/"..BGOVERLAY) ):linear(0.25):diffuse(Color.White)
-					oldcol = ThemePrefs.Get("ITG1")
+					oldcol = IsITG1Mode()
 				end;
 			},
 		},
@@ -51,8 +51,8 @@ return Def.ActorFrame{
 				self:zoom(1.5):y(-200):z(-400):customtexturerect(0.2,0,1.2,1):texcoordvelocity(-0.06,0):diffuse(streakcolor):diffusealpha(0.1)
 			end;
 			UpdateColoringMessageCommand=function(s)
-				streakcolor = ThemePrefs.Get("ITG1") and color("#999983") or color("#832626")
-				BGOVERLAY = ThemePrefs.Get("ITG1") and "ITG1/bglegacy" or "bgoverlay"
+				streakcolor = IsITG1Mode() and color("#999983") or color("#832626")
+				BGOVERLAY = IsITG1Mode() and "ITG1/bglegacy" or "bgoverlay"
 				s:linear(0.5):diffuse(streakcolor):diffusealpha(0.1)
 			end;
 		},

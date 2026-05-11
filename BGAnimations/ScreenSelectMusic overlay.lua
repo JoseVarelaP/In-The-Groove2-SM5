@@ -1,5 +1,5 @@
 local ModeMenuAvailable = THEME:GetMetric("ScreenSelectMusic","ModeMenuAvailable")
-local itgstylemargin = ThemePrefs.Get("ITG1") and -1 or 0
+local itgstylemargin = IsITG1Mode() and -1 or 0
 local t=Def.ActorFrame{}
 t[#t+1] = Def.ActorFrame{
 
@@ -63,7 +63,7 @@ t[#t+1] = Def.ActorFrame{
 			Font=_eurostileColorPick(),
 			Text=GAMESTATE:IsCourseMode() and THEME:GetString("ScreenSelectMusicCourse","HeaderText") or Screen.String("HeaderText"),
 			InitCommand=function(self)
-				self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16)
+				self:shadowlength(4):x(self:GetWidth()/2):skewx( IsITG1Mode() and 0 or -0.16)
 			end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)
@@ -74,7 +74,7 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.Sprite{
 			Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment()),
-			Condition=not GAMESTATE:IsCourseMode() and not ThemePrefs.Get("ITG1"),
+			Condition=not GAMESTATE:IsCourseMode() and not IsITG1Mode(),
 			OnCommand=function(self)
 				self:xy(40,34):addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(SCREEN_WIDTH)
 			end,
@@ -83,7 +83,7 @@ t[#t+1] = Def.ActorFrame{
 		},
 
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1") )..{
-			Condition=not GAMESTATE:IsCourseMode() and ThemePrefs.Get("ITG1"),
+			Condition=not GAMESTATE:IsCourseMode() and IsITG1Mode(),
 			OnCommand=function(self)
 				self:x(SCREEN_RIGHT-140):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
 			end,
@@ -214,16 +214,16 @@ t[#t+1] = Def.ActorFrame{
 				self:stoptweening():linear(0.2):diffusealpha(0):zoomx(0.5)
 			end,
 			ShowPressStartForOptionsCommand=function(self)
-				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+				SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
 			end,
 			ShowEnteringOptionsCommand=function(self)
-				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+				SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
 			end
 		}
 	},
 
 	Def.Sprite{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		Texture=THEME:GetPathG("ScreenSelectMusic","Options Message"),
 		InitCommand=function(self)
 			self:Center():pause():diffusealpha(0)
@@ -247,7 +247,7 @@ t[#t+1] = Def.ActorFrame{
 			self:diffusealpha(1):zoomx(0.1):zoomy(3):bounceend(0.3):zoom(0.9)
 		end,
 		Def.BitmapText{
-			Condition=ThemePrefs.Get("ITG1"),
+			Condition=IsITG1Mode(),
 			Font="_big blue glow",
 			Text=THEME:GetString("ScreenSelectMusic","OptionsMessage"),
 			ShowPressStartForOptionsCommand=function(self)
@@ -267,7 +267,7 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.Actor{
 	OffCommand=function(self)
 		if GAMESTATE:GetPlayMode() == "PlayMode_Oni" then
-			SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+			SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
 		end
 	end
 }

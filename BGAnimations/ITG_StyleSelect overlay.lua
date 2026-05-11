@@ -62,7 +62,7 @@ local BTInput = {
                 GAMESTATE:JoinPlayer(PLAYER_1)
                 GAMESTATE:JoinPlayer(PLAYER_2)
             end
-            SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+            SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 			or THEME:GetPathS("_ITGCommon","start") )
             if not GAMESTATE:Env()["WorkoutMode"] then
                 SOUND:StopMusic()
@@ -72,7 +72,7 @@ local BTInput = {
         else
             if GAMESTATE:GetCoins() >= 1 then
                 GAMESTATE:JoinPlayer(event)
-                SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+                SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
                 or THEME:GetPathS("_ITGCommon","start") )
                 GAMESTATE:InsertCoin(-1)
             end
@@ -133,7 +133,7 @@ local Controller = Def.ActorFrame{
 }
 
 t[#t+1] = Def.Quad{
-    Condition = not ThemePrefs.Get("ITG1"),
+    Condition = not IsITG1Mode(),
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
         if GAMESTATE:Env()["WorkoutMode"] then
@@ -254,7 +254,7 @@ t[#t+1] = Def.HelpDisplay {
 
 t[#t+1] = loadfile( THEME:GetPathB("_menu","out") )()..{
     OnCommand=function(self)
-        if ThemePrefs.Get("ITG1") then self:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
+        if IsITG1Mode() then self:xy(GetTitleSafeH(0.9),GetTitleSafeV(0.8)) else self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y) end
         self:diffusealpha(0)
     end,
     OffCommand=function(self)

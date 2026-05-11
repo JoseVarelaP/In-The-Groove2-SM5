@@ -96,11 +96,11 @@ local Prefs =
 		Choices = { OptionNameString("On"), OptionNameString("Off") },
 		Values = { true, false }
 	},
-	ITG1 = 
+	CurITGTheme = 
 	{
-		Default = false,
-		Choices = { "ITG1", "ITG2" },
-		Values = { true, false }
+		Default = 2,
+		Choices = { "ITG1", "ITG2", "ITG2PS2" },
+		Values = { 1, 2, 3 }
 	},
 	ShowOctaneIntro =
 	{

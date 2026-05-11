@@ -42,7 +42,7 @@ for player in ivalues(PlayerNumber) do
 			self:xy( player == PLAYER_1 and SCREEN_CENTER_X-150 or SCREEN_CENTER_X+150, SCREEN_TOP+56 )
 			:visible( Settings.CurrentScreen ~= "ScreenGameplaySyncMachine" )
 			:diffuse( PlayerColor(player) ):addy(-100):sleep(0.5)
-			:decelerate(0.8):addy(100)
+			:decelerate(0.8):addy(100):shadowlength(4)
 			if ThemePrefs.Get("CompareScores") and GAMESTATE:GetNumPlayersEnabled() == 2 then
 				self:pulse():effectclock("bgm"):effectmagnitude(1.05,0.95,0):effectperiod(1)
 			end
@@ -180,7 +180,7 @@ for player in ivalues(PlayerNumber) do
 		Def.ActorFrame{
 			Condition=GAMESTATE:IsPlayerEnabled(player);
 			OnCommand=function(s)
-				local margin = ThemePrefs.Get("ITG1") and WideScale(66,108) or 66
+				local margin = IsITG1Mode() and WideScale(66,108) or 66
 				s:xy( player == PLAYER_1 and SCREEN_LEFT+margin or SCREEN_RIGHT-margin,SCREEN_TOP+25)
 				:addx( player == PLAYER_1 and  -250 or 250 );
 			end;
@@ -192,7 +192,7 @@ for player in ivalues(PlayerNumber) do
 			end;
 	
 				Def.Sprite{
-					Texture=ThemePrefs.Get("ITG1") and THEME:GetPathG('_gameplay mirrored difficulty','frame') or THEME:GetPathG('_difficulty','icons');
+					Texture=IsITG1Mode() and THEME:GetPathG('_gameplay mirrored difficulty','frame') or THEME:GetPathG('_difficulty','icons');
 					OnCommand=function(s)
 						s:pause():playcommand("Update")
 						:zoomx( player == PLAYER_1 and 1 or -1 )
@@ -205,7 +205,9 @@ for player in ivalues(PlayerNumber) do
 				Def.BitmapText{
 				Font="Common Normal",
 				OnCommand=function(s)
-					s:zoom(0.5):xy( player == PLAYER_1 and -36 or 36,0):horizalign( player == PLAYER_1 and left or right):playcommand("Update")
+					s:zoom(0.5):xy( player == PLAYER_1 and -36 or 36,0):horizalign( player == PLAYER_1 and left or right)
+					:shadowlength(2)
+					:playcommand("Update")
 				end;
 				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s)
 					s:playcommand("Update")
@@ -214,25 +216,27 @@ for player in ivalues(PlayerNumber) do
 						if GAMESTATE:GetCurrentSteps(player) then
 							local steps = GAMESTATE:GetCurrentSteps(player):GetDifficulty();
 							s:settext( DifficultyName("Steps", player) ):maxwidth(100)
-							:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps ) )
+							:diffuse( IsITG1Mode() and Color.Black or ContrastingDifficultyColor( steps ) )
 						end
 					end,
 				},
 	
 				Def.BitmapText{
-				Font="Common Normal",
-				OnCommand=function(s)
-					s:zoom(0.5):xy(player == PLAYER_1 and 35 or -35,0):horizalign(player == PLAYER_1 and right or left):playcommand("Update")
-				end;
-				["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s)
-					s:playcommand("Update")
-				end;
-				UpdateCommand=function(s)
-					if GAMESTATE:GetCurrentSteps(player) then
-						local steps = GAMESTATE:GetCurrentSteps(player)
-						s:settext( steps:GetMeter() )
-						s:diffuse( ThemePrefs.Get("ITG1") and Color.Black or ContrastingDifficultyColor( steps:GetDifficulty() ) )
-					end
+					Font="Common Normal",
+					OnCommand=function(s)
+						s:zoom(0.5):xy(player == PLAYER_1 and 35 or -35,0):horizalign(player == PLAYER_1 and right or left)
+						:shadowlength(2)
+						:playcommand("Update")
+					end;
+					["CurrentSteps".. ToEnumShortString(player) .."ChangedMessageCommand"]=function(s)
+						s:playcommand("Update")
+					end;
+					UpdateCommand=function(s)
+						if GAMESTATE:GetCurrentSteps(player) then
+							local steps = GAMESTATE:GetCurrentSteps(player)
+							s:settext( steps:GetMeter() )
+							s:diffuse( IsITG1Mode() and Color.Black or ContrastingDifficultyColor( steps:GetDifficulty() ) )
+						end
 					end,
 				},
 	
@@ -258,10 +262,10 @@ t[#t+1] = Def.ActorFrame{
 
 		Def.SongMeterDisplay{
         InitCommand=function(s)
-        	s:SetStreamWidth( WideScale( ThemePrefs.Get("ITG1") and 418 or 390, 418+128) )
+        	s:SetStreamWidth( WideScale( IsITG1Mode() and 418 or 390, 418+128) )
         end;
         
-        Stream=Def.Sprite{ Texture=ThemePrefs.Get("ITG1") and "_meter stream" or "meter stream",
+        Stream=Def.Sprite{ Texture=IsITG1Mode() and "_meter stream" or "meter stream",
         	InitCommand=function(s) s:diffusealpha(1) end
         },
         Tip=Def.Sprite{ Texture="tip",
@@ -269,13 +273,13 @@ t[#t+1] = Def.ActorFrame{
         },
     };
 
-	Def.Sprite{ Texture="meter frame", Condition=not IsUsingWideScreen() and not ThemePrefs.Get("ITG1"); },
-	LoadActor( THEME:GetPathB("","_frame 3x1"), {"progress",WideScale( 374, 374+128 )} )..{ Condition=ThemePrefs.Get("ITG1"); };
+	Def.Sprite{ Texture="meter frame", Condition=not IsUsingWideScreen() and not IsITG1Mode(); },
+	LoadActor( THEME:GetPathB("","_frame 3x1"), {"progress",WideScale( 374, 374+128 )} )..{ Condition=IsITG1Mode(); };
 	
 	Def.BitmapText{
 	Font="_eurostile normal",
 	OnCommand=function(s)
-		s:y(1):zoom(.5):shadowlength(0)
+		s:y(1):zoom(.5):shadowlength(2)
 	end;
 	CurrentSongChangedMessageCommand=function(s)
 		s:playcommand("Update")
@@ -292,7 +296,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 };
 
-t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen() and not ThemePrefs.Get("ITG1"); };
+t[#t+1] = LoadActor("WideScreen SongMeter")..{ Condition=IsUsingWideScreen() and not IsITG1Mode(); };
 
 -- Draw on top of the rest
 	
@@ -329,7 +333,7 @@ t[#t+1] = Def.ActorFrame{
 
 if GAMESTATE:IsCourseMode() then
 	t[#t+1] = Def.ActorFrame{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		OnCommand=function(s)
 			s:Center():animate(0):draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.25):y(SCREEN_BOTTOM-40)
 			if GAMESTATE:GetPlayMode() == "PlayMode_Endless" then
@@ -353,14 +357,14 @@ if GAMESTATE:IsCourseMode() then
 	}
 
 	t[#t+1] = Def.ActorFrame{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 		BeforeLoadingNextCourseSongMessageCommand=function(self)
 			Settings.StageNum = Settings.StageNum + 1
 			self:GetChild("StageCount"):GetChild("Number"):Load( THEME:GetPathG("","StageAndCourses/ITG1/_stage " .. Settings.StageNum) )
 		end,
 
 		LoadActor( THEME:GetPathB("","_frame 3x1"), {"name entry",100} )..{
-			Condition=ThemePrefs.Get("ITG1") and not GAMESTATE:IsDemonstration();
+			Condition=IsITG1Mode() and not GAMESTATE:IsDemonstration();
 			OnCommand=function(self)
 				self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-40):addy(300):sleep(1.2):decelerate(0.3):addy(-300)
 			end
@@ -368,7 +372,7 @@ if GAMESTATE:IsCourseMode() then
 
 		LoadActor( THEME:GetPathG( "","StageAndCourses/ITG1" ) )..{
 			Name="StageCount",
-			Condition=ThemePrefs.Get("ITG1") and not GAMESTATE:IsDemonstration(),
+			Condition=IsITG1Mode() and not GAMESTATE:IsDemonstration(),
 			OnCommand=function(self)
 				self:Center():draworder(105):zoom(1):sleep(1.2):linear(0.3):zoom(0.22):y(SCREEN_BOTTOM-40)
 			end

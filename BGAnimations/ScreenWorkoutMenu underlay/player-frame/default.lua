@@ -1,4 +1,4 @@
-local style = ThemePrefs.Get("ITG1") and "_" or ""
+local style = IsITG1Mode() and "_" or ""
 local t = Def.ActorFrame{}
 t[#t+1] = Def.Sprite{ Texture=style.."player-frame" };
 t[#t+1] = Def.BitmapText{ Font="Common Normal", Text=THEME:GetString("ScreenWorkoutMenu","Weight"), OnCommand=function(s) s:xy(-128,-38):halign(0):zoom(0.5):diffuse(color(".8,.8,.8,1")):shadowlength(2) end; };

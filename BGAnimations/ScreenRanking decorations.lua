@@ -15,7 +15,7 @@ for i=1,2 do
     }
 end
 
-local isITG1 = ThemePrefs.Get("ITG1")
+local isITG1 = IsITG1Mode()
 local diffIconGraphic = isITG1 and THEME:GetPathG('_evaluation difficulty','icons') or THEME:GetPathG('_difficulty','icons');
 for i=1,THEME:GetMetric(Var "LoadingScreen","NumColumns") do
     local coldiff = THEME:GetMetric(Var "LoadingScreen","ColumnDifficulty"..i)

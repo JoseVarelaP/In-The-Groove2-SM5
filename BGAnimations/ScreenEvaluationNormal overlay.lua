@@ -1,5 +1,5 @@
 local t = Def.ActorFrame{}
-local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
+local itgstylemargin = IsITG1Mode() and -10 or 0
 
 local function side(pn)
 	local s = 1
@@ -18,8 +18,8 @@ local function pnum(pn)
 	return 1
 end
 
-local itgstylemargin = ThemePrefs.Get("ITG1") and -10 or 0
-local battlegraphloc = ThemePrefs.Get("ITG1") and "ITG1/" or ""
+local itgstylemargin = IsITG1Mode() and -10 or 0
+local battlegraphloc = IsITG1Mode() and "ITG1/" or ""
 t[#t+1] = Def.Sprite{
 	Condition=GAMESTATE:GetPlayMode() == "PlayMode_Rave",
 	Texture=THEME:GetPathG("ScreenEvaluation grade frame/battle/"..battlegraphloc.."graph","frame"),
@@ -84,19 +84,19 @@ t[#t+1] = Def.ActorFrame{
 		Def.BitmapText{
 		Font=_eurostileColorPick(),
 		Text=string.upper(THEME:GetString("ScreenEvaluation","HeaderText")),
-			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+			InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( IsITG1Mode() and 0 or -0.16) end,
 			OnCommand=function(self)
 				self:zoomx(0):zoomy(6):sleep(0.3):bounceend(0.3):zoom(1)
 			end,
 			OffCommand=function(self)
 				self:accelerate(0.2):zoomx(2):zoomy(0):diffusealpha(0)
-				SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
+				SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start") or THEME:GetPathS("_ITGCommon","start") )
 			end
 		},
 
 		Def.Sprite{
 			Texture=THEME:GetPathG("ScreenWithMenuElements Items/stage",""..StageIndexBySegment(true)),
-			Condition=not ThemePrefs.Get("ITG1"),
+			Condition=not IsITG1Mode(),
 			OnCommand=function(self)
 				if GAMESTATE:GetCurrentStage() == "Stage_Final" then
 					self:Load( THEME:GetPathG("ScreenWithMenuElements Items/stage","final") )
@@ -109,7 +109,7 @@ t[#t+1] = Def.ActorFrame{
 		},
 	
 		LoadActor( THEME:GetPathG("ScreenWithMenuElements","Items/ITG1"), true )..{
-			Condition=ThemePrefs.Get("ITG1"),
+			Condition=IsITG1Mode(),
 			OnCommand=function(self)
 				self:xy(SCREEN_RIGHT-140,0):addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.6):addx(-SCREEN_WIDTH)
 			end,
@@ -119,7 +119,7 @@ t[#t+1] = Def.ActorFrame{
 
 	-- Banner frame
 	LoadActor( THEME:GetPathG("Evaluation","banner frame mask") )..{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 		OnCommand=function(self)
 			self:zwrite(1):z(1):blend("BlendMode_NoEffect"):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-125):zoom(1.02)
@@ -130,7 +130,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner mask",194,1} )..{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 		OnCommand=function(self)
 			-- self:zwrite(1):z(1):blend("BlendMode_NoEffect")
@@ -144,7 +144,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
 		InitCommand=function(self)
 			self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126)
-			local bannerPath = THEME:GetPathG( (ThemePrefs.Get("ITG1") and "ITG1/" or "ITG2 ") .."Common fallback", "banner")
+			local bannerPath = THEME:GetPathG( (IsITG1Mode() and "ITG1/" or "ITG2 ") .."Common fallback", "banner")
 			if GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetBannerPath() ~= nil then
 				bannerPath = GAMESTATE:GetCurrentCourse():GetBannerPath()
 			end
@@ -162,7 +162,7 @@ t[#t+1] = Def.ActorFrame{
 			self:Load( bannerPath )
 		end,
 		OnCommand=function(self)
-			self:scaletoclipped( ThemePrefs.Get("ITG1") and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
+			self:scaletoclipped( IsITG1Mode() and 418/1.6 or 418/2,164/2):ztest(1):y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124+(itgstylemargin*2.4))
 		end,
 		OffCommand=function(self)
 			self:accelerate(0.3):addy(-SCREEN_CENTER_X)
@@ -170,7 +170,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 
 	LoadActor( THEME:GetPathB("","_frame 3x1"), {"banner frame",194} )..{
-		Condition=ThemePrefs.Get("ITG1"),
+		Condition=IsITG1Mode(),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 		OnCommand=function(self)
 			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-148)
@@ -181,7 +181,7 @@ t[#t+1] = Def.ActorFrame{
 	},
 	
 	LoadActor( THEME:GetPathG("","ScreenEvaluation banner frame") )..{
-		Condition=not ThemePrefs.Get("ITG1"),
+		Condition=not IsITG1Mode(),
 		InitCommand=function(self) self:xy(SCREEN_CENTER_X-1,SCREEN_CENTER_Y-126) end,
 		OnCommand=function(self)
 			self:y(SCREEN_TOP-100):sleep(3):decelerate(0.3):y(SCREEN_CENTER_Y-124)

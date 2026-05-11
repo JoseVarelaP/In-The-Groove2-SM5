@@ -114,7 +114,7 @@ local BTInput = {
         CheckValueOffsets(-1)
     end,
     ["Start"] = function(event)
-        SOUND:PlayOnce( ThemePrefs.Get("ITG1") and THEME:GetPathS("ITG1/Common","start")
+        SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")
 		or THEME:GetPathS("_ITGCommon","start") )
         local mode = modes[MenuIndex] == "dance" and "regular" or modes[MenuIndex]
         GAMESTATE:ApplyGameCommand("playmode,".. mode)
@@ -176,7 +176,7 @@ local Controller = Def.ActorFrame{
 }
 
 t[#t+1] = Def.Quad{
-    Condition = not ThemePrefs.Get("ITG1"),
+    Condition = not IsITG1Mode(),
     OnCommand=function(self)
         self:xy( _screen.cx,_screen.cy-40 ):zoomto(SCREEN_WIDTH,160):diffuse( 0,0,0,0.4 )
     end
@@ -248,7 +248,7 @@ t[#t+1] = Def.ActorScroller{
         :PositionItems()
     end
 }
-local isITG1 = ThemePrefs.Get("ITG1")
+local isITG1 = IsITG1Mode()
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(self)
@@ -289,7 +289,7 @@ t[#t+1] = Def.ActorFrame{
     Def.BitmapText{
         Font=_eurostileColorPick(),
         Text="SELECT A STYLE",
-        InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( ThemePrefs.Get("ITG1") and 0 or -0.16) end,
+        InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2):skewx( IsITG1Mode() and 0 or -0.16) end,
         OnCommand=function(self)
             self:zoomx(0):zoomy(6):bounceend(.3):zoom(1)
         end,

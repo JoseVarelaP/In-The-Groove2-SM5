@@ -71,7 +71,7 @@ end
 
 local t = Def.ActorFrame{}
 
-if ThemePrefs.Get("ITG1") then
+if IsITG1Mode() then
 	t[#t+1] = LoadActor( THEME:GetPathB("","_frame 3x1") , {"footer",250});
 else
 	t[#t+1] = LoadActor( THEME:GetPathG('PaneDisplay','Frame') );

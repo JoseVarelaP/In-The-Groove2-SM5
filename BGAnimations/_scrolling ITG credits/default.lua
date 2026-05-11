@@ -1,5 +1,5 @@
 local stopatframe=...
-local style = ThemePrefs.Get("ITG1") and "_" or ""
+local style = IsITG1Mode() and "_" or ""
 return Def.ActorFrame{
 	Def.ActorFrame{
 	OnCommand=function(self)
@@ -9,7 +9,7 @@ return Def.ActorFrame{
 		
 		Def.Quad{
 			 OnCommand=function(self)
-				self:y(-228+(ThemePrefs.Get("ITG1") and 2 or 0)):zwrite(1):blend("BlendMode_NoEffect"):zoomto(340,66)
+				self:y(-228+(IsITG1Mode() and 2 or 0)):zwrite(1):blend("BlendMode_NoEffect"):zoomto(340,66)
 			end
 		},
 		

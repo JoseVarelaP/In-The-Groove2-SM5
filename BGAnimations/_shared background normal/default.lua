@@ -1,5 +1,5 @@
-local streakcolor = ThemePrefs.Get("ITG1") and color("#6A6ADA") or color("#DA7979")
-local arrowcolor = ThemePrefs.Get("ITG1") and color("#33DADA") or color("#DA3333")
+local streakcolor = IsITG1Mode() and color("#6A6ADA") or color("#DA7979")
+local arrowcolor = IsITG1Mode() and color("#33DADA") or color("#DA3333")
 return Def.ActorFrame{
 	
 	LoadActor("../_shared background no streaks")..{ InitCommand=function(self) self:Center() end },
@@ -98,15 +98,15 @@ return Def.ActorFrame{
 	end,		
 		Def.Model{ Meshes="arrow.txt", Materials="ITG2arrowmaterial.txt", Bones="arrow.txt",
 			InitCommand=function(self)
-				self:diffusealpha(ThemePrefs.Get("ITG1") and 0 or .12):zoom(2):wag():effectmagnitude(0,0,5):effectperiod(5)
+				self:diffusealpha(IsITG1Mode() and 0 or .12):zoom(2):wag():effectmagnitude(0,0,5):effectperiod(5)
 			end,
-			UpdateColoringMessageCommand=function(self) self:finishtweening():linear(0.5):diffusealpha( ThemePrefs.Get("ITG1") and 0 or .12 ) end
+			UpdateColoringMessageCommand=function(self) self:finishtweening():linear(0.5):diffusealpha( IsITG1Mode() and 0 or .12 ) end
 		},		
 		Def.Model{ Meshes="arrow.txt", Materials="ITG1arrowmaterial.txt", Bones="arrow.txt",
 			InitCommand=function(self)
-				self:diffusealpha(ThemePrefs.Get("ITG1") and .12 or 0):zoom(2):wag():effectmagnitude(0,0,5):effectperiod(5)
+				self:diffusealpha(IsITG1Mode() and .12 or 0):zoom(2):wag():effectmagnitude(0,0,5):effectperiod(5)
 			end,
-			UpdateColoringMessageCommand=function(self) self:finishtweening():linear(0.5):diffusealpha( ThemePrefs.Get("ITG1") and .12 or 0 ) end
+			UpdateColoringMessageCommand=function(self) self:finishtweening():linear(0.5):diffusealpha( IsITG1Mode() and .12 or 0 ) end
 		}
 	},
 
