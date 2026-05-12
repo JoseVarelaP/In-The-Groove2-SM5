@@ -191,6 +191,10 @@ t[#t+1] = Def.Actor{
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(self)
         self:x(SCREEN_CENTER_X):y(SCREEN_CENTER_Y+60):zoom(1.3):fov(90)
+        
+        if IsITG2PS2Mode() then
+            SCREENMAN:GetTopScreen():GetChild("Underlay"):playcommand("DoOn"):playcommand("DoLarge")
+        end
     end,
     LoadActor( THEME:GetPathG("","chars/PlayMode") )..{
         OnCommand=function(self)

@@ -2,6 +2,17 @@ return Def.ActorFrame{
 	InitCommand=function(self)
 		self:y(SCREEN_TOP+42)
 	end,
+	OnCommand=function(self)
+		local autoSkip = {
+			["ITG_PlayModeSelect"] = true,
+			["ScreenTitleMenuPS2"] = true,
+		}
+		if SCREENMAN:GetTopScreen():GetName() then
+			if not autoSkip[SCREENMAN:GetTopScreen():GetName()] then
+				self:playcommand("DoOn"):finishtweening()
+			end
+		end
+	end,
 
 	-- Dark underlay
 	Def.Quad{
