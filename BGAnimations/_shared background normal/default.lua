@@ -1,3 +1,7 @@
+if IsITG2PS2Mode() then
+	return LoadActor( THEME:GetPathB("_shared background","normal/PS2") )
+end
+
 local streakcolor = IsITG1Mode() and color("#6A6ADA") or color("#DA7979")
 local arrowcolor = IsITG1Mode() and color("#33DADA") or color("#DA3333")
 return Def.ActorFrame{

@@ -1,0 +1,25 @@
+<ActorFrame><children>
+	<AutoActor
+		File="box cans.txt"
+	/>
+	<AutoActor
+		File="box lights.txt"
+		InitCommand="z,-1;EffectClock,beat;PlayCommand,CrossedBeat1"
+		CrossedBeat1MessageCommand="@'diffuseshift;EffectTiming,'..TimingA..';effectoffset,'..OffsetA..';effectcolor1,'..ColorDiffuseDimA..';effectcolor2,'..ColorDiffuseBrightA"
+		CrossedBeat14MessageCommand="diffuse,#FFFFFF;linear,0.3;QueueCommand,StopEffect;linear,0.2;diffuse,#303030;sleep,0.2;linear,0.2;diffuse,#FFFFFF;linear,0.2;diffuse,#303030"
+		CrossedBeat18MessageCommand="@'diffuseshift;EffectTiming,'..TimingB..';effectoffset,'..OffsetB..';effectcolor1,'..ColorDiffuseDimB..';effectcolor2,'..ColorDiffuseBrightB"
+		CrossedBeat54MessageCommand="@'diffuseshift;EffectTiming,'..TimingC..';effectoffset,'..OffsetC..';effectcolor1,'..ColorDiffuseDimC..';effectcolor2,'..ColorDiffuseBrightC"
+		CrossedBeat71MessageCommand="PlayCommand,CrossedBeat1"
+		StopEffectCommand="StopEffect"
+	/>
+	<AutoActor
+		File="box flares.txt"
+		InitCommand="zbuffer,0;blend,add;EffectClock,beat;PlayCommand,CrossedBeat1"
+		CrossedBeat1MessageCommand="@'diffuseshift;EffectTiming,'..TimingA..';effectoffset,'..OffsetA..';effectcolor1,'..ColorAddDimA..';effectcolor2,'..ColorAddBrightA"
+		CrossedBeat14MessageCommand="diffuse,#FFFFFF;linear,0.3;QueueCommand,StopEffect;linear,0.2;diffuse,#000000;sleep,0.2;linear,0.2;diffuse,#FFFFFF;linear,0.2;diffuse,#000000"
+		CrossedBeat18MessageCommand="@'diffuseshift;EffectTiming,'..TimingB..';effectoffset,'..OffsetB..';effectcolor1,'..ColorAddDimB..';effectcolor2,'..ColorAddBrightB"
+		CrossedBeat54MessageCommand="@'diffuseshift;EffectTiming,'..TimingC..';effectoffset,'..OffsetC..';effectcolor1,'..ColorAddDimC..';effectcolor2,'..ColorAddBrightC"
+		CrossedBeat71MessageCommand="PlayCommand,CrossedBeat1"
+		StopEffectCommand="StopEffect"
+	/>
+</children></ActorFrame>

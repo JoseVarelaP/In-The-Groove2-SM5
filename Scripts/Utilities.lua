@@ -356,7 +356,10 @@ function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 end
 
 function _eurostileColorPick()
-	return IsITG1Mode() and "_eurostile blue glow" or "_eurostile red glow"
+	if IsITG1Mode() then return "_eurostile blue glow" end
+	if IsITG2PS2Mode() then return "_xenotron normal" end
+
+	return "_eurostile red glow"
 end
 
 function Actor:LyricCommand(side)

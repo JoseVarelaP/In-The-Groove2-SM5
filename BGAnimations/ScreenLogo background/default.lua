@@ -3,7 +3,7 @@ local t = Def.ActorFrame{}
 local isDedicab = ThemePrefs.Get("DedicabToggle") or false
 
 t[#t+1] = Def.ActorFrame{
-	Condition=not ThemePrefs.Get("ITG1"),
+	Condition=not IsITG1Mode(),
 	Def.Sprite{
 		Texture="978_JumpBack.mpg",
 		OnCommand=function(self)
@@ -114,6 +114,6 @@ t[#t+1] = Def.ActorFrame{
 
 }
 
-t[#t+1] = LoadActor("ITG1")..{Condition=ThemePrefs.Get("ITG1")};
+t[#t+1] = LoadActor("ITG1")..{Condition=IsITG1Mode()};
 
 return t;
