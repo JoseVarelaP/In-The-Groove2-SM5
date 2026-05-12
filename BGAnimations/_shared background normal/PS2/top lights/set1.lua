@@ -22,11 +22,11 @@ return Def.ActorFrame{
             :sleep(0.2):linear(0.2):diffuse(color("#FFFFFF"))
             :linear(0.2):diffuse(color("#303030"))
         end,
-        CrossedBeat18MessageCommand=function(self)
+        CrossedBeat17MessageCommand=function(self)
             self:diffuseshift():effecttiming(0.2,0,1.8,0):effectoffset(-0.7)
             :effectcolor1(color("#303030")):effectcolor2(color("#3AD26C"))
         end,
-        CrossedBeat54MessageCommand=function(self)
+        CrossedBeat49MessageCommand=function(self)
             self:diffuseshift():effecttiming(0.2,0,3.8,0):effectoffset(-0.7)
             :effectcolor1(color("#303030")):effectcolor2(color("#8D5AD2"))
         end,
@@ -53,11 +53,11 @@ return Def.ActorFrame{
             :sleep(0.2):linear(0.2):diffuse(color("#FFFFFF"))
             :linear(0.2):diffuse(color("#000000"))
         end,
-        CrossedBeat18MessageCommand=function(self)
+        CrossedBeat17MessageCommand=function(self)
             self:diffuseshift():effecttiming(0.2,0,1.8,0):effectoffset(-0.7)
             :effectcolor1(color("#000000")):effectcolor2(color("#3AD26C"))
         end,
-        CrossedBeat54MessageCommand=function(self)
+        CrossedBeat49MessageCommand=function(self)
             self:diffuseshift():effecttiming(0.2,0,3.8,0):effectoffset(-0.7)
             :effectcolor1(color("#000000")):effectcolor2(color("#8D5AD2"))
         end,

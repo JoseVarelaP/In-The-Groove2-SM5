@@ -1,7 +1,18 @@
 local t = Def.ActorFrame{}
 
+local nextToPass = 0
 local function CheckRotationAndCulling(self, delta)
-    -- SCREENMAN:SystemMessage(self:GetRotationY())
+    
+    local beat = math.floor(GAMESTATE:GetSongPosition():GetSongBeat())
+
+    if beat < 1 then
+        nextToPass = 0
+    end
+
+    if (beat > nextToPass) and beat < 61 then
+        MESSAGEMAN:Broadcast("CrossedBeat"..beat)
+        nextToPass = beat
+    end
 
     local rot = self:GetRotationY()
     rot = rot % 360
@@ -50,15 +61,15 @@ local genArray = function(rotmult,panelColor,lightsColor,flareColor)
                     :sleep(0.2):linear(0.2):diffuse(color("#FFFFFF"))
                     :linear(0.2):diffuse(color("#303030"))
                 end,
-                CrossedBeat18MessageCommand=function(self)
+                CrossedBeat17MessageCommand=function(self)
                     self:diffuseshift():effecttiming(0.2,0,1.8,0):effectoffset(-0.7)
                     :effectcolor1(color("#303030")):effectcolor2(lightsColor)
                 end,
-                CrossedBeat54MessageCommand=function(self)
+                CrossedBeat49MessageCommand=function(self)
                     self:diffuseshift():effecttiming(0.2,0,3.8,0):effectoffset(-0.7)
                     :effectcolor1(color("#303030")):effectcolor2(lightsColor)
                 end,
-                CrossedBeat71MessageCommand=function(self)
+                CrossedBeat61MessageCommand=function(self)
                     self:playcommand("CrossedBeat1")
                 end,
                 StopEffectCommand=function(self) self:stopeffect() end
@@ -79,15 +90,15 @@ local genArray = function(rotmult,panelColor,lightsColor,flareColor)
                     :sleep(0.2):linear(0.2):diffuse(color("#FFFFFF"))
                     :linear(0.2):diffuse(color("#000000"))
                 end,
-                CrossedBeat18MessageCommand=function(self)
+                CrossedBeat17MessageCommand=function(self)
                     self:diffuseshift():effecttiming(0.2,0,1.8,0):effectoffset(-0.7)
                     :effectcolor1(color("#000000")):effectcolor2(flareColor)
                 end,
-                CrossedBeat54MessageCommand=function(self)
+                CrossedBeat49MessageCommand=function(self)
                     self:diffuseshift():effecttiming(0.2,0,3.8,0):effectoffset(-0.7)
                     :effectcolor1(color("#000000")):effectcolor2(flareColor)
                 end,
-                CrossedBeat71MessageCommand=function(self)
+                CrossedBeat61MessageCommand=function(self)
                     self:playcommand("CrossedBeat1")
                 end,
                 StopEffectCommand=function(self) self:stopeffect() end

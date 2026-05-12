@@ -1,3 +1,9 @@
+if IsITG2PS2Mode() then
+	return Def.ActorFrame{
+		LoadActor("./PS2")
+	}
+end
+
 return Def.ActorFrame{
 	ModeNotChosenMessageCommand=function(self)
 		self:linear(0.5):zoom(0):sleep(5)

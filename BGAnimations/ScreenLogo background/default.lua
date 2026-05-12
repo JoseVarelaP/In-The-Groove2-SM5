@@ -1,6 +1,15 @@
 local t = Def.ActorFrame{}
 
-local isDedicab = ThemePrefs.Get("DedicabToggle") or false
+local isDedicab = (ThemePrefs.Get("DedicabToggle") or false) and not IsITG2PS2Mode()
+
+function copyrightText()
+	-- PS2 had a different text, replace it.
+	if IsITG2PS2Mode() then
+		return "&xa9; 2005 Red Octane and Roxor Games, Inc."
+	end
+
+	return "&xa9; 2005 Roxor Games, Inc."
+end
 
 t[#t+1] = Def.ActorFrame{
 	Condition=not IsITG1Mode(),
@@ -14,6 +23,7 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.Sprite{
 		Texture="roxor",
+		Condition=not IsITG2PS2Mode(),
 		OnCommand=function(self)
 			self:xy(SCREEN_LEFT+90,SCREEN_TOP+30):diffusealpha(0):sleep(0.5):linear(0.5):diffusealpha(1)
 		end;
@@ -92,7 +102,7 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.BitmapText{
 		Font="_eurostile normal",
-		Text="&xa9; 2005 Roxor Games, Inc.",
+		Text=copyrightText(),
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):diffusealpha(0.8)
 		end;
@@ -100,6 +110,7 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.BitmapText{
 		Font="_eurostile normal",
+		Condition=not IsITG2PS2Mode(),
 		Text=("r%d"):format(ThemePrefs.Get("BuildVersionVisual") or 5),
 		OnCommand=function(self)
 			self:xy(SCREEN_CENTER_X+90,SCREEN_BOTTOM-17):zoom(0.5):shadowlength(2):horizalign(left):diffusealpha(0.8)

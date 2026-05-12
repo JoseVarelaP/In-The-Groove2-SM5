@@ -97,7 +97,9 @@ local function MainMenuChoices()
             MenuUpAllValMessageCommand=function(self)
                 self:finishtweening():stopeffect()
                 if MenuIndex == index then
-                    self:GetChild("")[1]:wag():effectmagnitude(0,10,0)
+                    if self:GetChild("")[1] then
+                        self:GetChild("")[1]:wag():effectmagnitude(0,10,0)
+                    end
                 end
 			end,
 			OffCommand=function(self)
@@ -153,6 +155,9 @@ t[#t+1] = Def.ActorFrame{
     Def.Sprite{
         Texture=THEME:GetPathG("","chars/Style"),
         OnCommand=function(self)
+            if IsITG2PS2Mode() then
+                self:zoomx(-1):addx(-90)
+            end
             self:z(-100):zbuffer(true):glow(1,1,1,0):diffusealpha(0):linear(0.3):glow(1,1,1,1):sleep(0.001):diffusealpha(1):linear(0.3):glow(1,1,1,0)
         end,
         OffCommand=function(self)

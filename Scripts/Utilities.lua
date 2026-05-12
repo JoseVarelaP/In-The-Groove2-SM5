@@ -235,7 +235,7 @@ function CalPerNum(pn)
 end
 
 Branch.AfterProfileLoad = function()
-	if PREFSMAN:GetPreference("ShowCaution") or GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+	if PREFSMAN:GetPreference("ShowCaution") or not IsITG2PS2Mode() or GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
 		return "ScreenCaution"
 	else
 		return Branch.StartGame()
