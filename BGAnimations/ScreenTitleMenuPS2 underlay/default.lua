@@ -7,17 +7,23 @@ local function WaitForStartButton(event)
 	if event.GameButton == "Start" then
 		enteredMenu = true
 		MESSAGEMAN:Broadcast("EnteredMenu")
-		SCREENMAN:set_input_redirected(PLAYER_2, false)
+		for pn in ivalues(PlayerNumber) do
+			SCREENMAN:set_input_redirected(pn, false)
+		end
 	end
 end
 
 return Def.ActorFrame{
 	OnCommand=function(self)
-		SCREENMAN:set_input_redirected(PLAYER_2, true)
+		for pn in ivalues(PlayerNumber) do
+			SCREENMAN:set_input_redirected(pn, true)
+		end
 		SCREENMAN:GetTopScreen():AddInputCallback(WaitForStartButton)
 	end,
 	CancelCommand=function(self)
-		SCREENMAN:set_input_redirected(PLAYER_2, false)
+		for pn in ivalues(PlayerNumber) do
+			SCREENMAN:set_input_redirected(pn, false)
+		end
 	end,
 	EnteredMenuMessageCommand=function(self)
 		self:GetChild("Enter"):play()
@@ -175,6 +181,7 @@ return Def.ActorFrame{
 		File="_eurostile normal",
 		OnCommand=function(self)
 			self:x(SCREEN_CENTER_X+200):y(SCREEN_CENTER_Y+180):zoom(0.7):diffuseblink():maxwidth(SCREEN_WIDTH/0.8)
+			:diffusealpha(0)
 		end;
 		InitCommand=function(self)
 			self:SetSecsBetweenSwitches(THEME:GetMetric("HelpDisplay","TipSwitchTime"))
@@ -188,6 +195,9 @@ return Def.ActorFrame{
 				end
 			end
 		end;
+		EnteredMenuMessageCommand=function(self)
+			self:sleep(0.5):diffusealpha(1)
+		end,
 		OffCommand=function(self)
 			self:linear(0.5):zoomy(0)
 			SOUND:PlayOnce( IsITG1Mode() and THEME:GetPathS("ITG1/Common","start")

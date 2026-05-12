@@ -56,10 +56,10 @@ return Def.ActorFrame{
 
 	Def.ActorFrame{
 		InitCommand=function(self)
-			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-104)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-40)
 		end,
 		DoOnCommand=function(self)
-			self:addy(60):decelerate(0.5):addy(-60)
+			self:y(SCREEN_BOTTOM-40):decelerate(0.5):y(SCREEN_BOTTOM-100)
 		end,
 		DoOffCommand=function(self)
 			self:decelerate(0.5):addy(60)
