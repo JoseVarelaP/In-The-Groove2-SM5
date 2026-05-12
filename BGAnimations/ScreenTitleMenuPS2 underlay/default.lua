@@ -16,6 +16,9 @@ return Def.ActorFrame{
 		SCREENMAN:set_input_redirected(PLAYER_2, true)
 		SCREENMAN:GetTopScreen():AddInputCallback(WaitForStartButton)
 	end,
+	CancelCommand=function(self)
+		SCREENMAN:set_input_redirected(PLAYER_2, false)
+	end,
 	EnteredMenuMessageCommand=function(self)
 		self:GetChild("Enter"):play()
 		SCREENMAN:GetTopScreen():RemoveInputCallback(WaitForStartButton)

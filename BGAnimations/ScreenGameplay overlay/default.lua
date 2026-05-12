@@ -327,6 +327,9 @@ t[#t+1] = Def.ActorFrame{
 		Texture="demonstration logo",
 		OnCommand=function(s)
 			s:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y-180):pulse():effectmagnitude(1.0,0.9,0):effectclock("bgm"):effectperiod(1)
+			if IsITG2PS2Mode() then
+				s:y( SCREEN_CENTER_Y+180 )
+			end
 		end;
 	};
 };

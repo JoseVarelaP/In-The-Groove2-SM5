@@ -347,6 +347,13 @@ Branch.AfterEvaluation = function()
 	end
 end
 
+Branch.Ranking = function()
+	if IsITG2PS2Mode() then
+		return "ScreenCautionPS2"
+	end
+	return "ScreenRanking"
+end
+
 function WorkoutRowTransform(self,offsetFromCenter,itemIndex,numItems)
 	self:y(SCREEN_CENTER_Y-96+24*offsetFromCenter)
 	-- Select Type
