@@ -14,15 +14,17 @@ if GAMESTATE:GetPlayMode() == "PlayMode_Rave" then
     table.remove(padloc, 3)
 end
 
+local function IsTwoPlayerAvailable(itemIndex)
+    return itemIndex ~= 0 and not (GAMESTATE:GetNumPlayersEnabled() < 2 and (GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin()))
+end
+
 local function CheckValueOffsets(offset)
     MenuIndex = MenuIndex + offset
     if MenuIndex > #padloc  then MenuIndex = 1 end
-    if MenuIndex < 1            then MenuIndex = #padloc end
+    if MenuIndex < 1        then MenuIndex = #padloc end
     if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
-        if MenuIndex == 2 or MenuIndex == 3 then
-            if GAMESTATE:GetNumPlayersEnabled() < 2 and (GAMESTATE:GetCoins() < GAMESTATE:GetCoinsNeededToJoin()) then
-                MenuIndex = 1
-            end
+        if not IsTwoPlayerAvailable(MenuIndex+1) then
+            MenuIndex = 1
         end
     end
 
@@ -181,7 +183,7 @@ t[#t+1] = Def.ActorScroller{
         self:x( math.sin( theta )*200 )
         :z( math.cos( theta )*200 )
         :y( self:GetZ()/2.2-20 )
-        :diffuse( offset == 0 and Color.White or color("0.5,0.5,0.5,1") )
+        :diffuse( offset == 0 and Color.White or (IsTwoPlayerAvailable(itemIndex) and color("0.5,0.5,0.5,1")) or color("0.2,0.2,0.2,1") )
         
         local focus=scale(self:GetZ(),-100,400,0,1)
         focus = clamp(focus,0,1)

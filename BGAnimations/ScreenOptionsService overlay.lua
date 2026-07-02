@@ -5,7 +5,7 @@ return Def.ActorFrame{
 
 	Def.BitmapText{
 		Font=_eurostileColorPick(),
-		Text=Screen.String("HeaderText"),
+		Text=string.upper(Screen.String("HeaderText")),
 		InitCommand=function(self) self:shadowlength(4):x(self:GetWidth()/2) end,
 		OnCommand=function(self)
 			self:zoomx(0):zoomy(6):sleep(0.3):bounceend(.3):zoom(1)

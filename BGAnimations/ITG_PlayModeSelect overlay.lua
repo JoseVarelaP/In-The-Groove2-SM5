@@ -16,27 +16,64 @@ local function Unlock(name)
 		},
 		["ITG2_"] = {
 			"Disconnected Disco", -- Up,Down,Down,Up,Left,Left,Down,Right,Down,Up,Right
-			"VerTex^2", -- Left,Down,Right,Right,Right,Down,Left,Up,Up,Down,Right
-			"Wanna Do", -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
-			"Know Your Enemy", -- Right,Left,Down,Down,Down,Up,Left,Down,Left,Left,Right
-			"Hardcore Symphony", -- Down,Up,Up,Left,Down,Right,Down,Right,Right,Down,Up
-            {"!"}
+            
+            -- Vertex^2, Monolith / Expert, Cryosleep / Expert
+			{{12,"Vertex^2"}, 20, 21}, -- Left,Down,Right,Right,Right,Down,Left,Up,Up,Down,Right
+            
+            -- Wanna Do, Robotix / Expert
+			{{13,"Wanna Do"}, 22}, -- Right,Right,Up,Up,Up,Right,Left,Left,Up,Up,Up
+            
+            -- ! / Expert, Know Your Enemy, Why Me / Expert
+			{16, 14, 17}, -- Right,Left,Down,Down,Down,Up,Left,Down,Left,Left,Right
+			
+            -- Amore / Expert, Hardcore Symphony, Temple of Boom / Expert
+            {18, 15, 19}, -- Down,Up,Up,Left,Down,Right,Down,Right,Right,Down,Up
 		}
     }
     local unlockid = Series == "ITG1_" and codenumber or codenumber+#codes["ITG1_"]
-    if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
-        -- if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
-            local isChartUnlock = UNLOCKMAN:GetUnlockEntry(unlockid-1):GetUnlockRewardType() == 1
-            lua.ReportScriptError(isChartUnlock)
-            local SongToFind = isChartUnlock and codes[Series][codenumber][1] or codes[Series][codenumber]
-            UNLOCKMAN:UnlockEntryIndex( unlockid-1 )
-            if not isChartUnlock then
-                SOUND:DimMusic( 0.2, 3 )
-                SOUND:PlayOnce( THEME:GetPathS("Unlocked",SongToFind) )
+    -- Is the unlock code a table? Then let's check the succession of unlocks.
+    if type(codes[Series][codenumber]) == "table" then
+        -- Check through each entry to see if its already unlocked.
+        for _,item in ipairs(codes[Series][codenumber]) do
+            local idToCheck = type(item) == "table" and item[1] or item
+            
+            if UNLOCKMAN:GetUnlockEntry(idToCheck-1) then
+                local entry = UNLOCKMAN:GetUnlockEntry(idToCheck-1)
+                if entry:IsLocked() then
+                    local unlockType = entry:GetUnlockRewardType()
+                    local songToFind = entry:GetSong()
+
+                    if songToFind then
+                        UNLOCKMAN:UnlockEntryIndex( idToCheck-1 )
+                        if unlockType == 1 then
+                            GAMESTATE:SetPreferredSong( songToFind )
+                            MESSAGEMAN:Broadcast("UnlockMade",{ Name=songToFind:GetDisplayFullTitle() })
+                        end
+                        if unlockType == 0 then
+                            SOUND:DimMusic( 0.2, 3 )
+                            SOUND:PlayOnce( THEME:GetPathS("Unlocked", type(item) == "table" and item[2] or songToFind:GetDisplayFullTitle() ) )
+                            GAMESTATE:SetPreferredSong( songToFind )
+                            MESSAGEMAN:Broadcast("UnlockMade",{ Name=songToFind:GetDisplayFullTitle() })
+                        end
+                        break
+                    end
+                end
             end
-            GAMESTATE:SetPreferredSong( SONGMAN:FindSong( SongToFind ) )
-            MESSAGEMAN:Broadcast("UnlockMade",{ Name=SongToFind })
-        -- end
+        end
+    else
+        if UNLOCKMAN:GetUnlockEntry(unlockid-1) then
+            -- if UNLOCKMAN:GetUnlockEntry(unlockid-1):IsLocked() then
+                local isChartUnlock = UNLOCKMAN:GetUnlockEntry(unlockid-1):GetUnlockRewardType() == 1
+                local SongToFind = isChartUnlock and codes[Series][codenumber][1] or codes[Series][codenumber]
+                UNLOCKMAN:UnlockEntryIndex( unlockid-1 )
+                if not isChartUnlock then
+                    SOUND:DimMusic( 0.2, 3 )
+                    SOUND:PlayOnce( THEME:GetPathS("Unlocked",SongToFind) )
+                end
+                GAMESTATE:SetPreferredSong( SONGMAN:FindSong( SongToFind ) )
+                MESSAGEMAN:Broadcast("UnlockMade",{ Name=SongToFind })
+            -- end
+        end
     end
 end
 

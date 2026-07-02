@@ -1,7 +1,7 @@
 function PlayerColor( pn )
 	local colors = {
 		[PLAYER_1] = color("#FBBE03"), -- orange
-		[PLAYER_2] = color("#FBBE03"), -- green
+		[PLAYER_2] = color("#56FF48"), -- green
 	}
 	return colors[pn] or color("1,1,1,1")
 end
